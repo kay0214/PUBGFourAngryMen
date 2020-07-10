@@ -18,7 +18,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,8 +74,22 @@ public class TestMongoController {
 
     @ApiOperation(value = "测试playerNames",notes = "测试playerNames")
     @PostMapping("/playerNames")
-    public String searchPage(String playName){
+    public JSONObject playerNames(String playName){
         JSONObject result = PubgApi.useApi(PubgApiEnum.PUBG_API_PLAYER_NAME).call(playName);
-        return result.toJSONString();
+        return result;
+    }
+
+    @ApiOperation(value = "测试accountId",notes = "测试accountId")
+    @PostMapping("/accountId/{accountId}")
+    public JSONObject accountId(@PathVariable String accountId){
+        JSONObject result = PubgApi.useApi(PubgApiEnum.PUBG_API_PLAYER_ACCOUNT).call(accountId);
+        return result;
+    }
+
+    @ApiOperation(value = "测试matches",notes = "测试matches")
+    @PostMapping("/matches/{id}")
+    public JSONObject matches(@PathVariable String id){
+        JSONObject result = PubgApi.useApi(PubgApiEnum.PUBG_API_MATCHES_ID).call(id);
+        return result;
     }
 }

@@ -7,14 +7,9 @@ import com.pubg.analysis.config.PUBGConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @author sunpeikai
@@ -39,10 +34,10 @@ public class HttpUtil {
             log.info("sendGet - {}", urlNameString);
             URL realUrl = new URL(urlNameString);
             URLConnection connection = realUrl.openConnection();
-            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("accept", "application/vnd.api+json");
             connection.setRequestProperty("connection", "Keep-Alive");
             connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-            connection.setRequestProperty("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhOGM1MzVmMC1hMzM4LTAxMzgtYTFmNC0wZjU5NTVjMDZiYjMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTk0MjA2MjQ0LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InN1bnBlaWthaS1oeWpmIn0.RfLMh9_d8aPB2jR2f8OPY-usxVSpVrWTJTTx4Fh64w8");// +  PUBGConfig.apiKey);
+            connection.setRequestProperty("Authorization", "Bearer " +  PUBGConfig.apiKey);
             connection.connect();
             in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
@@ -62,9 +57,5 @@ public class HttpUtil {
             }
         }
         return result.toString();
-    }
-    public static void main(String[] args){
-        String result = sendGet("https://api.pubg.com/shards/steam/players?filter[playerNames]=letUs1tChicken","");
-        System.out.println(result);
     }
 }
