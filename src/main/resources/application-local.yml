@@ -25,10 +25,10 @@ jetcache:
 
 #mongoDb
 mongodb:
-  host: 39.100.154.57
-  port: 28001
-  username: testuser
-  password: e2VdOav40i
+  host: 127.0.0.1
+  port: 27017
+  username: admin
+  password: 123456
   authenticationDatabase: admin
   database: pubg
   minConnectionsPerHost: 2
