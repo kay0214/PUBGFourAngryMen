@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: local
+    # active: remote
+  jackson:
+    time-zone: GMT+8
+    locale: zh_CN
+server:
+  port: 8071

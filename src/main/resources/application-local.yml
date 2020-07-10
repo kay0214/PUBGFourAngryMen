@@ -1,0 +1,38 @@
+server:
+  servlet:
+    # 项目contextPath
+    context-path: /pubg
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    threads:
+      # tomcat最大线程数，默认为200
+      max: 800
+      # Tomcat启动初始化的线程数，默认值25
+      min-spare: 10
+
+
+# JetCache config
+jetcache:
+  statIntervalMinutes: 15
+  areaInCacheName: false
+  local:
+    default:
+      type: linkedhashmap
+      keyConvertor: fastjson
+      limit: 100
+
+
+#mongoDb
+mongodb:
+  host: 39.100.154.57
+  port: 28001
+  username: testuser
+  password: e2VdOav40i
+  authenticationDatabase: admin
+  database: pubg
+  minConnectionsPerHost: 2
+  connectionsPerHost: 30
+  connectTimeout: 10000
+  maxWaitTime: 15000
+  socketTimeout: 120000
