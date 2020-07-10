@@ -3,6 +3,9 @@
  */
 package com.pubg.analysis.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.pubg.analysis.api.PubgApi;
+import com.pubg.analysis.api.enums.PubgApiEnum;
 import com.pubg.analysis.base.Page;
 import com.pubg.analysis.entity.MongoTest;
 import com.pubg.analysis.request.MongoTestRequest;
@@ -68,5 +71,12 @@ public class TestMongoController {
             return testResponse;
         });
         return result;
+    }
+
+    @ApiOperation(value = "测试playerNames",notes = "测试playerNames")
+    @PostMapping("/playerNames")
+    public String searchPage(String playName){
+        JSONObject result = PubgApi.useApi(PubgApiEnum.PUBG_API_PLAYER_NAME).call(playName);
+        return result.toJSONString();
     }
 }
