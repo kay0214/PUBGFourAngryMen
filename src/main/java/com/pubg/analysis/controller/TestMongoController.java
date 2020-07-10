@@ -8,12 +8,16 @@ import com.pubg.analysis.entity.MongoTest;
 import com.pubg.analysis.request.MongoTestRequest;
 import com.pubg.analysis.response.MongoTestResponse;
 import com.pubg.analysis.service.MongoTestDao;
+import com.pubg.analysis.utils.DateUtil;
 import com.pubg.analysis.utils.EntityUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +25,7 @@ import java.util.List;
  * @version TestMongo, v0.1 2020/7/10 10:49
  * @description
  */
+@Api(value = "mongo测试类",tags = "mongo测试类")
 @RestController
 @RequestMapping("/test")
 public class TestMongoController {
@@ -28,13 +33,16 @@ public class TestMongoController {
     @Autowired
     private MongoTestDao mongoTestDao;
 
+    @ApiOperation(value = "测试单条插入",notes = "测试单条插入")
     @PostMapping("/insert")
     public String insert(@RequestBody MongoTestRequest request){
         MongoTest mongoTest = EntityUtil.copyBean(request,MongoTest.class);
+        mongoTest.setCreateTime(new Date());
         mongoTestDao.insert(mongoTest);
         return "Ok";
     }
 
+    @ApiOperation(value = "测试批量插入",notes = "测试批量插入")
     @PostMapping("/insertBatch")
     public String insertBatch(@RequestBody MongoTestRequest request){
         List<MongoTest> mongoTests = new ArrayList<>();
@@ -42,19 +50,21 @@ public class TestMongoController {
             MongoTest mongoTest = EntityUtil.copyBean(request,MongoTest.class);
             mongoTest.setClassId(i);
             mongoTest.setHeadmaster(i==1?1:0);
+            mongoTest.setCreateTime(new Date());
             mongoTests.add(mongoTest);
         }
         mongoTestDao.insertAll(mongoTests);
         return "Ok";
     }
 
+    @ApiOperation(value = "测试分页查询",notes = "测试分页查询")
     @PostMapping("/searchPage")
     public Page<MongoTestResponse> searchPage(@RequestBody MongoTestRequest request){
         Page<MongoTest> testPage = mongoTestDao.searchPage(request);
         Page<MongoTestResponse> result = testPage.convert(mongoTest -> {
             // 分页的records的一个循环,这里可以做一些处理 - 相当于循环处理数据
             MongoTestResponse testResponse = EntityUtil.copyBean(mongoTest,MongoTestResponse.class);
-            testResponse.setQueryTime(LocalDateTime.now().toString());
+            testResponse.setCreateTime(mongoTest.getCreateTime() != null ? DateUtil.formatDateTime(mongoTest.getCreateTime()) : "");
             return testResponse;
         });
         return result;

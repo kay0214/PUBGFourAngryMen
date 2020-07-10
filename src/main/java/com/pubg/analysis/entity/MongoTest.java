@@ -35,4 +35,7 @@ public class MongoTest {
 
     // 所授课程
     private String course;
+
+    // 创建时间 - 必须用Date类型,java8的LocalDateTime还不兼容
+    private Date createTime;
 }
