@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
+ * 日志仓库
+ *
  * @author yangy
  * @date 2020/7/12 11:27
  */
@@ -22,6 +24,15 @@ public class LogRepository extends MongoBaseDao<BaseLog> {
 		return BaseLog.class;
 	}
 
+	/**
+	 * 取得日志列表
+	 *
+	 * @param clazz       输出类
+	 * @param matchId     比赛id
+	 * @param logTypeList 日志类型列表, null为全部输出
+	 * @param <T>         输出类型
+	 * @return 日志列表
+	 */
 	public <T> List<T> getLog(Class<T> clazz, String matchId, List<String> logTypeList) {
 		//拆分
 		UnwindOperation unwindOperation = Aggregation.unwind("$logs");
