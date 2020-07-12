@@ -1,7 +1,7 @@
 package com.pubg.analysis.utils;
 
 import com.pubg.analysis.constants.PubgConstant;
-import com.pubg.analysis.entity.Location;
+import com.pubg.analysis.entity.log.Location;
 import lombok.extern.slf4j.Slf4j;
 
 /**

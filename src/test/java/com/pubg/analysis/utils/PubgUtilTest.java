@@ -1,7 +1,7 @@
 package com.pubg.analysis.utils;
 
 import com.pubg.analysis.constants.PubgConstant;
-import com.pubg.analysis.entity.Location;
+import com.pubg.analysis.entity.log.Location;
 import org.junit.Assert;
 import org.junit.Test;
 

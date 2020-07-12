@@ -1,4 +1,4 @@
-package com.pubg.analysis.entity;
+package com.pubg.analysis.entity.log;
 
 import lombok.Data;
 

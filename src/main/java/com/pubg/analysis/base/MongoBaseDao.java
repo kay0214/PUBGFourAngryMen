@@ -3,11 +3,13 @@
  */
 package com.pubg.analysis.base;
 
+import com.pubg.analysis.entity.log.BaseLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.Fields;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
@@ -111,4 +113,11 @@ public abstract class MongoBaseDao<T> {
         log.debug("读取到聚合数据: {}", results.getRawResults().toJson());
 		return results.getMappedResults();
 	}
+
+    public <K> List<K> aggregate(Class<K> clazz, Aggregation aggregation, String collectionName) {
+
+        AggregationResults<K> results = this.mongoTemplate.aggregate(aggregation, collectionName, clazz);
+        log.debug("读取到聚合数据: {}", results.getRawResults().toJson());
+        return results.getMappedResults();
+    }
 }
