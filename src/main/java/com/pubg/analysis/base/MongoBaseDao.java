@@ -3,8 +3,11 @@
  */
 package com.pubg.analysis.base;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
@@ -15,6 +18,7 @@ import java.util.List;
  * @version MongoBaseDao, v0.1 2020/7/10 10:40
  * @description
  */
+@Slf4j
 public abstract class MongoBaseDao<T> {
 
     @Autowired
@@ -100,4 +104,11 @@ public abstract class MongoBaseDao<T> {
     public Long count(Query query) {
         return this.mongoTemplate.count(query, this.getEntityClass());
     }
+
+	public List<T> aggregate(Aggregation aggregation, String collectionName) {
+
+        AggregationResults<T> results = this.mongoTemplate.aggregate(aggregation, collectionName, this.getEntityClass());
+        log.debug("读取到聚合数据: {}", results.getRawResults().toJson());
+		return results.getMappedResults();
+	}
 }
