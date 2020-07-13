@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>位置追踪1</title>
+    <link rel="stylesheet" href="/pubg/static/css/bootstrap.min.css">
+    <script src="/pubg/static/js/jquery-3.5.1.min.js"></script>
+    <script src="/pubg/static/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div class="container-fluid testtest">
+
+    <div class="row">
+        <!--参数输入-->
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="text" class="form-control" id="matchIdInput1" placeholder="matchId">
+            </div>
+            <div class="btn btn-primary" id="btnGetTrack">load</div>
+        </form>
+    </div>
+
+    <div class="row">
+        <!--        <input type="range" id="timeRange" min="0" max="1000" step="1">-->
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <!--队伍列表-->
+            <div class="team-list">
+                队伍列表
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <!--地图-->
+
+            <input type="range" id="timeRange" min="0" max="1000" step="10">
+            <div id="mapContainer">
+                <canvas id="mapCanvas" width="1000" height="1000"></canvas>
+                <img id="mapImage">
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+<script>
+    const canvas = document.getElementById("mapCanvas");
+    const context = canvas.getContext("2d");
+    let map = document.getElementById("mapImage");
+    map.src = "/pubg/static/img/Sanhok_Main_Low_Res.png";
+    // context.drawImage(map, 0, 0);
+    map.onload = () => {
+        // context.drawImage(map, 0, 0);
+    }
+
+    const baseUrl = "/pubg";
+    let trackData = {};
+    $("#timeRange").val(0).attr("disabled", "true");
+    $("#btnGetTrack").click(() => {
+        const matchId = $("#matchIdInput1").val();
+        if (!matchId) {
+            return;
+        }
+
+        $.ajax({
+                url: baseUrl + "/position/track/" + matchId,
+                success: (e) => {
+                    console.log(e)
+                    trackData = e;
+                    $("#timeRange").attr("max", e.end).removeAttr("disabled");
+                }
+            }
+        )
+    })
+
+    $("#timeRange").on("input", (e) => {
+        const current = e.target.value;
+        drawInstantContent(current);
+    })
+
+    /**
+     *
+     * @param instant 时刻 拖动条的值
+     */
+    function drawInstantContent(instant) {
+        canvas.height = canvas.height;
+        const logs = trackData.positions[instant];
+        if (logs === undefined) {
+            return;
+        }
+
+        console.log("characters", logs);
+        for (let log of logs) {
+            drawCharacter(log);
+        }
+
+    }
+
+    function drawCharacter(log) {
+        console.log(log)
+        const size = 1000;
+        const location = log.character.location;
+        const x = size * location.xratio;
+        const y = size * location.yratio;
+
+        drawCircle(x, y);
+    }
+
+    function drawCircle(x, y) {
+        context.beginPath();
+        context.arc(x, y, 5, 0, 2 * Math.PI);
+        context.fillStyle = "red";
+        context.fill();
+        context.stroke();
+    }
+
+
+</script>
+<style>
+    .testtest {
+        border: solid red;
+    }
+
+    .team-list {
+        border: solid red;
+    }
+
+    #timeRange {
+        width: 1000px;
+    }
+
+    #mapContainer {
+        position: relative;
+    }
+
+    #mapImage {
+        position: absolute;
+        width: 1000px;
+        height: 1000px;
+        z-index: 0;
+    }
+
+    #mapCanvas {
+        position: absolute;
+        z-index: 1;
+    }
+</style>
+</html>
