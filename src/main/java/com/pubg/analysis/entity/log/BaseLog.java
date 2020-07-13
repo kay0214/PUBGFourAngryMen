@@ -17,6 +17,7 @@ public class BaseLog {
 	/**
 	 * 时间
 	 */
+	@DateTimeFormat(pattern = "dd-MMM-yyyyTHH:mm:ss:SSSz")
 	private String _D;
 
 	/**
@@ -27,14 +28,6 @@ public class BaseLog {
 	private Common common;
 	private Character character;
 
-	/**
-	 * 好像是表示游戏阶段
-	 */
-	@Data
-	class Common {
-
-		private float isGame;
-	}
 }
 
 

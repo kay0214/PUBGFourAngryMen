@@ -22,4 +22,13 @@ public class IndexController {
         model.addAttribute("userName","admin");
         return "index";
     }
+
+    /**
+     * 追踪页面
+     */
+    @GetMapping("/track")
+    public String track() {
+
+        return "track";
+    }
 }
