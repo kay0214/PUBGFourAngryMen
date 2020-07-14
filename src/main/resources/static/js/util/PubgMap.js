@@ -6,10 +6,10 @@
  * 用例: const pubgMap = new PubgMap("pubgMapEle", 1000, 1000, mapConstant.SANHOK);
  * <p>     pubgMap.drawPosition(0.5, 0.5, 1, 19);
  *
- * @param {String}  elementId   元素id
+ * @param {string}  elementId   元素id
  * @param {number}  width       宽
  * @param {number}  height      高
- * @param {String}  mapImgSrc   图片url
+ * @param {string}  mapImgSrc   图片url
  * @constructor
  *
  * @author yangy
@@ -17,10 +17,13 @@
 function PubgMap(elementId, width, height, mapImgSrc) {
 
     const that = this;
+    let imgElement = null;
+    let canvas = null;
     init(elementId, width, height, mapImgSrc);
-    const canvas = this.canvas;
+
     /** @type {CanvasRenderingContext2D } */
     const context = canvas.getContext("2d");
+
 
     /**
      * 初始化
@@ -28,14 +31,14 @@ function PubgMap(elementId, width, height, mapImgSrc) {
     function init(parentId, width, height, mapImgSrc) {
         const parent = document.getElementById(parentId);
         //设置canvas
-        const canvas = that.canvas = document.createElement("canvas");
+        canvas = that.canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
         canvas.style.position = "absolute";
         canvas.style.zIndex = "1";
 
         //设置图片
-        const img = document.createElement("img");
+        const img = imgElement = document.createElement("img");
         img.style.width = width + "px";
         img.style.height = height + "px";
         img.width = width;
@@ -52,11 +55,16 @@ function PubgMap(elementId, width, height, mapImgSrc) {
 
     /**
      * 设置背景地图图片
-     * @param {String} mapImgSrc 图片url
+     * @param {string}  mapImgSrc   图片url
+     * @param {number}  width       图片长
+     * @param {number}  height      图片宽
      */
-    this.setBackgroundMap = (mapImgSrc) => {
-        const img = document.getElementById(imgId);
-        img.setAttribute("src", mapImgSrc);
+    this.setBackgroundMap = (mapImgSrc, width = 1000, height = 1000) => {
+        imgElement.setAttribute("src", mapImgSrc);
+        imgElement.style.width = width + "px";
+        imgElement.style.height = height + "px";
+        imgElement.width = width;
+        imgElement.height = height;
     }
 
     /**
@@ -121,10 +129,10 @@ function PubgMap(elementId, width, height, mapImgSrc) {
 
     /**
      * 绘制位置点
-     * @param xRatio        x比率
-     * @param yRatio        y比率
-     * @param groupId       队伍id
-     * @param playerIndex   玩家编号
+     * @param {number}          xRatio        x比率
+     * @param {number}          yRatio        y比率
+     * @param {number}          groupId       队伍id
+     * @param {number|string}   playerIndex   玩家编号
      */
     this.drawPosition = (xRatio, yRatio, groupId, playerIndex) => {
         const pos = convertRatioToPos(xRatio, yRatio);
@@ -158,7 +166,7 @@ function PubgMap(elementId, width, height, mapImgSrc) {
 
     /**
      * 绘制行进路径
-     * @param {number[][]}  ratioList   比率坐标列表
+     * @param {number[][]}  ratioList   比率坐标列表  [[0.1, 0.1], [0.2, 0.2], [0.3, 0.5]]
      * @param {number}      teamIndex   队伍编号
      */
     this.drawPath = (ratioList, teamIndex) => {
