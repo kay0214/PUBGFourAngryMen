@@ -28,12 +28,12 @@ public class Vehicle {
 
 	private String vehicleType;
 	private String vehicleId;
-	private int vehicleUniqueId;
-	private int seatIndex;
-	private int healthPercent;
+	private Integer vehicleUniqueId;
+	private Integer seatIndex;
+	private Integer healthPercent;
 	private double feulPercent;
-	private int altitudeAbs;
-	private int altitudeRel;
+	private Integer altitudeAbs;
+	private Integer altitudeRel;
 	private double velocity;
 	private boolean isWheelsInAir;
 	private boolean isInWaterVolume;

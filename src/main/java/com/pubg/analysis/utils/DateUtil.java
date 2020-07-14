@@ -16,6 +16,22 @@ public class DateUtil {
     // 格式化
     private static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     private static final String YYYY_MM_DD = "yyyy-MM-dd";
+    private static final String GET_FROM = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    /**
+     * @description string -> date
+     * @auth sunpeikai
+     * @param
+     * @return
+     */
+    public static Date getFromStr(String date){
+        try{
+            // 2020-07-12T14:56:52Z
+            SimpleDateFormat format = new SimpleDateFormat(GET_FROM);
+            return format.parse(date);
+        }catch (Exception e){
+            return null;
+        }
+    }
 
     /**
      * @description 格式化时间

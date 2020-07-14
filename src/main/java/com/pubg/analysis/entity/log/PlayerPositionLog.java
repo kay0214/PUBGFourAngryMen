@@ -20,7 +20,7 @@ public class PlayerPositionLog extends BaseLog {
 	 * common : {"isGame":1}
 	 */
 
-	private Vehicle vehicle;
-	private int elapsedTime;
-	private int numAlivePlayers;
+	// private Vehicle vehicle;
+	// private int elapsedTime;
+	// private int numAlivePlayers;
 }
