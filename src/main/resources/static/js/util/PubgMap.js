@@ -1,27 +1,23 @@
 /**
  * 绘制封装
  *
- * canvas元素与img元素须用一个div包裹, 如:
- * <div>
- *     <canvas id="mapCanvas"></canvas>
- *     <img id="mapImage">
- *</div>
+ * <div id="pubgMapEle"></div>
  *
- * 用例: const pubgMap = new PubgMap("mapCanvas", "mapImage", 1000, 1000, mapConstant.SANHOK);
+ * 用例: const pubgMap = new PubgMap("pubgMapEle", 1000, 1000, mapConstant.SANHOK);
  * <p>     pubgMap.drawPosition(0.5, 0.5, 1, 19);
- * @param {String}  canvasId  canvas元素id
- * @param {String}  imgId     图片元素id
- * @param {number}  width     宽
- * @param {number}  height    高
- * @param {String}  mapImgSrc 图片url
+ *
+ * @param {String}  elementId   元素id
+ * @param {number}  width       宽
+ * @param {number}  height      高
+ * @param {String}  mapImgSrc   图片url
  * @constructor
  *
  * @author yangy
  */
-function PubgMap(canvasId, imgId, width, height, mapImgSrc) {
+function PubgMap(elementId, width, height, mapImgSrc) {
 
     const that = this;
-    init(canvasId, imgId, width, height, mapImgSrc);
+    init(elementId, width, height, mapImgSrc);
     const canvas = this.canvas;
     /** @type {CanvasRenderingContext2D } */
     const context = canvas.getContext("2d");
@@ -29,16 +25,17 @@ function PubgMap(canvasId, imgId, width, height, mapImgSrc) {
     /**
      * 初始化
      */
-    function init(canvasId, imgId, width, height, mapImgSrc) {
+    function init(parentId, width, height, mapImgSrc) {
+        const parent = document.getElementById(parentId);
         //设置canvas
-        const canvas = that.canvas = document.getElementById(canvasId);
+        const canvas = that.canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
         canvas.style.position = "absolute";
         canvas.style.zIndex = "1";
 
         //设置图片
-        const img = document.getElementById(imgId);
+        const img = document.createElement("img");
         img.style.width = width + "px";
         img.style.height = height + "px";
         img.width = width;
@@ -48,7 +45,9 @@ function PubgMap(canvasId, imgId, width, height, mapImgSrc) {
         img.style.zIndex = "0";
 
         //设置父元素
-        canvas.parentElement.style.position = "relative";
+        parent.style.position = "relative";
+        parent.appendChild(canvas);
+        parent.appendChild(img);
     }
 
     /**
