@@ -5,6 +5,7 @@ import com.pubg.analysis.entity.matchs.MatchPlayer;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * @date 2020/7/12 11:27
  */
 @Repository
-public class PlayerMatchRepository extends MongoBaseDao<MatchPlayer> {
+public class MatchPlayerRepository extends MongoBaseDao<MatchPlayer> {
 
 	@Override
 	protected Class<MatchPlayer> getEntityClass() {
@@ -23,11 +24,16 @@ public class PlayerMatchRepository extends MongoBaseDao<MatchPlayer> {
 	}
 
 	public List<MatchPlayer> findByIdOrName(String accountId, String playerName){
-        return null;
-    }
-    public MatchPlayer findByMatchId(String matchId){
         Query query = new Query();
-        query.addCriteria(new Criteria().and("matchId").is(matchId));
-        return findOne(query);
+        // 构建查询条件
+        Criteria criteria = new Criteria();
+        if(!StringUtils.isEmpty(accountId)){
+            criteria.and("accountId").is(accountId);
+        }
+        if(!StringUtils.isEmpty(playerName)){
+            criteria.and("playerName").is(playerName);
+        }
+        query.addCriteria(criteria);
+        return find(query);
     }
 }

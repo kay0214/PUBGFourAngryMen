@@ -4,18 +4,24 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.pubg.analysis.api.PubgApi;
 import com.pubg.analysis.api.enums.PubgApiEnum;
+import com.pubg.analysis.base.Page;
+import com.pubg.analysis.constants.ApiConstant;
 import com.pubg.analysis.constants.PubgConstant;
 import com.pubg.analysis.entity.log.PlayerPositionLog;
 import com.pubg.analysis.entity.matchs.Match;
 import com.pubg.analysis.entity.matchs.MatchPlayer;
 import com.pubg.analysis.repository.LogRepository;
 import com.pubg.analysis.repository.MatchRepository;
-import com.pubg.analysis.repository.PlayerMatchRepository;
+import com.pubg.analysis.repository.MatchPlayerRepository;
+import com.pubg.analysis.request.MatchRequest;
+import com.pubg.analysis.response.MatchResponse;
 import com.pubg.analysis.response.PositionResponse;
 import com.pubg.analysis.service.IPubgService;
 import com.pubg.analysis.utils.DateUtil;
 import com.pubg.analysis.utils.PubgUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -36,7 +42,7 @@ public class PubgServiceImpl implements IPubgService {
     @Resource
     private MatchRepository matchRepository;
 	@Resource
-    private PlayerMatchRepository playerMatchRepository;
+    private MatchPlayerRepository matchPlayerRepository;
 
 
     @Override
@@ -96,56 +102,55 @@ public class PubgServiceImpl implements IPubgService {
     /**
      * @description accountId查找对局列表
      * @auth sunpeikai
-     * @param accountId 玩家账户ID
+     * @param request 玩家账户ID
      * @return
      */
     @Override
-    public List<Match> findByAccountId(String accountId) {
-        return findByAccountId(false,accountId);
+    public Page<Match> findMatchPageByAccountId(MatchRequest request) {
+        return findMatchPageByAccountId(false,request);
     }
 
     /**
      * @description accountId查找对局列表
      * @auth sunpeikai
      * @param fromRemote 从pubg官网更新
-     * @param accountId 玩家账户ID
+     * @param request 玩家账户ID
      * @return
      */
     @Override
-    public List<Match> findByAccountId(boolean fromRemote, String accountId) {
+    public Page<Match> findMatchPageByAccountId(boolean fromRemote, MatchRequest request) {
         if(fromRemote){
             // 从pubg官网重新拉取数据
-            updateMatchesFromRemote(accountId,"");
+            updateMatchesFromRemote(request.getAccountId(),"");
         }
-        List<MatchPlayer> result = new ArrayList<>();
-        return null;
+        return findMatchPageByAccountIdOrPlayerName(request);
     }
 
     /**
      * @description 玩家昵称查找对局列表
      * @auth sunpeikai
-     * @param playerName 玩家昵称
+     * @param request 玩家昵称
      * @return
      */
     @Override
-    public List<Match> findByPlayerName(String playerName) {
-        return findByPlayerName(false,playerName);
+    public Page<Match> findMatchPageByPlayerName(MatchRequest request) {
+        return findMatchPageByPlayerName(false,request);
     }
 
     /**
      * @description 玩家昵称查找对局列表
      * @auth sunpeikai
      * @param fromRemote 从pubg官网更新
-     * @param playerName 玩家昵称
+     * @param request 玩家昵称
      * @return
      */
     @Override
-    public List<Match> findByPlayerName(boolean fromRemote, String playerName) {
+    public Page<Match> findMatchPageByPlayerName(boolean fromRemote, MatchRequest request) {
         if(fromRemote){
             // 从pubg官网重新拉取数据
-            updateMatchesFromRemote("",playerName);
+            updateMatchesFromRemote("",request.getPlayerName());
         }
-        return null;
+        return findMatchPageByAccountIdOrPlayerName(request);
     }
 
     /**
@@ -163,10 +168,10 @@ public class PubgServiceImpl implements IPubgService {
         }
         List<String> matches = new ArrayList<>();
         // 处理数据
-        if(!result.isEmpty()){
+        if(result != null && !result.isEmpty()){
             // 返回不为空
             JSONArray data = result.getJSONArray("data");
-            if(!data.isEmpty()){
+            if(data != null && !data.isEmpty()){
                 // 返回data不为空
                 int length = data.size();
                 for(int i=0 ; i<length ; i++){
@@ -184,51 +189,113 @@ public class PubgServiceImpl implements IPubgService {
         }
         // 校验哪些对局需要更新 - 需要更新则请求并更新
         for (String matchId : matches) {
-            Match exist = findByMatchId(matchId);
-            if (exist != null) {
-                break;
-            }
+            findMatchDetailByMatchId(matchId);
         }
     }
 
     /**
      * @description 对局ID查找对局详情
      * @auth sunpeikai
-     * @param matchId 玩家昵称
+     * @param matchId 对局ID
      * @return
      */
     @Override
-    public Match findByMatchId(String matchId) {
+    public Match findMatchDetailByMatchId(String matchId) {
+        // TODO:sunpeikai 对局详情请求实现
         if(StringUtils.isEmpty(matchId)){
             return null;
         }else{
             Match exist = matchRepository.findByMatchId(matchId);
             if(exist == null){
                 // 如果mongo中不存在就去pubg去查询
-                JSONObject result = PubgApi.useApi(PubgApiEnum.PUBG_API_MATCHES_ID).call(matchId);
-                if(!result.isEmpty()){
-                    // 返回不为空
-                    JSONObject data = result.getJSONObject("data");
-                    if(!data.isEmpty()){
-                        Match match = new Match();
-                        // 获取对局基本信息
-                        JSONObject matchInfo = data.getJSONObject("attributes");
-                        match.setMatchId(matchId);
-                        match.setDuration(matchInfo.getInteger("duration"));
-                        match.setCustomMatch(matchInfo.getBoolean("isCustomMatch")?1:0);
-                        match.setMapName(matchInfo.getString("mapName"));
-                        match.setGameMode(matchInfo.getString("gameMode"));
-                        match.setCreateTime(DateUtil.getFromStr(matchInfo.getString("createdAt")));
-                    }
-                }
-                // 将列表插入
-                // playerMatchRepository.insert(matchPlayer);
+                fetchMatchAndPlayer(matchId);
+                return matchRepository.findByMatchId(matchId);
             }else{
-                // mongo中存在
                 return exist;
             }
         }
-        return null;
     }
 
+    private void fetchMatchAndPlayer(String matchId){
+        JSONObject result = PubgApi.useApi(PubgApiEnum.PUBG_API_MATCHES_ID).call(matchId);
+        if(result != null && !result.isEmpty()){
+            // 对局
+            Match match = new Match();
+            // 个人信息
+            List<MatchPlayer> matchPlayers = new ArrayList<>();
+            // 个人映射队伍
+            Map<String,String> teamMap = new HashMap<>();
+            // 返回不为空
+            JSONObject data = result.getJSONObject("data");
+            if(data != null && !data.isEmpty()){
+                // 获取对局基本信息
+                JSONObject matchInfo = data.getJSONObject("attributes");
+                match.setMatchId(matchId);
+                match.setDuration(matchInfo.getInteger("duration"));
+                match.setCustomMatch(matchInfo.getBoolean("isCustomMatch")?1:0);
+                match.setMapName(matchInfo.getString("mapName"));
+                match.setGameMode(matchInfo.getString("gameMode"));
+                match.setCreateTime(DateUtil.getFromStr(matchInfo.getString("createdAt")));
+            }
+
+            JSONArray array = result.getJSONArray("included");
+            if(array != null && !array.isEmpty()){
+                // 获取对局个人信息
+                int arraySize = array.size();
+                for(int i=0 ; i<arraySize ; i++){
+                    JSONObject include = array.getJSONObject(i);
+                    if(ApiConstant.MATCH_INCLUDE_PARTICIPANT.equals(include.getString("type"))){
+                        JSONObject stats = include.getJSONObject("attributes").getJSONObject("stats");
+                        if(stats != null && !stats.isEmpty()){
+                            // 个人信息
+                            MatchPlayer matchPlayer = JSONObject.parseObject(stats.toJSONString(),MatchPlayer.class);
+                            matchPlayer.setMatchId(matchId);
+                            matchPlayer.setAccountId(stats.getString("playerId"));
+                            matchPlayer.setPlayerName(stats.getString("name"));
+                            matchPlayer.setMatchPlayerId(include.getString("id"));
+                            matchPlayers.add(matchPlayer);
+                        }
+                    }else if(ApiConstant.MATCH_INCLUDE_ROSTER.equals(include.getString("type"))){
+                        // 队伍信息
+                        String teamId = include.getString("id");
+                        JSONArray participants = include.getJSONObject("relationships").getJSONObject("participants").getJSONArray("data");
+                        if(participants != null && !participants.isEmpty()){
+                            int participantLength = participants.size();
+                            for(int j=0 ; j<participantLength ; j++){
+                                String participantId = participants.getJSONObject(j).getString("id");
+                                if(!teamMap.containsKey(participantId)){
+                                    teamMap.put(participantId,teamId);
+                                }
+                            }
+                        }
+                    }else if(ApiConstant.MATCH_INCLUDE_ASSET.equals(include.getString("type"))){
+                        // 对局日志信息
+                        match.setAssetsUrl(include.getJSONObject("attributes").getString("URL"));
+                    }
+                }
+            }
+            // 处理玩家与团队的映射关系
+            matchPlayers.forEach(matchPlayer -> {
+                matchPlayer.setTeamId(teamMap.getOrDefault(matchPlayer.getMatchPlayerId(), ""));
+            });
+            // 将play和match数据插入mongo
+            matchRepository.insert(match);
+            matchPlayerRepository.insertAll(matchPlayers);
+        }
+    }
+
+    private Page<Match> findMatchPageByAccountIdOrPlayerName(MatchRequest request){
+        Query query = new Query();
+        // 构建查询条件
+        Criteria criteria = new Criteria();
+        if(!StringUtils.isEmpty(request.getAccountId())){
+            criteria.and("accountId").is(request.getAccountId());
+        }
+        if(!StringUtils.isEmpty(request.getPlayerName())){
+            criteria.and("playerName").is(request.getPlayerName());
+        }
+        query.addCriteria(criteria);
+        Page<MatchPlayer> matchPlayers = matchPlayerRepository.page(query,request.getCurrPage(),request.getPageSize());
+        return matchPlayers.convert(matchPlayer -> matchRepository.findByMatchId(matchPlayer.getMatchId()));
+    }
 }
