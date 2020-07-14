@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src="../static/js/util/MapConstant.js"></script>
+    <script src="../static/js/util/PubgMap.js"></script>
+
+</head>
+<body>
+<div>
+    <canvas id="mapCanvas"></canvas>
+    <img id="mapImage">
+</div>
+
+</body>
+<script>
+
+    const pubgMap = new PubgMap("mapCanvas", "mapImage", 1000, 1000, mapConstant.source.SANHOK);
+    pubgMap.drawPosition(0.5, 0.5, 1, 19);
+    pubgMap.drawPosition(0.4, 0.6, 2, 30);
+    const list = [[0.1, 0.1], [0.2, 0.2], [0.3, 0.5], [0.6, 0.4], [0.6, 0.6]];
+    pubgMap.drawPath(list, 1)
+</script>
+</html>
