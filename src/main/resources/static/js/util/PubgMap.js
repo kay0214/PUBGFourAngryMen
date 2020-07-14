@@ -143,7 +143,7 @@ function PubgMap(elementId, width, height, mapImgSrc) {
      *
      * @param {number[][]}  posList       坐标列表
      * @param {number}      lineWidth     线宽
-     * @param {number}      color         颜色
+     * @param {string}      color         颜色
      */
     function drawLines(posList, lineWidth = 1, color = "red") {
         context.lineWidth = lineWidth;

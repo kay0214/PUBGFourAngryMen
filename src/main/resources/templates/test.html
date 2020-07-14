@@ -8,14 +8,15 @@
 
 </head>
 <body>
-<div>
-    <div id="pubgMap"></div>
-</div>
+
+<div id="pubgMap"></div>
+
 
 </body>
 <script>
 
     const pubgMap = new PubgMap("pubgMap", 1000, 1000, mapConstant.source.SANHOK);
+
     pubgMap.drawPosition(0.5, 0.5, 1, 19);
     pubgMap.drawPosition(0.4, 0.6, 2, 30);
     const list = [[0.1, 0.1], [0.2, 0.2], [0.3, 0.5], [0.6, 0.4], [0.6, 0.6]];

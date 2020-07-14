@@ -4,10 +4,11 @@
  */
 const mapConstant = {
     source: {
-        ERANGEL: "",
-        MIRAMAR: "",
+        ERANGEL: "../static/img/Erangel_Remastered_Main_Low_Res.png",
+        MIRAMAR: "../static/img/Miramar_Main_Low_Res.png",
         SANHOK: "../static/img/Sanhok_Main_Low_Res.png",
-        VIKENDI: "",
+        VIKENDI: "../static/img/Vikendi_Main_Low_Res.png",
+        KARAKIN: "../static/img/Karakin_Main_Low_Res.png"
     },
     color: {
         1: "LightPink",
