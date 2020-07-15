@@ -20,4 +20,10 @@ public class MatchDetailResponse {
 
     @ApiModelProperty(value = "对局玩家列表信息")
     private List<MatchPlayerResponse> matchPlayers;
+
+    @ApiModelProperty(value = "团队玩家列表信息")
+    private List<MatchPlayerResponse> teamPlayers;
+
+    @ApiModelProperty(value = "个人玩家信息")
+    private MatchPlayerResponse matchPlayer;
 }

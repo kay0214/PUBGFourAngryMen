@@ -2,8 +2,8 @@ package com.pubg.analysis.service;
 
 import com.pubg.analysis.base.Page;
 import com.pubg.analysis.entity.matchs.Match;
+import com.pubg.analysis.entity.matchs.MatchPlayer;
 import com.pubg.analysis.request.MatchRequest;
-import com.pubg.analysis.response.MatchResponse;
 import com.pubg.analysis.response.PositionResponse;
 
 import java.util.List;
@@ -61,5 +61,13 @@ public interface IPubgService {
      * @param matchId 玩家昵称
      * @return
      */
-    Match findMatchDetailByMatchId(String matchId);
+    Match findMatchByMatchId(String matchId);
+
+    /**
+     * @description 对局ID查找对局玩家信息
+     * @auth sunpeikai
+     * @param matchId 玩家昵称
+     * @return
+     */
+    List<MatchPlayer> findMatchPlayersByMatchId(String matchId);
 }
