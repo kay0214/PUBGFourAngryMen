@@ -29,13 +29,13 @@ public class Character {
 	 */
 
 	private String name;
-	private int teamId;
-	private int health;
+	private Integer teamId;
+	private Integer health;
 	private Location location;
-	private int ranking;
+	private Integer ranking;
 	private String accountId;
-	private boolean isInBlueZone;
-	private boolean isInRedZone;
+	private Boolean isInBlueZone;
+	private Boolean isInRedZone;
 	private List<String> zone;
 
 }

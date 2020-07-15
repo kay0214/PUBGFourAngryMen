@@ -41,7 +41,7 @@ public class MatchPlayer {
     private Integer heals;
     // 跑步移动距离
     private double walkDistance;
-    // 最长击杀时间?
+    // 最远击杀距离
     private double longestKill;
     // 摧毁载具
     private Integer vehicleDestroys;
@@ -57,15 +57,15 @@ public class MatchPlayer {
     private Integer assists;
     // 不知道什么意思
     private Integer killPlace;
-    // 不知道什么意思
+    // 连杀
     private Integer killStreaks;
     // 游泳移动距离
     private double swimDistance;
     // 获得武器
     private Integer weaponsAcquired;
-    // 不知道什么意思
+    // 开车撞死人数
     private Integer roadKills;
-    // 不知道什么意思
+    // 加速数 - 饮料
     private Integer boosts;
     // 存活时间
     private double timeSurvived;

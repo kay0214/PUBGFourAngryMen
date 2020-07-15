@@ -1,10 +1,10 @@
 package com.pubg.analysis.entity.log;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -21,11 +21,12 @@ import java.util.List;
         @CompoundIndex(name = "matchId_T",def = "{'matchId':1,'_T':1}")
 })
 public class BaseLog {
-    // 对局ID
+    // 对局日志ID
     private String matchLogId;
     // 时间
-    @DateTimeFormat(pattern = "dd-MMM-yyyyTHH:mm:ss:SSSz")
-    private String _D;
+    // @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")// dd-MMM-yyyyTHH:mm:ss:SSSz
+    @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'")
+    private Date _D;
     // 事件类型
     private String _T;
     private Common common;
@@ -56,9 +57,9 @@ public class BaseLog {
     // 每队人数 - 4
     private Integer teamSize;
     // 是否自定义游戏
-    private boolean isCustomGame;
+    private Boolean isCustomGame;
     // 是否娱乐模式
-    private boolean isEventMode;
+    private Boolean isEventMode;
     // 毒圈自定义
     private String blueZoneCustomOptions;
     // 游戏状态
@@ -102,9 +103,9 @@ public class BaseLog {
     // 伤害原因附加信息
     private List<String> damageCauserAdditionalInfo;
     // 穿透墙壁?
-    private boolean isThroughPenetrableWall;
+    private Boolean isThroughPenetrableWall;
     // 是否车上攻击
-    private boolean isAttackerInVehicle;
+    private Boolean isAttackerInVehicle;
     // 受害武器
     private String victimWeapon;
     // 受害附加信息
@@ -143,11 +144,11 @@ public class BaseLog {
     // 车辆
     private Vehicle vehicle;
     // 开车距离
-    private double rideDistance;
+    private Double rideDistance;
     // 座位索引
     private Integer seatIndex;
     // 最大速度
-    private double maxSpeed;
+    private Double maxSpeed;
     // 乘客
     private List<Character> fellowPassengers;
 
@@ -162,15 +163,15 @@ public class BaseLog {
     // 对象附加信息 - 暂时没看到里面的结构
     // private List<String> objectTypeAdditionalInfo;
     // LogVaultStart事件 - 是否抓墙壁
-    private boolean isLedgeGrab;
+    private Boolean isLedgeGrab;
 
 
     // 跑动距离?
-    private double distance;
+    private Double distance;
     // 游泳距离
-    private double swimDistance;
+    private Double swimDistance;
     // 潜水深度
-    private double maxSwimDepthOfWater;
+    private Double maxSwimDepthOfWater;
     // 治疗量
     private Integer healAmount;
 }

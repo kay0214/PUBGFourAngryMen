@@ -18,7 +18,8 @@ import java.util.Date;
 @Data
 @Document(collection = "pubg_match")
 @CompoundIndexes({
-        @CompoundIndex(name = "matchId",def = "{'matchId':1}")
+        @CompoundIndex(name = "matchId",def = "{'matchId':1}"),
+        @CompoundIndex(name = "fetchLog",def = "{'fetchLog':1}")
 })
 public class Match {
     // 对局ID
@@ -31,6 +32,8 @@ public class Match {
     private String mapName;
     // 模式 - squad - 四排
     private String gameMode;
+    // 是否已经拉取了对局日志
+    private Integer fetchLog;
     // 对局日志URL
     private String assetsUrl;
     // 对局创建时间

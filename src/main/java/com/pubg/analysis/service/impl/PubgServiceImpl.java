@@ -246,6 +246,7 @@ public class PubgServiceImpl implements IPubgService {
                 match.setCustomMatch(matchInfo.getBoolean("isCustomMatch")?1:0);
                 match.setMapName(matchInfo.getString("mapName"));
                 match.setGameMode(matchInfo.getString("gameMode"));
+                match.setFetchLog(ApiConstant.MATCH_FETCH_LOG_NO);
                 match.setCreateTime(DateUtil.getFromStr(matchInfo.getString("createdAt")));
             }
 

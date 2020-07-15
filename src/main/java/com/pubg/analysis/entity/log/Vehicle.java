@@ -31,11 +31,11 @@ public class Vehicle {
 	private Integer vehicleUniqueId;
 	private Integer seatIndex;
 	private Integer healthPercent;
-	private double feulPercent;
+	private Double feulPercent;
 	private Integer altitudeAbs;
 	private Integer altitudeRel;
-	private double velocity;
-	private boolean isWheelsInAir;
-	private boolean isInWaterVolume;
-	private boolean isEngineOn;
+	private Double velocity;
+	private Boolean isWheelsInAir;
+	private Boolean isInWaterVolume;
+	private Boolean isEngineOn;
 }
