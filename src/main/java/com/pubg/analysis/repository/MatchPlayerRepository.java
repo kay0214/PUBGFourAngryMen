@@ -23,17 +23,27 @@ public class MatchPlayerRepository extends MongoBaseDao<MatchPlayer> {
 		return MatchPlayer.class;
 	}
 
-	public List<MatchPlayer> findByIdOrName(String accountId, String playerName){
+	public List<MatchPlayer> findByMatchId(String matchId){
         Query query = new Query();
-        // 构建查询条件
-        Criteria criteria = new Criteria();
-        if(!StringUtils.isEmpty(accountId)){
-            criteria.and("accountId").is(accountId);
-        }
-        if(!StringUtils.isEmpty(playerName)){
-            criteria.and("playerName").is(playerName);
-        }
-        query.addCriteria(criteria);
+        query.addCriteria(new Criteria().and("matchId").is(matchId));
         return find(query);
+    }
+
+    public List<MatchPlayer> findByMatchIdAndTeamId(String matchId, String teamId){
+        Query query = new Query();
+        query.addCriteria(new Criteria().and("matchId").is(matchId).and("teamId").is(teamId));
+        return find(query);
+    }
+
+    public MatchPlayer findByMatchIdAndAccountId(String matchId, String accountId){
+        Query query = new Query();
+        query.addCriteria(new Criteria().and("matchId").is(matchId).and("accountId").is(accountId));
+        return findOne(query);
+    }
+
+    public MatchPlayer findByMatchIdAndPlayerName(String matchId, String playerName){
+        Query query = new Query();
+        query.addCriteria(new Criteria().and("matchId").is(matchId).and("playerName").is(playerName));
+        return findOne(query);
     }
 }

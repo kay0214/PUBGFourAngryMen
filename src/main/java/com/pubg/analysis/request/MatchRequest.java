@@ -16,9 +16,12 @@ import lombok.EqualsAndHashCode;
 @ApiModel("mongo测试请求参数")
 public class MatchRequest extends BaseRequest {
 
-    @ApiModelProperty(value = "账户ID")
+    @ApiModelProperty(value = "账户ID - findMatchPageByAccountId/findMatchPageByAccountIdRemote接口用")
     private String accountId;
 
-    @ApiModelProperty(value = "账户昵称")
+    @ApiModelProperty(value = "账户昵称 - findMatchPageByPlayerName/findMatchPageByPlayerNameRemote接口用")
     private String playerName;
+
+    @ApiModelProperty(value = "对局ID - findMatchDetailByMatchId接口用")
+    private String matchId;
 }

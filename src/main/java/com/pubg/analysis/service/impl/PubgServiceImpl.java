@@ -189,7 +189,7 @@ public class PubgServiceImpl implements IPubgService {
         }
         // 校验哪些对局需要更新 - 需要更新则请求并更新
         for (String matchId : matches) {
-            findMatchDetailByMatchId(matchId);
+            findMatchByMatchId(matchId);
         }
     }
 
@@ -200,7 +200,7 @@ public class PubgServiceImpl implements IPubgService {
      * @return
      */
     @Override
-    public Match findMatchDetailByMatchId(String matchId) {
+    public Match findMatchByMatchId(String matchId) {
         // TODO:sunpeikai 对局详情请求实现
         if(StringUtils.isEmpty(matchId)){
             return null;
@@ -214,6 +214,17 @@ public class PubgServiceImpl implements IPubgService {
                 return exist;
             }
         }
+    }
+
+    /**
+     * @description 对局ID查找对局玩家信息
+     * @auth sunpeikai
+     * @param matchId 玩家昵称
+     * @return
+     */
+    @Override
+    public List<MatchPlayer> findMatchPlayersByMatchId(String matchId) {
+        return matchPlayerRepository.findByMatchId(matchId);
     }
 
     private void fetchMatchAndPlayer(String matchId){
