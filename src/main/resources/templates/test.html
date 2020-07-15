@@ -3,23 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <title>test</title>
+    <script src="../static/js/lib/jquery-3.5.1.min.js"></script>
     <script src="../static/js/util/MapConstant.js"></script>
     <script src="../static/js/util/PubgMap.js"></script>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <script src="../static/js/util/TeamList.js"></script>
+    <link rel="stylesheet" href="../static/css/player-list.css">
+
 
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4">
+            <!--队伍列表-->
+            <div id="teamList1">
+                队伍列表
+                <table class="table-player-list">
 
-<div id="pubgMap"></div>
+                    <tr>
+                        <th>队伍</th>
+                        <th>玩家</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" class="td-team-id">
+                            <span>1</span>
+                        </td>
+                        <td>
+                            <label><span>player1</span><input type="checkbox"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label><span>player22</span></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="1">2</td>
+                        <td>player3</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5" class="td-team-id">1</td>
+                        <td>player1</td>
+                    </tr>
+                    <tr>
+                        <td>player2</td>
+                    </tr>
+                    <tr>
+                        <td>player2</td>
+                    </tr>
+                    <tr>
+                        <td>player2</td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+        <div id="teamList"></div>
+
+        <div class="col-lg-8">
+            <!--地图-->
+            <div id="pubgMap"></div>
+        </div>
+    </div>
+</div>
 
 
 </body>
 <script>
 
-    const pubgMap = new PubgMap("pubgMap", 1000, 1000, mapConstant.source.SANHOK);
+    const pubgMap = new PubgMap("pubgMap", 800, 800, mapConstant.source.SANHOK);
 
     pubgMap.drawPosition(0.5, 0.5, 1, 19);
     pubgMap.drawPosition(0.4, 0.6, 2, 30);
-    const list = [[0.1, 0.1], [0.2, 0.2], [0.3, 0.5], [0.6, 0.4], [0.6, 0.6]];
+    let list = [[0.1, 0.1], [0.2, 0.2], [0.3, 0.5], [0.6, 0.4], [0.6, 0.6]];
     pubgMap.drawPath(list, 1)
+
+    const teamList = new TeamList("teamList", true);
+    let teamListData = [
+        {
+            teamId: 1,
+            playerName: "player1"
+        },
+        {
+            teamId: 1,
+            playerName: "player2"
+        },
+        {
+            teamId: 2,
+            playerName: "player3"
+        },
+        {
+            teamId: 3,
+            playerName: "player4"
+        },
+        {
+            teamId: 3,
+            playerName: "player5"
+        },
+        {
+            teamId: 3,
+            playerName: "player6"
+        },
+    ]
+    teamList.load(teamListData);
+    teamList.onSelected((a) => {
+        console.log(a)
+    })
 </script>
 </html>
