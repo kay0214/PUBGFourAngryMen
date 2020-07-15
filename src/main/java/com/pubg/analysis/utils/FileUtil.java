@@ -6,7 +6,9 @@ package com.pubg.analysis.utils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 /**
  * @author sunpeikai
@@ -40,6 +42,31 @@ public class FileUtil {
                 }
                 if(inputStream != null){
                     inputStream.close();
+                }
+            }catch (Exception e){
+                log.error("resources close failed");
+            }
+        }
+    }
+
+    public static void fileWriteBuffer(String fileFullPath, String content){
+        BufferedOutputStream buffer = null;
+        FileOutputStream outputStream = null;
+        try{
+            outputStream = new FileOutputStream(fileFullPath);
+            buffer = new BufferedOutputStream(outputStream);
+            buffer.write(content.getBytes());
+            buffer.flush();
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("write file failed,exception is ==>>{}",e.getMessage());
+        }finally {
+            try{
+                if(buffer != null){
+                    buffer.close();
+                }
+                if(outputStream != null){
+                    outputStream.close();
                 }
             }catch (Exception e){
                 log.error("resources close failed");

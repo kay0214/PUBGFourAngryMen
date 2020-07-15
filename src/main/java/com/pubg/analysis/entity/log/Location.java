@@ -15,11 +15,11 @@ public class Location {
 	 * z : 1358.9000244140625
 	 */
 
-	private double x;
-	private double y;
-	private double z;
+	private Double x;
+	private Double y;
+	private Double z;
 
-	private double xRatio;
-	private double yRatio;
+	private Double xRatio;
+	private Double yRatio;
 
 }

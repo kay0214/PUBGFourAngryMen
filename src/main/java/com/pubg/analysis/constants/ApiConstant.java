@@ -34,4 +34,19 @@ public class ApiConstant {
      * match对局的include类型 - asset
      * */
     public static final String MATCH_INCLUDE_ASSET = "asset";
+
+    /**
+     * match对局是否已经拉取了对局日志 - 是
+     * */
+    public static final Integer MATCH_FETCH_LOG_YES = 1;
+
+    /**
+     * match对局是否已经拉取了对局日志 - 否
+     * */
+    public static final Integer MATCH_FETCH_LOG_NO = 0;
+
+    /**
+     * match对局拉取对局日志数量 - 测试72秒钟拉取5条
+     * */
+    public static final Integer MATCH_FETCH_LOG_COUNT = 4;
 }

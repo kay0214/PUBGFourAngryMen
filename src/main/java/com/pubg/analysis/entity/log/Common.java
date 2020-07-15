@@ -12,5 +12,5 @@ public class Common {
 	/**
 	 * 好像是表示游戏阶段
 	 */
-	private double isGame;
+	private Double isGame;
 }

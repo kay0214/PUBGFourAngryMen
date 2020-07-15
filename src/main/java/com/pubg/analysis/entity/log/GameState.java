@@ -3,11 +3,14 @@
  */
 package com.pubg.analysis.entity.log;
 
+import lombok.Data;
+
 /**
  * @author sunpeikai
  * @version GameState, v0.1 2020/7/14 11:44
  * @description
  */
+@Data
 public class GameState {
 
     private Integer elapsedTime;
@@ -16,11 +19,11 @@ public class GameState {
     private Integer numStartPlayers;
     private Integer numAlivePlayers;
     private Location safetyZonePosition;
-    private double safetyZoneRadius;
+    private Double safetyZoneRadius;
     private Location poisonGasWarningPosition;
-    private double poisonGasWarningRadius;
+    private Double poisonGasWarningRadius;
     private Location redZonePosition;
-    private double redZoneRadius;
+    private Double redZoneRadius;
     private Location blackZonePosition;
-    private double blackZoneRadius;
+    private Double blackZoneRadius;
 }

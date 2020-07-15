@@ -15,8 +15,8 @@ public class PubgUtilTest {
 	public void calculateLocationRation() {
 
 		Location location = new Location();
-		location.setX(4 * 1000 * 100);
-		location.setY(2 * 1000 * 100);
+		location.setX(4.0 * 1000 * 100);
+		location.setY(2.0 * 1000 * 100);
 
 		PubgUtil.calculateLocationRation(location, PubgConstant.Maps.SANHOK);
 		Assert.assertEquals(1, location.getXRatio(), 0.001);

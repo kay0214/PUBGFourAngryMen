@@ -11,9 +11,9 @@ package com.pubg.analysis.entity.log;
 public class Stats {
 
     private Integer killCount;
-    private double distanceOnFoot;
-    private double distanceOnSwim;
-    private double distanceOnVehicle;
-    private double distanceOnParachute;
-    private double distanceOnFreefall;
+    private Double distanceOnFoot;
+    private Double distanceOnSwim;
+    private Double distanceOnVehicle;
+    private Double distanceOnParachute;
+    private Double distanceOnFreefall;
 }

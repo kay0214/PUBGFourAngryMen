@@ -3,6 +3,8 @@
  */
 package com.pubg.analysis.entity.log;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
@@ -10,6 +12,7 @@ import java.util.List;
  * @version ItemPackage, v0.1 2020/7/14 11:15
  * @description
  */
+@Data
 public class ItemPackage {
     // 空投类型Carapackage_RedBox_C
     private String itemPackageId;

@@ -20,7 +20,6 @@ public class LogRepository extends MongoBaseDao<BaseLog> {
 
 	@Override
 	protected Class<BaseLog> getEntityClass() {
-
 		return BaseLog.class;
 	}
 

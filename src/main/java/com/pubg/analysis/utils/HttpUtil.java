@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.zip.GZIPInputStream;
 
 /**
  * @author sunpeikai
@@ -19,6 +20,8 @@ import java.net.URLConnection;
 @Slf4j
 public class HttpUtil {
 
+    public static final Integer SIZE = 1024;
+    public static final Integer OFFSET = 0;
     /**
      * 向指定 URL 发送GET方法的请求
      *
@@ -54,6 +57,44 @@ public class HttpUtil {
                 }
             } catch (Exception ex) {
                 log.error("close buffer exception -> url[{}],param[{}],exception[{}]", url, param, ex.getMessage());
+            }
+        }
+        return result.toString();
+    }
+
+    /**
+     * 向指定 URL 发送GET方法的请求
+     *
+     * @param url   发送请求的 URL
+     * @return 所代表远程资源的响应结果
+     */
+    public static String sendGetGZIP(String url) {
+        StringBuilder result = new StringBuilder();
+        GZIPInputStream inputStream = null;
+        try {
+            log.info("sendGet - {}", url);
+            URL realUrl = new URL(url);
+            URLConnection connection = realUrl.openConnection();
+            connection.setRequestProperty("accept", "application/vnd.api+json");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            connection.connect();
+            inputStream = new GZIPInputStream(connection.getInputStream());
+            int count;
+            byte[] data = new byte[SIZE];
+            while ((count = inputStream.read(data,OFFSET,SIZE)) != -1) {
+                result.append(new String(data,OFFSET,count));
+            }
+            log.info("received content size - {}", result.toString().length());
+        } catch (Exception e) {
+            log.error("sendGet Exception -> url[{}],exception[{}]", url, e.getMessage());
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (Exception ex) {
+                log.error("close buffer exception -> url[{}],exception[{}]", url, ex.getMessage());
             }
         }
         return result.toString();
