@@ -27,6 +27,10 @@ public class MatchPlayer {
     private String accountId;
     // 玩家昵称
     private String playerName;
+    // team id
+    private String teamId;
+    // matchPlayerId - 团队与个人映射关系
+    private String matchPlayerId;
     // 个人击杀
     private Integer kills;
     // 个人爆头击杀
