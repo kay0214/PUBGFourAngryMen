@@ -43,7 +43,7 @@ public class MatchPlayerResponse {
     @ApiModelProperty(value = "跑步移动距离")
     private double walkDistance;
 
-    @ApiModelProperty(value = "最长击杀时间?")
+    @ApiModelProperty(value = "最远击杀距离")
     private double longestKill;
 
     @ApiModelProperty(value = "摧毁载具")
@@ -67,7 +67,7 @@ public class MatchPlayerResponse {
     @ApiModelProperty(value = "不知道什么意思")
     private Integer killPlace;
 
-    @ApiModelProperty(value = "不知道什么意思")
+    @ApiModelProperty(value = "连杀数")
     private Integer killStreaks;
 
     @ApiModelProperty(value = "游泳移动距离")
@@ -76,10 +76,10 @@ public class MatchPlayerResponse {
     @ApiModelProperty(value = "获得武器")
     private Integer weaponsAcquired;
 
-    @ApiModelProperty(value = "不知道什么意思")
+    @ApiModelProperty(value = "开车撞死人数")
     private Integer roadKills;
 
-    @ApiModelProperty(value = "不知道什么意思")
+    @ApiModelProperty(value = "加速数 - 饮料")
     private Integer boosts;
 
     @ApiModelProperty(value = "存活时间")
