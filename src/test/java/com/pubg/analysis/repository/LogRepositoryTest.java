@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -52,6 +53,13 @@ public class LogRepositoryTest {
 		List<LogTypes> type = new ArrayList<>();
 		type.add(LogTypes.LogPlayerPosition);
 		List<BaseLog> result = logRepository.getBaseLog(matchId2, type);
+		System.out.println(result);
+	}
+
+	@Test
+	public void getBaseLog2() {
+
+		List<BaseLog> result = logRepository.getBaseLog(matchId2, null, Collections.singletonList("character"));
 		System.out.println(result);
 	}
 }

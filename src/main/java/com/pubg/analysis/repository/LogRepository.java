@@ -23,6 +23,7 @@ public class LogRepository extends MongoBaseDao<BaseLog> {
 
 	@Override
 	protected Class<BaseLog> getEntityClass() {
+
 		return BaseLog.class;
 	}
 
@@ -56,27 +57,45 @@ public class LogRepository extends MongoBaseDao<BaseLog> {
 	}
 
 
-	public boolean isExistMatchLog(String matchId){
-        Query query = new Query();
-        query.addCriteria(new Criteria().and("matchId").is(matchId).and("_T").is(ApiConstant.MATCH_LOG_DEFINITION));
-        List<BaseLog> exists = find(query);
-        return exists!=null && exists.size()>0;
-    }
+	public boolean isExistMatchLog(String matchId) {
+
+		Query query = new Query();
+		query.addCriteria(new Criteria().and("matchId").is(matchId).and("_T").is(ApiConstant.MATCH_LOG_DEFINITION));
+		List<BaseLog> exists = find(query);
+		return exists != null && exists.size() > 0;
+	}
 
 	/**
-	 * @param matchId
-	 * @param logTypeList
-	 * @return
+	 * @param matchId     比赛id
+	 * @param logTypeList 日志类型列表，null则不过滤
+	 * @param fieldList   必须存在的字段列表, null则不过滤
+	 * @return 日志列表
 	 */
-	List<BaseLog> getBaseLog(String matchId, List<LogTypes> logTypeList) {
+	public List<BaseLog> getBaseLog(String matchId, List<LogTypes> logTypeList, List<String> fieldList) {
 
 		Query query = new Query();
 		Criteria criteria = new Criteria();
-		criteria.and("MatchId").is(matchId);
+		criteria.and("matchId").is(matchId);
 		if (logTypeList != null) {
 			criteria.and("_T").in(logTypeList);
 		}
+
+		if (fieldList != null) {
+			for (String field : fieldList) {
+				criteria.and(field).exists(true);
+			}
+		}
 		query.addCriteria(criteria);
 		return find(query, "pubg_match_log");
+	}
+
+	/**
+	 * @param matchId     比赛id
+	 * @param logTypeList 日志类型列表，null则不过滤
+	 * @return 日志列表
+	 */
+	public List<BaseLog> getBaseLog(String matchId, List<LogTypes> logTypeList) {
+
+		return getBaseLog(matchId, logTypeList, null);
 	}
 }
