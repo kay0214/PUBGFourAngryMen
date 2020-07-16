@@ -201,7 +201,6 @@ public class PubgServiceImpl implements IPubgService {
      */
     @Override
     public Match findMatchByMatchId(String matchId) {
-        // TODO:sunpeikai 对局详情请求实现
         if(StringUtils.isEmpty(matchId)){
             return null;
         }else{
