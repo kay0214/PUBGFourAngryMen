@@ -21,8 +21,6 @@ import java.util.List;
         @CompoundIndex(name = "matchId_T",def = "{'matchId':1,'_T':1}")
 })
 public class BaseLog {
-    // 对局日志ID
-    private String matchLogId;
     // 时间
     // @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")// dd-MMM-yyyyTHH:mm:ss:SSSz
     @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'")
