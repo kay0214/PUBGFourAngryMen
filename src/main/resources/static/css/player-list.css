@@ -1,8 +1,49 @@
-.table-player-list {
-    border: solid;
-}
 
 .table-player-list tr, td, th {
-    border: solid;
+    border: solid 1px rgb(200, 200, 200);
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    text-align: center;
+    font-size: 15px;
 }
+
+.table-player-list th {
+    font-size: 20px;
+}
+
+.table-player-list .td-team-id {
+    width: 50px;
+}
+
+.table-player-list td:not(.td-team-id) {
+    width: 200px;
+    padding-left: 5px;
+    padding-right: 2px;
+    height: 34px;
+    text-align: left;
+}
+
+.table-player-list label {
+    vertical-align: middle;
+}
+
+.table-player-list label > div {
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    float: left;
+}
+
+.table-player-list label > input {
+    width: 30px;
+    float: right;
+}
+
 

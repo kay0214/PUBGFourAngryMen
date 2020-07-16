@@ -95,7 +95,7 @@ function TeamList(listId, checkBox = true) {
 
         //构建表格
         const table = document.createElement("table");
-        table.classList.add("table-team-list");
+        table.classList.add("table-player-list");
         let html = "<tr><th>队伍</th><th>玩家</th></tr>";
 
         for (let teamId in teams) {
@@ -111,7 +111,7 @@ function TeamList(listId, checkBox = true) {
                                 ${includedTeamId ? "" : teamIdBlock}
                                 <td>
                                     <label>
-                                        <span>${player.playerName}</span>
+                                        <div>${player.playerName}</div>
                                         ${checkBox ? `<input type='checkbox' checked data-name='${player.playerName}'>` : ""}
                                     </label>
                                 </td>
@@ -142,6 +142,7 @@ function TeamList(listId, checkBox = true) {
             if (teamId) {
                 const color = mapConstant.color[teamId];
                 f.style.backgroundColor = color;
+                console.debug(`为队伍${teamId}染色`, color);
             }
         });
     }
