@@ -31,11 +31,11 @@ public class BaseLog {
 
     /**********          对局          **********/
     // 对局ID
-    private String MatchId;
+    private String matchId;
     // ping质量
-    private String PingQuality;
+    private String pingQuality;
     // 赛季状态 - progress
-    private String SeasonState;
+    private String seasonState;
     // 对局运行时间
     private Integer elapsedTime;
     // 剩余存活人数

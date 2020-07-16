@@ -49,4 +49,9 @@ public class ApiConstant {
      * match对局拉取对局日志数量 - 测试72秒钟拉取5条
      * */
     public static final Integer MATCH_FETCH_LOG_COUNT = 4;
+
+    /**
+     * match对局的日志的定义类型 - LogMatchDefinition
+     * */
+    public static final String MATCH_LOG_DEFINITION = "LogMatchDefinition";
 }

@@ -1,10 +1,12 @@
 package com.pubg.analysis.repository;
 
 import com.pubg.analysis.base.MongoBaseDao;
+import com.pubg.analysis.constants.ApiConstant;
 import com.pubg.analysis.entity.log.BaseLog;
 import com.pubg.analysis.utils.MongoUtil;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -51,4 +53,11 @@ public class LogRepository extends MongoBaseDao<BaseLog> {
 		Aggregation aggregation = Aggregation.newAggregation(unwindOperation, match1, projectionOperation);
 		return aggregate(clazz, aggregation, "telemetry");
 	}
+
+	public boolean isExistMatchLog(String matchId){
+        Query query = new Query();
+        query.addCriteria(new Criteria().and("matchId").is(matchId).and("_T").is(ApiConstant.MATCH_LOG_DEFINITION));
+        List<BaseLog> exists = find(query);
+        return exists!=null && exists.size()>0;
+    }
 }

@@ -36,27 +36,31 @@ public class FetchLogSchedule {
     public void fetchLogRemote(){
         long startTime = System.currentTimeMillis();
         List<Match> matches = matchRepository.findMatchToFetch();
-        log.info("本次拉取对局日志start,count[{}]",matches.size());
+        log.info("Fetch match log from pubg remote start,fetch count is [{}]",matches.size());
         for(Match match : matches){
             String matchId = match.getMatchId();
             String url = match.getAssetsUrl();
-            log.info("拉取对局日志,matchId[{}],url[{}]",matchId,url);
-            String result = HttpUtil.sendGetGZIP(url);
-            JSONArray array = JSONObject.parseArray(result);
-            List<BaseLog> baseLogs = array
-                    .parallelStream()
-                    .map(e -> {
-                        JSONObject json = (JSONObject) e;
-                        BaseLog baseLog = json.toJavaObject(BaseLog.class);
-                        baseLog.setMatchId(matchId);
-                        return baseLog;
-                    })
-                    .collect(Collectors.toList());
-            // 插入对局日志
-            logRepository.insertAll(baseLogs);
-            // 更新状态
-            matchRepository.updateFetchLogStatus(matchId);
+            if(logRepository.isExistMatchLog(matchId)){
+                // 判断是否已经入库过,避免重复入库
+                log.error("This match is already put into the mongoDB,matchId is [{}]",matchId);
+            }else{
+                log.info("Fetch match log from pubg remote,matchId is [{}],url is [{}]",matchId,url);
+                String result = HttpUtil.sendGetGZIP(url);
+                JSONArray array = JSONObject.parseArray(result);
+                List<BaseLog> baseLogs = array
+                        .parallelStream()
+                        .map(e -> {
+                            JSONObject json = (JSONObject) e;
+                            return json.toJavaObject(BaseLog.class);
+                        })
+                        .collect(Collectors.toList());
+                // 插入对局日志
+                logRepository.insertAll(baseLogs);
+                // 更新状态
+                matchRepository.updateFetchLogStatus(matchId);
+            }
+
         }
-        log.info("本次拉取对局日志end,count[{}],耗时[{}]",matches.size(),(System.currentTimeMillis() - startTime)/1000 + "s");
+        log.info("Fetch match log from pubg remote end,fetch count is [{}],elapsed time is [{}]",matches.size(),(System.currentTimeMillis() - startTime)/1000 + "s");
     }
 }
