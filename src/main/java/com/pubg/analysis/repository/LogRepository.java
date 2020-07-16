@@ -1,10 +1,12 @@
 package com.pubg.analysis.repository;
 
 import com.pubg.analysis.base.MongoBaseDao;
+import com.pubg.analysis.constants.LogTypes;
 import com.pubg.analysis.entity.log.BaseLog;
 import com.pubg.analysis.utils.MongoUtil;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class LogRepository extends MongoBaseDao<BaseLog> {
 
 	@Override
 	protected Class<BaseLog> getEntityClass() {
+
 		return BaseLog.class;
 	}
 
@@ -50,5 +53,22 @@ public class LogRepository extends MongoBaseDao<BaseLog> {
 
 		Aggregation aggregation = Aggregation.newAggregation(unwindOperation, match1, projectionOperation);
 		return aggregate(clazz, aggregation, "telemetry");
+	}
+
+	/**
+	 * @param matchId
+	 * @param logTypeList
+	 * @return
+	 */
+	List<BaseLog> getBaseLog(String matchId, List<LogTypes> logTypeList) {
+
+		Query query = new Query();
+		Criteria criteria = new Criteria();
+		criteria.and("MatchId").is(matchId);
+		if (logTypeList != null) {
+			criteria.and("_T").in(logTypeList);
+		}
+		query.addCriteria(criteria);
+		return find(query, "pubg_match_log");
 	}
 }
