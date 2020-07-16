@@ -51,7 +51,9 @@ public class FetchLogSchedule {
                         .parallelStream()
                         .map(e -> {
                             JSONObject json = (JSONObject) e;
-                            return json.toJavaObject(BaseLog.class);
+                            BaseLog baseLog = json.toJavaObject(BaseLog.class);
+                            baseLog.setMatchId(matchId);
+                            return baseLog;
                         })
                         .collect(Collectors.toList());
                 // 插入对局日志

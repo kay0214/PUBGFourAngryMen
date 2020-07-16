@@ -41,7 +41,7 @@ public class LogTypeTest {
     }
 
     public static void logParse(){
-        String url = "https://telemetry-cdn.playbattlegrounds.com/bluehole-pubg/steam/2020/07/09/15/04/78fe2b5a-c1f5-11ea-a176-ea864576b2b5-telemetry.json";
+        String url = "https://telemetry-cdn.playbattlegrounds.com/bluehole-pubg/steam/2020/07/15/13/03/8ffbbfd7-c69b-11ea-95fb-4e5f24c32952-telemetry.json";
         String result = HttpUtil.sendGetGZIP(url);
 /*        FileUtil.fileWriteBuffer("C:\\Users\\dell\\Desktop\\received-78fe2b5a-c1f5-11ea-a176-ea864576b2b5-telemetry.json",result);
         JSONArray array = JSONObject.parseArray(result);
