@@ -1,6 +1,7 @@
 package com.pubg.analysis.repository;
 
 import com.pubg.analysis.base.MongoBaseDao;
+import com.pubg.analysis.constants.ApiConstant;
 import com.pubg.analysis.constants.LogTypes;
 import com.pubg.analysis.entity.log.BaseLog;
 import com.pubg.analysis.utils.MongoUtil;
