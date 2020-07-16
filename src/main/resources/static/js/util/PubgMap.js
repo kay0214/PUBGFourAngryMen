@@ -102,9 +102,7 @@ function PubgMap(elementId, width, height, mapImgSrc) {
         const textX = x - text.length * fontSize * 0.6 / 2;
         const textY = y + size / 2;
         context.font = `${fontSize}px Arial`;
-        context.strokeStyle = "white";
-        context.fillStyle = "DarkSlateGray";
-        context.strokeText(text, textX, textY);
+        context.fillStyle = "white";
         context.fillText(text, textX, textY);
     }
 
