@@ -22,7 +22,6 @@ public class LogRepository extends MongoBaseDao<BaseLog> {
 
 	@Override
 	protected Class<BaseLog> getEntityClass() {
-
 		return BaseLog.class;
 	}
 
@@ -54,6 +53,14 @@ public class LogRepository extends MongoBaseDao<BaseLog> {
 		Aggregation aggregation = Aggregation.newAggregation(unwindOperation, match1, projectionOperation);
 		return aggregate(clazz, aggregation, "telemetry");
 	}
+
+
+	public boolean isExistMatchLog(String matchId){
+        Query query = new Query();
+        query.addCriteria(new Criteria().and("matchId").is(matchId).and("_T").is(ApiConstant.MATCH_LOG_DEFINITION));
+        List<BaseLog> exists = find(query);
+        return exists!=null && exists.size()>0;
+    }
 
 	/**
 	 * @param matchId

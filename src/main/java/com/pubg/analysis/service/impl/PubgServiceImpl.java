@@ -295,9 +295,13 @@ public class PubgServiceImpl implements IPubgService {
             matchPlayers.forEach(matchPlayer -> {
                 matchPlayer.setTeamId(teamMap.getOrDefault(matchPlayer.getMatchPlayerId(), ""));
             });
-            // 将play和match数据插入mongo
-            matchRepository.insert(match);
-            matchPlayerRepository.insertAll(matchPlayers);
+            // 检查是否存在
+            if(!matchRepository.isExistMatch(matchId)){
+                // 将play和match数据插入mongo
+                matchRepository.insert(match);
+                matchPlayerRepository.insertAll(matchPlayers);
+            }
+
         }
     }
 

@@ -50,4 +50,11 @@ public class MatchRepository extends MongoBaseDao<Match>{
         // mongo更新,将满足条件的消息全部更新[updateAll(query,update);]。[update(query,update);]只能更新一条
         update(query,update);
     }
+
+    public boolean isExistMatch(String matchId){
+        Query query = new Query();
+        // 添加查询条件
+        query.addCriteria(new Criteria().and("matchId").is(matchId));
+        return count(query)>0;
+    }
 }
