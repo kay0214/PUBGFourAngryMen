@@ -227,6 +227,12 @@ public class PubgServiceImpl implements IPubgService {
         return matchPlayerRepository.findByMatchId(matchId);
     }
 
+    /**
+     * @description 从pubg获取对局和玩家结算信息
+     * @auth sunpeikai
+     * @param matchId 对局ID
+     * @return
+     */
     private void fetchMatchAndPlayer(String matchId){
         JSONObject result = PubgApi.useApi(PubgApiEnum.PUBG_API_MATCHES_ID).call(matchId);
         if(result != null && !result.isEmpty()){
@@ -296,6 +302,13 @@ public class PubgServiceImpl implements IPubgService {
         }
     }
 
+    /**
+     * @description 用账户ID或昵称查询对应的对局列表
+     *     先从matchPlayer查询用户获得matchId,再去match查询比赛
+     * @auth sunpeikai
+     * @param
+     * @return
+     */
     private Page<Match> findMatchPageByAccountIdOrPlayerName(MatchRequest request){
         Query query = new Query();
         // 构建查询条件
