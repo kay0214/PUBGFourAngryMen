@@ -4,11 +4,12 @@
  */
 const mapConstant = {
     source: {
-        ERANGEL: "../static/img/Erangel_Remastered_Main_Low_Res.png",
-        MIRAMAR: "../static/img/Miramar_Main_Low_Res.png",
-        SANHOK: "../static/img/Sanhok_Main_Low_Res.png",
-        VIKENDI: "../static/img/Vikendi_Main_Low_Res.png",
-        KARAKIN: "../static/img/Karakin_Main_Low_Res.png"
+        ERANGEL: "img/Erangel_Remastered_Main_Low_Res.png",
+        MIRAMAR: "img/Miramar_Main_Low_Res.png",
+        SANHOK: "img/Sanhok_Main_Low_Res.png",
+        VIKENDI: "img/Vikendi_Main_Low_Res.png",
+        KARAKIN: "img/Karakin_Main_Low_Res.png",
+        DEFAULT: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1594997199095&di=e3576ffb2bf64036e5ca220c358d027d&imgtype=0&src=http%3A%2F%2Fpic.uzzf.com%2Fup%2F2017-10%2F201710311653074704008.jpg"
     },
     color: {
         1: "rgb(254,67,101)",
