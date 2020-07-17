@@ -14,7 +14,7 @@
  *
  * @author yangy
  */
-function PubgMap(elementId, width, height, mapImgSrc) {
+function PubgMap(elementId, width, height, mapImgSrc = undefined) {
 
     const that = this;
     let imgElement = null;
@@ -43,7 +43,11 @@ function PubgMap(elementId, width, height, mapImgSrc) {
         img.style.height = height + "px";
         img.width = width;
         img.height = height;
-        img.setAttribute("src", mapImgSrc);
+        if (mapImgSrc) {
+            img.setAttribute("src", mapImgSrc);
+        } else if (mapConstant.source.DEFAULT) {
+            img.setAttribute("src", mapConstant.source.DEFAULT);
+        }
         img.style.position = "absolute";
         img.style.zIndex = "0";
 
