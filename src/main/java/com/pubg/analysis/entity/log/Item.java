@@ -5,6 +5,7 @@ package com.pubg.analysis.entity.log;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * @description
  */
 @Data
-public class Item {
+public class Item implements Serializable {
 
     /*
     		"itemId": "Item_Weapon_UMP_C",

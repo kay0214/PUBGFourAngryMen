@@ -3,12 +3,17 @@
  */
 package com.pubg.analysis.entity.log;
 
+import lombok.Data;
+
+import java.io.Serializable;
+
 /**
  * @author sunpeikai
  * @version Stats, v0.1 2020/7/14 10:31
  * @description
  */
-public class Stats {
+@Data
+public class Stats implements Serializable {
 
     private Integer killCount;
     private Double distanceOnFoot;

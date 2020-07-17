@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -23,7 +24,7 @@ import java.util.Date;
         @CompoundIndex(name = "matchId",def = "{'matchId':1}"),
         @CompoundIndex(name = "fetchLog",def = "{'fetchLog':1}")
 })
-public class Match {
+public class Match implements Serializable {
     // 对局ID
     private String matchId;
     // 持续时间

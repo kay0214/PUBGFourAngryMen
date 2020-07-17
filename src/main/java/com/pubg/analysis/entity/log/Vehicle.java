@@ -3,13 +3,15 @@ package com.pubg.analysis.entity.log;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author yangy
  * @date 2020/7/12 10:24
  */
 @NoArgsConstructor
 @Data
-public class Vehicle {
+public class Vehicle implements Serializable {
 
 	/**
 	 * vehicleType : WheeledVehicle
