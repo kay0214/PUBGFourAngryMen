@@ -1,6 +1,5 @@
 package com.pubg.analysis.response;
 
-import com.pubg.analysis.entity.log.BaseLog;
 import com.pubg.analysis.entity.log.Character;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -26,6 +26,15 @@ public class PositionResponse implements Serializable {
     @ApiModelProperty("终止时间")
     private long end = 0;
 
-    @ApiModelProperty("位置信息")
-    private TreeMap<Long, List<Character>> positions;
+    @ApiModelProperty(value = "位置信息", notes = "<时间点, Map<accountId,Character>>")
+    private TreeMap<Long, Map<String, Character>> positions;
+
+    @ApiModelProperty("@ApiModelProperty(\"终止时间\")")
+    private String mapType;
+
+    @ApiModelProperty("死亡记录")
+    private Map<String, Long> deathLog;
+
+    @ApiModelProperty(value = "角色列表", notes = "包括电脑")
+    private List<Character> characters;
 }

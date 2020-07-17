@@ -1,6 +1,7 @@
 package com.pubg.analysis.entity.log;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(of = "accountId")
 public class Character implements Serializable {
 
 

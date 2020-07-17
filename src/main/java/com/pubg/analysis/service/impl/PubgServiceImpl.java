@@ -6,6 +6,7 @@ import com.pubg.analysis.api.PubgApi;
 import com.pubg.analysis.api.enums.PubgApiEnum;
 import com.pubg.analysis.base.Page;
 import com.pubg.analysis.constants.ApiConstant;
+import com.pubg.analysis.constants.LogTypes;
 import com.pubg.analysis.constants.PubgConstant;
 import com.pubg.analysis.entity.log.BaseLog;
 import com.pubg.analysis.entity.log.Character;
@@ -31,6 +32,8 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.pubg.analysis.utils.PubgUtil.sortLogByTimeAndCharacter;
+
 /**
  * @author yangy
  * @date 2020/7/12 9:22
@@ -53,7 +56,6 @@ public class PubgServiceImpl implements IPubgService {
 
         log.info("获取位置时间维度位置追踪数据");
 
-        TreeMap<Long, List<Character>> logs = new TreeMap<>();
 
         //所有带character的日志
         List<String> fieldList = Collections.singletonList("character");
@@ -63,45 +65,31 @@ public class PubgServiceImpl implements IPubgService {
         long startTimestamp = PubgUtil.getMatchStartTime(matchId);
         PubgConstant.Maps mapType = PubgUtil.getMapType(matchId);
 
-        baseLogs.parallelStream()
-                //按时间分组 秒级
-                .collect(Collectors.groupingByConcurrent(e -> (e.get_D().getTime() - startTimestamp) / 1000))
-
-                //每组内按用户去重
-                .entrySet()
-                .parallelStream()
-                //去除开始时间点前的事件
-                .filter(e -> e.getKey() > 0)
-                .peek(entry -> {
-                    List<BaseLog> records = entry.getValue()
-                            .stream()
-                            //按角色分组
-                            .collect(Collectors.groupingBy(v -> v.getCharacter().getAccountId()))
-                            .entrySet()
-                            .parallelStream()
-                            .peek(value -> {
-                                //只保留一个元素
-                                List<BaseLog> same = value.getValue();
-                                if (!same.isEmpty()) {
-                                    //确定要保留的元素
-                                    BaseLog keep = same.get(0);
-                                    //计算比率位置
-                                    PubgUtil.calculateLocationRation(keep.getCharacter().getLocation(), PubgConstant.Maps.SANHOK);
-                                    value.setValue(Collections.singletonList(keep));
-                                }
-                            })
-                            .map(Map.Entry::getValue)
-                            .flatMap(List::stream)
-                            .collect(Collectors.toList());
-                    entry.setValue(records);
-                })
-
-                //添加到结果
-                .forEachOrdered(e -> logs.put(e.getKey(), PubgUtil.baseLogsToCharacters(e.getValue())));
+        //计算位置分组
+        TreeMap<Long, Map<String, Character>> logs = sortLogByTimeAndCharacter(baseLogs, startTimestamp);
         log.debug("读取到LogPlayerPosition: {}", logs);
 
+        //读取死亡记录
+        Map<String, Long> deathLog = PubgUtil.getDeathTimestamp(matchId);
+        deathLog.entrySet().forEach(e -> e.setValue((e.getValue() - startTimestamp) / 1000));
+
+        //玩家列表
+        List<Character> characters = PubgUtil.getDistinctCharacter(baseLogs)
+                .parallelStream()
+                //清空无用字段
+                .peek(e -> {
+                    e.setLocation(null);
+                    e.setHealth(0);
+                    e.setZone(null);
+                })
+                .collect(Collectors.toList());
+
+        //构建响应
         PositionResponse response = new PositionResponse();
         response.setPositions(logs);
+        response.setMapType(mapType.name());
+        response.setDeathLog(deathLog);
+        response.setCharacters(characters);
         if (logs.size() > 0) {
             response.setStart(logs.firstKey());
             response.setEnd(logs.lastKey());
@@ -109,6 +97,7 @@ public class PubgServiceImpl implements IPubgService {
 
         return response;
     }
+
 
     /**
      * @param request 玩家账户ID
