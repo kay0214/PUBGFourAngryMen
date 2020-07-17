@@ -3,6 +3,8 @@
  */
 package com.pubg.analysis.entity.matchs;
 
+import com.pubg.analysis.response.MatchResponse;
+import com.pubg.analysis.utils.DateUtil;
 import lombok.Data;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -38,4 +40,17 @@ public class Match {
     private String assetsUrl;
     // 对局创建时间
     private Date createTime;
+
+    public MatchResponse getResponse(){
+        // 格式化处理
+        MatchResponse response = new MatchResponse();
+        response.setMatchId(this.getMatchId());
+        response.setDuration(this.getDuration());
+        response.setCustomMatch(this.getCustomMatch());
+        response.setMapName(this.getMapName());
+        response.setGameMode(this.getGameMode());
+        response.setAssetsUrl(this.getAssetsUrl());
+        response.setCreateTime(DateUtil.formatDateTime(this.getCreateTime()));
+        return response;
+    }
 }

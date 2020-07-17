@@ -11,7 +11,6 @@ import com.pubg.analysis.response.MatchDetailResponse;
 import com.pubg.analysis.response.MatchPlayerResponse;
 import com.pubg.analysis.response.MatchResponse;
 import com.pubg.analysis.service.IPubgService;
-import com.pubg.analysis.utils.DateUtil;
 import com.pubg.analysis.utils.EntityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -73,8 +72,7 @@ public class MatchController {
         Match match = iPubgService.findMatchByMatchId(request.getMatchId());
         if(match != null){
             // 格式化对局基本信息
-            MatchResponse matchResponse = formatMatch(match);
-            result.setMatch(matchResponse);
+            result.setMatch(match.getResponse());
         }
         // 获取对局所有玩家信息
         List<MatchPlayer> matchPlayers = iPubgService.findMatchPlayersByMatchId(request.getMatchId());
@@ -93,8 +91,7 @@ public class MatchController {
         Match match = iPubgService.findMatchByMatchId(request.getMatchId());
         if(match != null){
             // 格式化对局基本信息
-            MatchResponse matchResponse = formatMatch(match);
-            result.setMatch(matchResponse);
+            result.setMatch(match.getResponse());
         }
         // 获取对局所有玩家信息
         List<MatchPlayer> matchPlayers = iPubgService.findMatchPlayersByMatchId(request.getMatchId());
@@ -132,8 +129,7 @@ public class MatchController {
         Match match = iPubgService.findMatchByMatchId(request.getMatchId());
         if(match != null){
             // 格式化对局基本信息
-            MatchResponse matchResponse = formatMatch(match);
-            result.setMatch(matchResponse);
+            result.setMatch(match.getResponse());
         }
         // 获取对局所有玩家信息
         List<MatchPlayer> matchPlayers = iPubgService.findMatchPlayersByMatchId(request.getMatchId());
@@ -158,18 +154,5 @@ public class MatchController {
         }
 
         return result;
-    }
-
-    private MatchResponse formatMatch(Match match){
-        // 格式化处理
-        MatchResponse response = new MatchResponse();
-        response.setMatchId(match.getMatchId());
-        response.setDuration(match.getDuration());
-        response.setCustomMatch(match.getCustomMatch());
-        response.setMapName(match.getMapName());
-        response.setGameMode(match.getGameMode());
-        response.setAssetsUrl(match.getAssetsUrl());
-        response.setCreateTime(DateUtil.formatDateTime(match.getCreateTime()));
-        return response;
     }
 }

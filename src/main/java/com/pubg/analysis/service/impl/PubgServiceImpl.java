@@ -347,26 +347,7 @@ public class PubgServiceImpl implements IPubgService {
         }
         query.addCriteria(criteria);
         Page<MatchPlayer> matchPlayers = matchPlayerRepository.page(query, request.getCurrPage(), request.getPageSize());
-        return matchPlayers.convert(this::formatMatch);
+        return matchPlayers.convert(matchPlayer -> matchRepository.findByMatchId(matchPlayer.getMatchId()).getResponse());
     }
 
-    /**
-     * @description match -> matchResponse的转换
-     * @auth sunpeikai
-     * @param matchPlayer 比赛玩家
-     * @return 某个玩家的比赛列表
-     */
-    private MatchResponse formatMatch(MatchPlayer matchPlayer){
-        Match match = matchRepository.findByMatchId(matchPlayer.getMatchId());
-        // 格式化处理
-        MatchResponse response = new MatchResponse();
-        response.setMatchId(match.getMatchId());
-        response.setDuration(match.getDuration());
-        response.setCustomMatch(match.getCustomMatch());
-        response.setMapName(match.getMapName());
-        response.setGameMode(match.getGameMode());
-        response.setAssetsUrl(match.getAssetsUrl());
-        response.setCreateTime(DateUtil.formatDateTime(match.getCreateTime()));
-        return response;
-    }
 }
