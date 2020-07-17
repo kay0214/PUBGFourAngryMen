@@ -68,7 +68,7 @@ public class PubgServiceImpl implements IPubgService {
                 .entrySet()
                 .parallelStream()
                 //去除开始时间点前的事件
-                .filter(e -> e.getKey() >= 0)
+                .filter(e -> e.getKey() > 0)
                 .peek(entry -> {
                     List<BaseLog> records = entry.getValue()
                             .stream()

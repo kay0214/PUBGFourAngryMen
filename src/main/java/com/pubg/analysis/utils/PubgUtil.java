@@ -92,4 +92,16 @@ public class PubgUtil {
                 .map(BaseLog::getCharacter)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 判断是否为机器人
+     * 以 character.accountId的前缀作为判断依据
+     *
+     * @param accountId 账号
+     * @return 是否机器人
+     */
+    public static boolean isAiAccount(String accountId) {
+
+        return accountId.startsWith("ai.");
+    }
 }
