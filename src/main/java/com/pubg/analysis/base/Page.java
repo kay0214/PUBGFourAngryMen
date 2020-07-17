@@ -3,6 +3,7 @@
  */
 package com.pubg.analysis.base;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -14,7 +15,7 @@ import static java.util.stream.Collectors.toList;
  * @version Page, v0.1 2020/7/10 11:34
  * @description
  */
-public class Page<T> {
+public class Page<T> implements Serializable {
 
     // 数据列表
     private List<T> records = Collections.emptyList();

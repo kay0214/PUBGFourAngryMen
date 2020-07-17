@@ -28,3 +28,7 @@ spring:
   devtools:
     restart:
       enabled: true
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:ehcache.xml
