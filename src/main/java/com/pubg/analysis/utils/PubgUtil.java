@@ -3,6 +3,7 @@ package com.pubg.analysis.utils;
 import com.pubg.analysis.constants.LogTypes;
 import com.pubg.analysis.constants.PubgConstant;
 import com.pubg.analysis.entity.log.BaseLog;
+import com.pubg.analysis.entity.log.Character;
 import com.pubg.analysis.entity.log.Location;
 import com.pubg.analysis.repository.LogRepository;
 import com.pubg.analysis.repository.MatchRepository;
@@ -10,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author yangy
@@ -69,5 +72,24 @@ public class PubgUtil {
         PubgConstant.Maps map = PubgConstant.Maps.getByLongName(mapName);
         log.info("获取地图类型: {} -> {}", matchId, map.name());
         return map;
+    }
+
+    /**
+     * base log 转 character
+     * 不保证顺序
+     *
+     * @param baseLogs baselog列表
+     * @return character列表
+     */
+    public static List<Character> baseLogsToCharacters(List<BaseLog> baseLogs) {
+
+        if (baseLogs == null) {
+            return null;
+        }
+
+        return baseLogs
+                .parallelStream()
+                .map(BaseLog::getCharacter)
+                .collect(Collectors.toList());
     }
 }

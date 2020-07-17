@@ -8,6 +8,7 @@ import com.pubg.analysis.base.Page;
 import com.pubg.analysis.constants.ApiConstant;
 import com.pubg.analysis.constants.PubgConstant;
 import com.pubg.analysis.entity.log.BaseLog;
+import com.pubg.analysis.entity.log.Character;
 import com.pubg.analysis.entity.matchs.Match;
 import com.pubg.analysis.entity.matchs.MatchPlayer;
 import com.pubg.analysis.repository.LogRepository;
@@ -49,7 +50,7 @@ public class PubgServiceImpl implements IPubgService {
 
         log.info("获取位置时间维度位置追踪数据");
 
-        TreeMap<Long, List<BaseLog>> logs = new TreeMap<>();
+        TreeMap<Long, List<Character>> logs = new TreeMap<>();
 
         //所有带character的日志
         List<String> fieldList = Collections.singletonList("character");
@@ -90,11 +91,10 @@ public class PubgServiceImpl implements IPubgService {
                             .flatMap(List::stream)
                             .collect(Collectors.toList());
                     entry.setValue(records);
-
                 })
 
                 //添加到结果
-                .forEachOrdered(e -> logs.put(e.getKey(), e.getValue()));
+                .forEachOrdered(e -> logs.put(e.getKey(), PubgUtil.baseLogsToCharacters(e.getValue())));
         log.debug("读取到LogPlayerPosition: {}", logs);
 
         PositionResponse response = new PositionResponse();
