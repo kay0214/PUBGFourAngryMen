@@ -67,15 +67,19 @@
 
         $.ajax({
             url: baseUrl + "/position/track/" + matchId,
-                success: (e) => {
-                    console.log(e)
-                    trackData = e;
-                    $("#timeRange").attr("max", e.end).removeAttr("disabled");
-                    //载入地图
-                    pubgMap.setBackgroundMap(mapConstant.source[e.mapType], 800, 800);
-                    //载入玩家列表
-                    teamList.load(e.characters);
+            success: (e) => {
+                console.log(e)
+                trackData = e;
+                $("#timeRange").attr("max", e.end).removeAttr("disabled");
+                //载入地图
+                pubgMap.setBackgroundMap(mapConstant.source[e.mapType], 800, 800);
+                //载入玩家列表
+                const characters = [];
+                for (let c in e.characters) {
+                    characters.push(e.characters[c]);
                 }
+                teamList.load(characters);
+            }
             }
         )
     })
@@ -95,17 +99,25 @@
         pubgMap.clear();
 
         //遍历玩家
-        for (let character of trackData.characters) {
-            const accountId = character.accountId;
+        for (let character in trackData.characters) {
+            const accountId = trackData.characters[character].accountId;
 
             //判断是否输出该角色
             if (!teamList.isSelected(accountId)) {
                 continue;
             }
 
-            let characterPos = trackData.positions[instant][accountId];
+            let instantValue = trackData.positions[instant];
+            if (!instantValue) {
+                continue;
+            }
+
+            let characterPos = instantValue[accountId];
             //如果该时刻该角色存在位置信息
             if (characterPos) {
+                if (characterPos.location == null) {
+                    continue;
+                }
                 const displayName = DRAW_NAME ? characterPos.name : "";
                 pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, characterPos.teamId, displayName);
             } else {
@@ -119,6 +131,10 @@
                         }
                         characterPos = trackData.positions[past][accountId];
                         if (characterPos) {
+                            //!test
+                            if (characterPos.location == null) {
+                                continue;
+                            }
                             const displayName = DRAW_NAME ? characterPos.name : "";
                             pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, characterPos.teamId, displayName);
                             break;
@@ -129,6 +145,13 @@
             }
         }
 
+
+    }
+
+    /**
+     * 绘制个人维度路线
+     */
+    function drawPersonalTrack() {
 
     }
 
