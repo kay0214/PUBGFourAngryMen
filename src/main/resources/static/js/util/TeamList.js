@@ -142,9 +142,15 @@ function TeamList(listId, checkBox = true) {
             selected[name] = checked;
             triggerOnSelected(selected);
         });
+        //总开关
         $(`#${listId} input.teamListCheckAllPlayer`).change((e) => {
             const checked = e.currentTarget.checked;
-            $(`#${listId} td input[type="checkbox"]`).trigger("click");
+            $(`#${listId} td input[type="checkbox"]`).each((e, f) => {
+                const name = f.getAttribute("data-name");
+                f.checked = checked;
+                selected[name] = checked;
+            });
+            triggerOnSelected(selected);
         });
 
         //染色
