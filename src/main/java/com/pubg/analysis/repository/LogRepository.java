@@ -21,81 +21,81 @@ import java.util.List;
 @Repository
 public class LogRepository extends MongoBaseDao<BaseLog> {
 
-	@Override
-	protected Class<BaseLog> getEntityClass() {
+    @Override
+    protected Class<BaseLog> getEntityClass() {
 
-		return BaseLog.class;
-	}
+        return BaseLog.class;
+    }
 
-	/**
-	 * 取得日志列表
-	 *
-	 * @param clazz       输出类
-	 * @param matchId     比赛id
-	 * @param logTypeList 日志类型列表, null为全部输出
-	 * @param <T>         输出类型
-	 * @return 日志列表
-	 */
-	public <T> List<T> getLog(Class<T> clazz, String matchId, List<String> logTypeList) {
-		//拆分
-		UnwindOperation unwindOperation = Aggregation.unwind("$logs");
+    /**
+     * 取得日志列表
+     *
+     * @param clazz       输出类
+     * @param matchId     比赛id
+     * @param logTypeList 日志类型列表, null为全部输出
+     * @param <T>         输出类型
+     * @return 日志列表
+     */
+    public <T> List<T> getLog(Class<T> clazz, String matchId, List<String> logTypeList) {
+        //拆分
+        UnwindOperation unwindOperation = Aggregation.unwind("$logs");
 
-		//匹配
-		Criteria criteria = new Criteria();
-		criteria.and("matchId").is(matchId);
-		if (logTypeList != null) {
-			criteria.and("logs._T").in(logTypeList);
-		}
-		MatchOperation match1 = Aggregation.match(criteria);
+        //匹配
+        Criteria criteria = new Criteria();
+        criteria.and("matchId").is(matchId);
+        if (logTypeList != null) {
+            criteria.and("logs._T").in(logTypeList);
+        }
+        MatchOperation match1 = Aggregation.match(criteria);
 
-		//根据实体类字段设置投影规则
-		Fields fields = Fields.from(MongoUtil.getFieldsByClass(clazz, "$logs.", true));
-		ProjectionOperation projectionOperation = Aggregation.project(fields).andExclude("_id");
+        //根据实体类字段设置投影规则
+        Fields fields = Fields.from(MongoUtil.getFieldsByClass(clazz, "$logs.", true));
+        ProjectionOperation projectionOperation = Aggregation.project(fields).andExclude("_id");
 
-		Aggregation aggregation = Aggregation.newAggregation(unwindOperation, match1, projectionOperation);
-		return aggregate(clazz, aggregation, "telemetry");
-	}
+        Aggregation aggregation = Aggregation.newAggregation(unwindOperation, match1, projectionOperation);
+        return aggregate(clazz, aggregation, "telemetry");
+    }
 
 
-	public boolean isExistMatchLog(String matchId) {
+    public boolean isExistMatchLog(String matchId) {
 
-		Query query = new Query();
-		query.addCriteria(new Criteria().and("matchId").is(matchId).and("_T").is(ApiConstant.MATCH_LOG_DEFINITION));
-		List<BaseLog> exists = find(query);
-		return exists != null && exists.size() > 0;
-	}
+        Query query = new Query();
+        query.addCriteria(new Criteria().and("matchId").is(matchId).and("_T").is(ApiConstant.MATCH_LOG_DEFINITION));
+        List<BaseLog> exists = find(query);
+        return exists != null && exists.size() > 0;
+    }
 
-	/**
-	 * @param matchId     比赛id
-	 * @param logTypeList 日志类型列表，null则不过滤
-	 * @param fieldList   必须存在的字段列表, null则不过滤
-	 * @return 日志列表
-	 */
-	public List<BaseLog> getBaseLog(String matchId, List<LogTypes> logTypeList, List<String> fieldList) {
+    /**
+     * @param matchId     比赛id
+     * @param logTypeList 日志类型列表，null则不过滤
+     * @param fieldList   必须存在的字段列表, null则不过滤
+     * @return 日志列表
+     */
+    public List<BaseLog> getBaseLog(String matchId, List<LogTypes> logTypeList, List<String> fieldList) {
 
-		Query query = new Query();
-		Criteria criteria = new Criteria();
-		criteria.and("matchId").is(matchId);
-		if (logTypeList != null) {
-			criteria.and("_T").in(logTypeList);
-		}
+        Query query = new Query();
+        Criteria criteria = new Criteria();
+        criteria.and("matchId").is(matchId);
+        if (logTypeList != null) {
+            criteria.and("_T").in(logTypeList);
+        }
 
-		if (fieldList != null) {
-			for (String field : fieldList) {
-				criteria.and(field).exists(true);
-			}
-		}
-		query.addCriteria(criteria);
-		return find(query, "pubg_match_log");
-	}
+        if (fieldList != null) {
+            for (String field : fieldList) {
+                criteria.and(field).exists(true);
+            }
+        }
+        query.addCriteria(criteria);
+        return find(query, "pubg_match_log");
+    }
 
-	/**
-	 * @param matchId     比赛id
-	 * @param logTypeList 日志类型列表，null则不过滤
-	 * @return 日志列表
-	 */
-	public List<BaseLog> getBaseLog(String matchId, List<LogTypes> logTypeList) {
+    /**
+     * @param matchId     比赛id
+     * @param logTypeList 日志类型列表，null则不过滤
+     * @return 日志列表
+     */
+    public List<BaseLog> getBaseLog(String matchId, List<LogTypes> logTypeList) {
 
-		return getBaseLog(matchId, logTypeList, null);
-	}
+        return getBaseLog(matchId, logTypeList, null);
+    }
 }
