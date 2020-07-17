@@ -36,3 +36,7 @@ mongodb:
   connectTimeout: 10000
   maxWaitTime: 15000
   socketTimeout: 120000
+spring:
+  devtools:
+    restart:
+      enabled: true
