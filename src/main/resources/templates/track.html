@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>位置追踪1</title>
-    <link rel="stylesheet" href="/pubg/static/css/bootstrap.min.css">
-    <script src="/pubg/static/js/jquery-3.5.1.min.js"></script>
-    <script src="/pubg/static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/player-list.css">
+    <script src="js/lib/jquery-3.5.1.min.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/util/MapConstant.js"></script>
+    <script src="js/util/PubgMap.js"></script>
+    <script src="js/util/TeamList.js"></script>
 
 </head>
 <body>
@@ -22,25 +26,19 @@
     </div>
 
     <div class="row">
-        <!--        <input type="range" id="timeRange" min="0" max="1000" step="1">-->
     </div>
 
     <div class="row">
         <div class="col-lg-4">
             <!--队伍列表-->
-            <div class="team-list">
-                队伍列表
-            </div>
+            <div id="teamList"></div>
         </div>
 
         <div class="col-lg-8">
-            <!--地图-->
 
-            <input type="range" id="timeRange" min="0" max="1000" step="10">
-            <div id="mapContainer">
-                <canvas id="mapCanvas" width="1000" height="1000"></canvas>
-                <img id="mapImage">
-            </div>
+            <input type="range" id="timeRange" min="0" max="1000" step="1">
+            <!--地图-->
+            <div id="pubgMap"></div>
         </div>
     </div>
 
@@ -49,17 +47,17 @@
 
 </body>
 <script>
-    const canvas = document.getElementById("mapCanvas");
-    const context = canvas.getContext("2d");
-    let map = document.getElementById("mapImage");
-    map.src = "/pubg/static/img/Sanhok_Main_Low_Res.png";
-    // context.drawImage(map, 0, 0);
-    map.onload = () => {
-        // context.drawImage(map, 0, 0);
-    }
+    const pubgMap = new PubgMap("pubgMap", 800, 800);
+    const teamList = new TeamList("teamList", true);
 
     const baseUrl = "/pubg";
     let trackData = {};
+    let currentInstant = 0;
+
+    teamList.onSelected(() => {
+        drawInstantContent(currentInstant);
+    })
+
     $("#timeRange").val(0).attr("disabled", "true");
     $("#btnGetTrack").click(() => {
         const matchId = $("#matchIdInput1").val();
@@ -68,11 +66,15 @@
         }
 
         $.ajax({
-                url: baseUrl + "/position/track/" + matchId,
+            url: baseUrl + "/position/track/" + matchId,
                 success: (e) => {
                     console.log(e)
                     trackData = e;
                     $("#timeRange").attr("max", e.end).removeAttr("disabled");
+                    //载入地图
+                    pubgMap.setBackgroundMap(mapConstant.source[e.mapType], 800, 800);
+                    //载入玩家列表
+                    teamList.load(e.characters);
                 }
             }
         )
@@ -80,6 +82,7 @@
 
     $("#timeRange").on("input", (e) => {
         const current = e.target.value;
+        currentInstant = current;
         drawInstantContent(current);
     })
 
@@ -88,35 +91,45 @@
      * @param instant 时刻 拖动条的值
      */
     function drawInstantContent(instant) {
-        canvas.height = canvas.height;
-        const logs = trackData.positions[instant];
-        if (logs === undefined) {
-            return;
+        let DRAW_NAME = true;
+        pubgMap.clear();
+
+        //遍历玩家
+        for (let character of trackData.characters) {
+            const accountId = character.accountId;
+
+            //判断是否输出该角色
+            if (!teamList.isSelected(accountId)) {
+                continue;
+            }
+
+            let characterPos = trackData.positions[instant][accountId];
+            //如果该时刻该角色存在位置信息
+            if (characterPos) {
+                const displayName = DRAW_NAME ? characterPos.name : "";
+                pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, characterPos.teamId, displayName);
+            } else {
+                //判断是否死亡
+                const deathTime = trackData.deathLog[accountId];
+                if (deathTime === undefined || deathTime > instant) {
+                    //回溯时间查找
+                    for (let past = instant - 1; past >= 0; past--) {
+                        if (!trackData.positions[past]) {
+                            continue;
+                        }
+                        characterPos = trackData.positions[past][accountId];
+                        if (characterPos) {
+                            const displayName = DRAW_NAME ? characterPos.name : "";
+                            pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, characterPos.teamId, displayName);
+                            break;
+                        }
+                    }
+                }
+
+            }
         }
 
-        console.log("characters", logs);
-        for (let log of logs) {
-            drawCharacter(log);
-        }
 
-    }
-
-    function drawCharacter(log) {
-        console.log(log)
-        const size = 1000;
-        const location = log.character.location;
-        const x = size * location.xratio;
-        const y = size * location.yratio;
-
-        drawCircle(x, y);
-    }
-
-    function drawCircle(x, y) {
-        context.beginPath();
-        context.arc(x, y, 5, 0, 2 * Math.PI);
-        context.fillStyle = "red";
-        context.fill();
-        context.stroke();
     }
 
 
@@ -126,28 +139,9 @@
         border: solid red;
     }
 
-    .team-list {
-        border: solid red;
-    }
-
     #timeRange {
-        width: 1000px;
+        width: 800px;
     }
 
-    #mapContainer {
-        position: relative;
-    }
-
-    #mapImage {
-        position: absolute;
-        width: 1000px;
-        height: 1000px;
-        z-index: 0;
-    }
-
-    #mapCanvas {
-        position: absolute;
-        z-index: 1;
-    }
 </style>
 </html>
