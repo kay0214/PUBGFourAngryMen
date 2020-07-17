@@ -73,6 +73,30 @@ public class PubgConstant {
 		 */
 		private final long height;
 
+		/**
+		 * 根据长地图名映射地图类型
+		 *
+		 * @param longName 长地图名
+		 * @return 地图类型
+		 */
+		public static Maps getByLongName(String longName) {
+
+			switch (longName) {
+				case "Desert_Main":
+					return MIRAMAR;
+				case "DihorOtok_Main":
+					return VIKENDI;
+				case "Erangel_Main":
+					return ERANGEL;
+				case "Baltic_Main":
+					return ERANGEL;
+				case "Savage_Main":
+					return SANHOK;
+				default:
+					throw new IllegalArgumentException("Unrecognized map name: " + longName);
+			}
+		}
+
 	}
 
 }
