@@ -4,8 +4,14 @@ import com.pubg.analysis.constants.LogTypes;
 import com.pubg.analysis.constants.PubgConstant;
 import com.pubg.analysis.entity.log.BaseLog;
 import com.pubg.analysis.entity.log.Location;
+import com.pubg.analysis.repository.LogRepository;
+import com.pubg.analysis.repository.MatchRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -33,21 +39,39 @@ public class PubgUtil {
 	/**
 	 * 获取比赛开始时间戳
 	 *
-	 * @param logs 日志列表
+	 * @param matchId 比赛id
 	 * @return 开始时间戳
 	 */
-	public static long getMatchStartTime(List<BaseLog> logs) {
+	public static long getMatchStartTime(String matchId) {
 
-		Optional<Long> start = logs
+		LogRepository logRepository = BeanUtil.getBean(LogRepository.class);
+		Optional<Date> start = logRepository.getBaseLog(matchId, Collections.singletonList(LogTypes.LogMatchStart))
 				.parallelStream()
 				.filter(e -> LogTypes.LogMatchStart.name().equals(e.get_T()))
-				.map(e -> e.get_D().getTime())
+				.map(BaseLog::get_D)
 				.findAny();
 		if (start.isPresent()) {
-			return start.get();
+			long time = start.get().getTime();
+			log.info("比赛{}开始时间: {}", matchId, time);
+			return time;
 		} else {
-			log.warn("获取比赛开始时间点异常: {}", logs);
+			log.warn("获取比赛开始时间点异常: {}", matchId);
 			return 0L;
 		}
+	}
+
+	/**
+	 * 获取地图类型
+	 *
+	 * @param matchId 比赛id
+	 * @return 地图类型枚举值
+	 */
+	public static PubgConstant.Maps getMapType(String matchId) {
+
+		MatchRepository matchRepository = BeanUtil.getBean(MatchRepository.class);
+		String mapName = matchRepository.findByMatchId(matchId).getMapName();
+		PubgConstant.Maps map = PubgConstant.Maps.getByLongName(mapName);
+		log.info("获取地图类型: {} -> {}", matchId, map.name());
+		return map;
 	}
 }
