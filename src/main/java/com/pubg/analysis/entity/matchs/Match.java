@@ -3,11 +3,14 @@
  */
 package com.pubg.analysis.entity.matchs;
 
+import com.pubg.analysis.response.MatchResponse;
+import com.pubg.analysis.utils.DateUtil;
 import lombok.Data;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -21,7 +24,7 @@ import java.util.Date;
         @CompoundIndex(name = "matchId",def = "{'matchId':1}"),
         @CompoundIndex(name = "fetchLog",def = "{'fetchLog':1}")
 })
-public class Match {
+public class Match implements Serializable {
     // 对局ID
     private String matchId;
     // 持续时间
@@ -38,4 +41,17 @@ public class Match {
     private String assetsUrl;
     // 对局创建时间
     private Date createTime;
+
+    public MatchResponse getResponse(){
+        // 格式化处理
+        MatchResponse response = new MatchResponse();
+        response.setMatchId(this.getMatchId());
+        response.setDuration(this.getDuration());
+        response.setCustomMatch(this.getCustomMatch());
+        response.setMapName(this.getMapName());
+        response.setGameMode(this.getGameMode());
+        response.setAssetsUrl(this.getAssetsUrl());
+        response.setCreateTime(DateUtil.formatDateTime(this.getCreateTime()));
+        return response;
+    }
 }

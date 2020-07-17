@@ -11,18 +11,6 @@ server:
       # Tomcat启动初始化的线程数，默认值25
       min-spare: 10
 
-
-# JetCache config
-jetcache:
-  statIntervalMinutes: 15
-  areaInCacheName: false
-  local:
-    default:
-      type: linkedhashmap
-      keyConvertor: fastjson
-      limit: 100
-
-
 #mongoDb
 mongodb:
   host: 39.100.154.57
@@ -40,3 +28,7 @@ spring:
   devtools:
     restart:
       enabled: true
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:ehcache.xml

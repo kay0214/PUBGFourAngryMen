@@ -2,12 +2,14 @@ package com.pubg.analysis.entity.log;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author yangy
  * @date 2020/7/10 9:20
  */
 @Data
-public class Location {
+public class Location implements Serializable {
 
 	/**
 	 * x : 123399.4375

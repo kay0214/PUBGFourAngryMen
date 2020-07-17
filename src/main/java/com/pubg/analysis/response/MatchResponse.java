@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author sunpeikai
  * @version MatchResponse, v0.1 2020/7/14 10:49
@@ -11,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel("对局列表返回参数")
-public class MatchResponse {
+public class MatchResponse implements Serializable {
     // 对局ID
     @ApiModelProperty("对局ID")
     private String matchId;

@@ -3,6 +3,7 @@ package com.pubg.analysis.entity.log;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  */
 @NoArgsConstructor
 @Data
-public class Character {
+public class Character implements Serializable {
 
 
 	/**

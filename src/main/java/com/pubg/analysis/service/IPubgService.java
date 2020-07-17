@@ -4,6 +4,7 @@ import com.pubg.analysis.base.Page;
 import com.pubg.analysis.entity.matchs.Match;
 import com.pubg.analysis.entity.matchs.MatchPlayer;
 import com.pubg.analysis.request.MatchRequest;
+import com.pubg.analysis.response.MatchResponse;
 import com.pubg.analysis.response.PositionResponse;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface IPubgService {
      * @param request 玩家账户ID
      * @return
      */
-    Page<Match> findMatchPageByAccountId(MatchRequest request);
+    Page<MatchResponse> findMatchPageByAccountId(MatchRequest request);
 
     /**
      * @description accountId查找对局列表
@@ -36,7 +37,7 @@ public interface IPubgService {
      * @param request 玩家账户ID
      * @return
      */
-    Page<Match> findMatchPageByAccountId(boolean fromRemote, MatchRequest request);
+    Page<MatchResponse> findMatchPageByAccountId(boolean fromRemote, MatchRequest request);
 
     /**
      * @description 玩家昵称查找对局列表
@@ -44,7 +45,7 @@ public interface IPubgService {
      * @param request 玩家昵称
      * @return
      */
-    Page<Match> findMatchPageByPlayerName(MatchRequest request);
+    Page<MatchResponse> findMatchPageByPlayerName(MatchRequest request);
 
     /**
      * @description 玩家昵称查找对局列表
@@ -53,7 +54,7 @@ public interface IPubgService {
      * @param request 玩家昵称
      * @return
      */
-    Page<Match> findMatchPageByPlayerName(boolean fromRemote, MatchRequest request);
+    Page<MatchResponse> findMatchPageByPlayerName(boolean fromRemote, MatchRequest request);
 
     /**
      * @description 对局ID查找对局详情

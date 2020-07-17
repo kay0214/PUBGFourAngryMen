@@ -5,13 +5,15 @@ package com.pubg.analysis.entity.log;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author sunpeikai
  * @version GameState, v0.1 2020/7/14 11:44
  * @description
  */
 @Data
-public class GameState {
+public class GameState implements Serializable {
 
     private Integer elapsedTime;
     private Integer numAliveTeams;

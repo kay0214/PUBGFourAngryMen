@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -20,7 +21,7 @@ import java.util.Date;
 @CompoundIndexes({
         @CompoundIndex(name = "matchId_accountId_playerName",def = "{'matchId':1,'accountId':1,'playerName':1}")
 })
-public class MatchPlayer {
+public class MatchPlayer implements Serializable {
     // 对局ID
     private String matchId;
     // 玩家ID

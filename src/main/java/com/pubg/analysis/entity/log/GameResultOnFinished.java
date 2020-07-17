@@ -5,6 +5,7 @@ package com.pubg.analysis.entity.log;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,6 +14,6 @@ import java.util.List;
  * @description
  */
 @Data
-public class GameResultOnFinished {
+public class GameResultOnFinished implements Serializable {
     private List<GameResult> results;
 }

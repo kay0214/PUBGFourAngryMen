@@ -10,18 +10,6 @@ server:
       max: 800
       # Tomcat启动初始化的线程数，默认值25
       min-spare: 10
-
-
-# JetCache config
-jetcache:
-  statIntervalMinutes: 15
-  areaInCacheName: false
-  local:
-    default:
-      type: linkedhashmap
-      keyConvertor: fastjson
-      limit: 100
-
 #mongoDb
 mongodb:
   hostports: 39.100.154.57:28001
@@ -34,3 +22,9 @@ mongodb:
   connectTimeout: 10000
   maxWaitTime: 15000
   socketTimeout: 120000
+
+spring:
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:ehcache.xml

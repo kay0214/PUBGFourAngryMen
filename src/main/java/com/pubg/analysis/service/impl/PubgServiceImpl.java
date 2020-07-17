@@ -15,11 +15,13 @@ import com.pubg.analysis.repository.LogRepository;
 import com.pubg.analysis.repository.MatchRepository;
 import com.pubg.analysis.repository.MatchPlayerRepository;
 import com.pubg.analysis.request.MatchRequest;
+import com.pubg.analysis.response.MatchResponse;
 import com.pubg.analysis.response.PositionResponse;
 import com.pubg.analysis.service.IPubgService;
 import com.pubg.analysis.utils.DateUtil;
 import com.pubg.analysis.utils.PubgUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,7 @@ public class PubgServiceImpl implements IPubgService {
 
 
     @Override
+    @Cacheable(value = "match:position",key = "#matchId",unless = "#result.positions.size()<=0")
     public PositionResponse getPubgLocation(String matchId) {
 
         log.info("获取位置时间维度位置追踪数据");
@@ -114,8 +117,9 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
-    public Page<Match> findMatchPageByAccountId(MatchRequest request) {
-
+    @Cacheable(value = "match:page:accountId",key = "#request.accountId + #request.currPage + #request.pageSize",unless = "#result.records.size()<=0")
+    public Page<MatchResponse> findMatchPageByAccountId(MatchRequest request) {
+        log.info("no cached");
         return findMatchPageByAccountId(false, request);
     }
 
@@ -127,7 +131,7 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
-    public Page<Match> findMatchPageByAccountId(boolean fromRemote, MatchRequest request) {
+    public Page<MatchResponse> findMatchPageByAccountId(boolean fromRemote, MatchRequest request) {
 
         if (fromRemote) {
             // 从pubg官网重新拉取数据
@@ -143,8 +147,9 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
-    public Page<Match> findMatchPageByPlayerName(MatchRequest request) {
-
+    @Cacheable(value = "match:page:playerName",key = "#request.playerName + #request.currPage + #request.pageSize",unless = "#result.records.size()<=0")
+    public Page<MatchResponse> findMatchPageByPlayerName(MatchRequest request) {
+        log.info("no cached");
         return findMatchPageByPlayerName(false, request);
     }
 
@@ -156,7 +161,7 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
-    public Page<Match> findMatchPageByPlayerName(boolean fromRemote, MatchRequest request) {
+    public Page<MatchResponse> findMatchPageByPlayerName(boolean fromRemote, MatchRequest request) {
 
         if (fromRemote) {
             // 从pubg官网重新拉取数据
@@ -236,8 +241,9 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
+    @Cacheable(value = "match-players:matchId",key = "#matchId",unless = "#result.size()<=0")
     public List<MatchPlayer> findMatchPlayersByMatchId(String matchId) {
-
+        log.info("no cached");
         return matchPlayerRepository.findByMatchId(matchId);
     }
 
@@ -328,7 +334,7 @@ public class PubgServiceImpl implements IPubgService {
      * 先从matchPlayer查询用户获得matchId,再去match查询比赛
      * @auth sunpeikai
      */
-    private Page<Match> findMatchPageByAccountIdOrPlayerName(MatchRequest request) {
+    private Page<MatchResponse> findMatchPageByAccountIdOrPlayerName(MatchRequest request) {
 
         Query query = new Query();
         // 构建查询条件
@@ -341,6 +347,7 @@ public class PubgServiceImpl implements IPubgService {
         }
         query.addCriteria(criteria);
         Page<MatchPlayer> matchPlayers = matchPlayerRepository.page(query, request.getCurrPage(), request.getPageSize());
-        return matchPlayers.convert(matchPlayer -> matchRepository.findByMatchId(matchPlayer.getMatchId()));
+        return matchPlayers.convert(matchPlayer -> matchRepository.findByMatchId(matchPlayer.getMatchId()).getResponse());
     }
+
 }

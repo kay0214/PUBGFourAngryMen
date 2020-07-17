@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import java.util.List;
 @CompoundIndexes({
         @CompoundIndex(name = "matchId_T",def = "{'matchId':1,'_T':1}")
 })
-public class BaseLog {
+public class BaseLog implements Serializable {
     // 时间
     // @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")// dd-MMM-yyyyTHH:mm:ss:SSSz
     @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'")

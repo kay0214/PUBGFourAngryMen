@@ -5,6 +5,7 @@ package com.pubg.analysis.entity.log;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * @description
  */
 @Data
-public class ItemPackage {
+public class ItemPackage implements Serializable {
     // 空投类型Carapackage_RedBox_C
     private String itemPackageId;
     // 空投着陆坐标

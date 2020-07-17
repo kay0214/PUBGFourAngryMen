@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  */
 @Data
 @ApiModel("对局详情返回参数")
-public class MatchDetailResponse {
+public class MatchDetailResponse implements Serializable {
 
     @ApiModelProperty(value = "对局基本信息")
     private MatchResponse match;

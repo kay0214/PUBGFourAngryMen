@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -17,7 +18,7 @@ import java.util.TreeMap;
  */
 @Data
 @ApiModel("位置信息返回参数")
-public class PositionResponse {
+public class PositionResponse implements Serializable {
 
     @ApiModelProperty("起始时间")
     private long start = 0;
