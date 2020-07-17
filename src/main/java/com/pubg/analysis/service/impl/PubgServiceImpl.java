@@ -51,11 +51,10 @@ public class PubgServiceImpl implements IPubgService {
 
 
     @Override
-    @Cacheable(value = "match:position",key = "#matchId",unless = "#result.positions.size()<=0")
+    @Cacheable(value = "match:position", key = "#matchId", unless = "#result.positions.size()<=0")
     public PositionResponse getPubgLocation(String matchId) {
 
         log.info("获取位置时间维度位置追踪数据");
-
 
         //所有带character的日志
         List<String> fieldList = Collections.singletonList("character");
@@ -74,15 +73,20 @@ public class PubgServiceImpl implements IPubgService {
         deathLog.entrySet().forEach(e -> e.setValue((e.getValue() - startTimestamp) / 1000));
 
         //玩家列表
-        List<Character> characters = PubgUtil.getDistinctCharacter(baseLogs)
+        Map<String, Character> characters = PubgUtil.getDistinctCharacter(baseLogs)
+                .entrySet()
                 .parallelStream()
                 //清空无用字段
                 .peek(e -> {
-                    e.setLocation(null);
-                    e.setHealth(0);
-                    e.setZone(null);
+                    Character c = e.getValue();
+                    c.setLocation(null);
+                    c.setHealth(0);
+                    c.setZone(null);
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        //角色维度位置追踪
+        Map<String, List<List<Double>>> playerTrack = PubgUtil.getPersonalTrack(baseLogs, mapType);
 
         //构建响应
         PositionResponse response = new PositionResponse();
@@ -90,6 +94,7 @@ public class PubgServiceImpl implements IPubgService {
         response.setMapType(mapType.name());
         response.setDeathLog(deathLog);
         response.setCharacters(characters);
+        response.setPlayerTrack(playerTrack);
         if (logs.size() > 0) {
             response.setStart(logs.firstKey());
             response.setEnd(logs.lastKey());
@@ -106,8 +111,9 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
-    @Cacheable(value = "match:page:accountId",key = "#request.accountId + #request.currPage + #request.pageSize",unless = "#result.records.size()<=0")
+    @Cacheable(value = "match:page:accountId", key = "#request.accountId + #request.currPage + #request.pageSize", unless = "#result.records.size()<=0")
     public Page<MatchResponse> findMatchPageByAccountId(MatchRequest request) {
+
         log.info("no cached");
         return findMatchPageByAccountId(false, request);
     }
@@ -136,8 +142,9 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
-    @Cacheable(value = "match:page:playerName",key = "#request.playerName + #request.currPage + #request.pageSize",unless = "#result.records.size()<=0")
+    @Cacheable(value = "match:page:playerName", key = "#request.playerName + #request.currPage + #request.pageSize", unless = "#result.records.size()<=0")
     public Page<MatchResponse> findMatchPageByPlayerName(MatchRequest request) {
+
         log.info("no cached");
         return findMatchPageByPlayerName(false, request);
     }
@@ -230,8 +237,9 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
-    @Cacheable(value = "match-players:matchId",key = "#matchId",unless = "#result.size()<=0")
+    @Cacheable(value = "match-players:matchId", key = "#matchId", unless = "#result.size()<=0")
     public List<MatchPlayer> findMatchPlayersByMatchId(String matchId) {
+
         log.info("no cached");
         return matchPlayerRepository.findByMatchId(matchId);
     }

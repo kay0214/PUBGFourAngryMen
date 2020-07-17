@@ -29,12 +29,15 @@ public class PositionResponse implements Serializable {
     @ApiModelProperty(value = "位置信息", notes = "<时间点, Map<accountId,Character>>")
     private TreeMap<Long, Map<String, Character>> positions;
 
-    @ApiModelProperty("@ApiModelProperty(\"终止时间\")")
+    @ApiModelProperty("地图类型")
     private String mapType;
 
     @ApiModelProperty("死亡记录")
     private Map<String, Long> deathLog;
 
     @ApiModelProperty(value = "角色列表", notes = "包括电脑")
-    private List<Character> characters;
+    private Map<String, Character> characters;
+
+    @ApiModelProperty(value = "角色维度位置追踪", notes = "<accountId, [[xRatio, yRatio]]>")
+    Map<String, List<List<Double>>> playerTrack;
 }

@@ -178,14 +178,44 @@ public class PubgUtil {
      * @param baseLogs 日志列表
      * @return 玩家列表
      */
-    public static List<Character> getDistinctCharacter(List<BaseLog> baseLogs) {
+    public static Map<String, Character> getDistinctCharacter(List<BaseLog> baseLogs) {
 
         return baseLogs
                 .parallelStream()
                 .filter(e -> e.getCharacter() != null && !e.getCharacter().getAccountId().isEmpty())
                 .map(BaseLog::getCharacter)
                 .distinct()
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(Character::getAccountId, c -> c));
+
+    }
+
+    /**
+     * 取得角色维度位置跟踪数据
+     *
+     * @param baseLogs 日志列表
+     * @return accountId, [[xRatio, yRatio]]
+     */
+    public static Map<String, List<List<Double>>> getPersonalTrack(List<BaseLog> baseLogs, PubgConstant.Maps mapType) {
+
+        return baseLogs
+                .parallelStream()
+                .filter(e -> e.getCharacter() != null && e.getCharacter().getLocation() != null)
+                .collect(Collectors.groupingByConcurrent(e -> e.getCharacter().getAccountId()))
+                .entrySet()
+                .parallelStream()
+                .map(e -> new AbstractMap.SimpleEntry<String, List<List<Double>>>(
+                        e.getKey(),
+                        e.getValue()
+                                .stream()
+                                .sorted(Comparator.comparing(BaseLog::get_D))
+                                .map(l -> {
+                                    Location location = l.getCharacter().getLocation();
+                                    PubgUtil.calculateLocationRation(location, mapType);
+                                    return Arrays.asList(location.getXRatio(), location.getYRatio());
+                                })
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     }
 }
