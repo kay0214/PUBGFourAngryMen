@@ -1,6 +1,7 @@
 package com.pubg.analysis.response;
 
 import com.pubg.analysis.entity.log.BaseLog;
+import com.pubg.analysis.entity.log.Character;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,5 +26,5 @@ public class PositionResponse {
     private long end = 0;
 
     @ApiModelProperty("位置信息")
-    private TreeMap<Long, List<BaseLog>> positions;
+    private TreeMap<Long, List<Character>> positions;
 }
