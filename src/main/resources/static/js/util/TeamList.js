@@ -18,7 +18,8 @@ function TeamList(listId, checkBox = true) {
      * 玩家定义
      * @typedef {Object}    player
      * @property {number}   teamId
-     * @property {string}   playerName
+     * @property {string}   name
+     * @property {string}   accountId
      */
 
 
@@ -96,7 +97,13 @@ function TeamList(listId, checkBox = true) {
         //构建表格
         const table = document.createElement("table");
         table.classList.add("table-player-list");
-        let html = "<tr><th>队伍</th><th>玩家</th></tr>";
+        let html = `<tr>
+                        <th>队伍</th>
+                        <th>
+                        玩家
+                        ${checkBox ? `<input class="teamListCheckAllPlayer" type='checkbox' checked>` : ""}
+                        </th>
+                    </tr>`;
 
         for (let teamId in teams) {
             const teamPlayerCount = teams[teamId].length;
@@ -111,8 +118,8 @@ function TeamList(listId, checkBox = true) {
                                 ${includedTeamId ? "" : teamIdBlock}
                                 <td>
                                     <label>
-                                        <div>${player.playerName}</div>
-                                        ${checkBox ? `<input type='checkbox' checked data-name='${player.playerName}'>` : ""}
+                                        <div>${player.name}</div>
+                                        ${checkBox ? `<input type='checkbox' checked data-name='${player.accountId}'>` : ""}
                                     </label>
                                 </td>
                             </tr>`;
@@ -120,7 +127,7 @@ function TeamList(listId, checkBox = true) {
                 html += ele;
 
                 //加入
-                selected[player.playerName] = true;
+                selected[player.accountId] = true;
             }
         }
         //填入
@@ -128,12 +135,16 @@ function TeamList(listId, checkBox = true) {
         document.getElementById(listId).appendChild(table);
 
         //注册点击事件
-        $(`#${listId} input[type="checkbox"]`).change((e) => {
+        $(`#${listId} td input[type="checkbox"]`).change((e) => {
             const name = e.currentTarget.getAttribute("data-name");
             const checked = e.currentTarget.checked;
 
             selected[name] = checked;
             triggerOnSelected(selected);
+        });
+        $(`#${listId} input.teamListCheckAllPlayer`).change((e) => {
+            const checked = e.currentTarget.checked;
+            $(`#${listId} td input[type="checkbox"]`).trigger("click");
         });
 
         //染色
@@ -147,5 +158,21 @@ function TeamList(listId, checkBox = true) {
         });
     }
 
+    /**
+     * 返回当前被勾选玩家
+     * @returns {selectedPlayers}
+     */
+    this.getSelected = () => {
+        return selected;
+    }
+
+    /**
+     * 返回该账号id是否被勾选
+     * @param accountId 账号id
+     * @returns {boolean}
+     */
+    this.isSelected = accountId => {
+        return selected[accountId] === true;
+    }
 
 }
