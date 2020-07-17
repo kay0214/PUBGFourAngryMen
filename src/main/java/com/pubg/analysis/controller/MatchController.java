@@ -15,6 +15,7 @@ import com.pubg.analysis.utils.DateUtil;
 import com.pubg.analysis.utils.EntityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ import java.util.List;
  * @version MatchController, v0.1 2020/7/15 10:49
  * @description
  */
+@Slf4j
 @Api(value = "对局",tags = "对局")
 @RestController
 @RequestMapping("/match")
@@ -38,29 +40,25 @@ public class MatchController {
     @ApiOperation(value = "账户昵称搜索对局列表本地库",notes = "账户昵称搜索对局列表本地库")
     @PostMapping("/findMatchPageByPlayerName")
     public Page<MatchResponse> findMatchPageByPlayerName(@RequestBody MatchRequest request){
-        Page<Match> page =  iPubgService.findMatchPageByPlayerName(request);
-        return page.convert(this::formatMatch);
+        return iPubgService.findMatchPageByPlayerName(request);
     }
 
     @ApiOperation(value = "账户昵称搜索对局列表远程库",notes = "账户昵称搜索对局列表远程库")
     @PostMapping("/findMatchPageByPlayerNameRemote")
     public Page<MatchResponse> findMatchPageByPlayerNameRemote(@RequestBody MatchRequest request){
-        Page<Match> page =  iPubgService.findMatchPageByPlayerName(true,request);
-        return page.convert(this::formatMatch);
+        return iPubgService.findMatchPageByPlayerName(true,request);
     }
 
     @ApiOperation(value = "账户ID搜索对局列表本地库",notes = "账户ID搜索对局列表本地库")
     @PostMapping("/findMatchPageByAccountId")
     public Page<MatchResponse> findMatchPageByAccountId(@RequestBody MatchRequest request){
-        Page<Match> page =  iPubgService.findMatchPageByAccountId(request);
-        return page.convert(this::formatMatch);
+        return iPubgService.findMatchPageByAccountId(request);
     }
 
     @ApiOperation(value = "账户ID搜索对局列表远程库",notes = "账户ID搜索对局列表远程库")
     @PostMapping("/findMatchPageByAccountIdRemote")
     public Page<MatchResponse> findMatchPageByAccountIdRemote(@RequestBody MatchRequest request){
-        Page<Match> page = iPubgService.findMatchPageByAccountId(true,request);
-        return page.convert(this::formatMatch);
+        return iPubgService.findMatchPageByAccountId(true,request);
     }
 
     @ApiOperation(value = "对局ID搜索对局详情本地库",notes = "对局ID搜索对局详情本地库")

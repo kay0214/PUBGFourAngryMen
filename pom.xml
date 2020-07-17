@@ -21,7 +21,6 @@
         <project.name>PUBGFourAngryMen</project.name>
         <swagger.version>2.9.2</swagger.version>
         <swagger.ui.version>1.9.3</swagger.ui.version>
-        <crawler.version>1.2.2</crawler.version>
         <fastjson.version>1.2.72</fastjson.version>
     </properties>
 
@@ -74,13 +73,6 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>swagger-bootstrap-ui</artifactId>
             <version>${swagger.ui.version}</version>
-        </dependency>
-
-        <!-- xxl-crawler -->
-        <dependency>
-            <groupId>com.xuxueli</groupId>
-            <artifactId>xxl-crawler</artifactId>
-            <version>${crawler.version}</version>
         </dependency>
 
         <dependency>
