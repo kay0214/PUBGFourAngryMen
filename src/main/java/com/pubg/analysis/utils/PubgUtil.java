@@ -9,10 +9,7 @@ import com.pubg.analysis.repository.LogRepository;
 import com.pubg.analysis.repository.MatchRepository;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -103,5 +100,92 @@ public class PubgUtil {
     public static boolean isAiAccount(String accountId) {
 
         return accountId.startsWith("ai.");
+    }
+
+    /**
+     * 根据时间、玩家分组日志列表
+     *
+     * @param baseLogs       输入日志列表
+     * @param startTimestamp 开始时间戳
+     * @return 有序map
+     */
+    public static TreeMap<Long, Map<String, Character>> sortLogByTimeAndCharacter(List<BaseLog> baseLogs, long startTimestamp) {
+
+        TreeMap<Long, Map<String, Character>> logs = new TreeMap<>();
+        baseLogs.parallelStream()
+                .filter(e -> e.getCharacter() != null && e.getCharacter().getLocation() != null)
+                //按时间分组 秒级
+                .collect(Collectors.groupingByConcurrent(e -> (e.get_D().getTime() - startTimestamp) / 1000))
+
+                .entrySet()
+                .parallelStream()
+                //去除开始时间点前的事件
+                .filter(e -> e.getKey() > 0)
+                .map(entry -> new AbstractMap.SimpleEntry<Long, Map<String, List<Character>>>(
+                        entry.getKey(),
+                        entry.getValue()
+                                .stream()
+                                .map(BaseLog::getCharacter)
+                                .collect(Collectors.groupingBy(Character::getAccountId))
+                ))
+                //每组内按用户去重
+                .map(entry -> new AbstractMap.SimpleEntry<Long, Map<String, Character>>(
+                        entry.getKey(),
+                        entry.getValue()
+                                .entrySet()
+                                .stream()
+                                .map(e -> {
+                                    //确定要保留的元素
+                                    Character keep = e.getValue().get(0);
+                                    //计算比率位置
+                                    PubgUtil.calculateLocationRation(keep.getLocation(), PubgConstant.Maps.SANHOK);
+                                    e.setValue(Collections.singletonList(keep));
+                                    return new AbstractMap.SimpleEntry<String, Character>(
+                                            e.getKey(),
+                                            keep);
+                                })
+                                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))
+                ))
+
+                //添加到结果
+                .forEachOrdered(e -> logs.put(e.getKey(), e.getValue()));
+
+        return logs;
+    }
+
+    /**
+     * 取得玩家死亡时间
+     *
+     * @param matchId 比赛id
+     * @return accountId, 时间戳
+     */
+    public static Map<String, Long> getDeathTimestamp(String matchId) {
+
+        LogRepository logRepository = BeanUtil.getBean(LogRepository.class);
+        return logRepository.getBaseLog(matchId, Collections.singletonList(LogTypes.LogPlayerKill))
+                .parallelStream()
+                .collect(Collectors.toMap(
+                        e -> e.getVictim().getAccountId(),
+                        e -> e.get_D().getTime()
+                ));
+    }
+
+    /**
+     * 获取玩家列表
+     * 包括电脑
+     * 依照accountId去重
+     *
+     * @param baseLogs 日志列表
+     * @return 玩家列表
+     */
+    public static List<Character> getDistinctCharacter(List<BaseLog> baseLogs) {
+
+        return baseLogs
+                .parallelStream()
+                .filter(e -> e.getCharacter() != null && !e.getCharacter().getAccountId().isEmpty())
+                .map(BaseLog::getCharacter)
+                .distinct()
+                .collect(Collectors.toList());
+
     }
 }
