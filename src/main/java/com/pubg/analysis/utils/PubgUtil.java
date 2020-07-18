@@ -137,7 +137,7 @@ public class PubgUtil {
                                 .stream()
                                 .map(e -> {
                                     //确定要保留的元素
-                                    Character keep = e.getValue().get(0);
+                                    Character keep = e.getValue().get(e.getValue().size() - 1);
                                     //计算比率位置
                                     PubgUtil.calculateLocationRation(keep.getLocation(), PubgConstant.Maps.SANHOK);
                                     e.setValue(Collections.singletonList(keep));
@@ -198,12 +198,32 @@ public class PubgUtil {
      */
     public static Map<String, List<List<Double>>> getPersonalTrack(List<BaseLog> baseLogs, PubgConstant.Maps mapType) {
 
+        //获取落地时间
+        Map<String, Long> landings = baseLogs
+                .parallelStream()
+                .filter(e -> LogTypes.LogParachuteLanding.name().equals(e.get_T()))
+                .collect(Collectors.toMap(
+                        e -> e.getCharacter().getAccountId(),
+                        e -> e.get_D().getTime(),
+                        (v1, v2) -> v2
+                ));
+
+
         return baseLogs
                 .parallelStream()
+                //过滤无效数据
                 .filter(e -> e.getCharacter() != null &&
                         e.getCharacter().getLocation() != null &&
                         !StringUtils.isEmpty(e.getCharacter().getAccountId())
                 )
+                //过滤落地前数据
+                .filter(e -> {
+                    String accountId = e.getCharacter().getAccountId();
+                    if (!landings.containsKey(accountId)) {
+                        return false;
+                    }
+                    return e.get_D().getTime() >= landings.get(accountId);
+                })
                 .collect(Collectors.groupingByConcurrent(e -> e.getCharacter().getAccountId()))
                 .entrySet()
                 .parallelStream()
