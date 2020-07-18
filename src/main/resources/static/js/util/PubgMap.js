@@ -172,12 +172,12 @@ function PubgMap(elementId, width, height, mapImgSrc = undefined) {
      * @param {number}      teamIndex   队伍编号
      */
     this.drawPath = (ratioList, teamIndex) => {
+        const coordinates = [];
         for (let ratios of ratioList) {
             const pos = convertRatioToPos(ratios[0], ratios[1]);
-            ratios[0] = pos.x;
-            ratios[1] = pos.y;
+            coordinates.push([pos.x, pos.y]);
         }
-        drawLines(ratioList, 2, mapConstant.color[teamIndex]);
+        drawLines(coordinates, 2, mapConstant.color[teamIndex]);
     }
 
 }
