@@ -5,14 +5,18 @@
     <title>位置追踪1</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/player-list.css">
+    <link rel="stylesheet" href="css/loader.css">
     <script src="js/lib/jquery-3.5.1.min.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
     <script src="js/util/MapConstant.js"></script>
     <script src="js/util/PubgMap.js"></script>
     <script src="js/util/TeamList.js"></script>
 
+
 </head>
 <body>
+<div id="globalSpinner" class="loader center-screen top-level" style="display: none"></div>
+
 <div class="container-fluid testtest">
 
     <div class="row">
@@ -64,6 +68,7 @@
         if (!matchId) {
             return;
         }
+        $("#globalSpinner").css("display", "block");
 
         $.ajax({
                 url: baseUrl + "/position/track/" + matchId,
@@ -80,6 +85,9 @@
                     }
                     teamList.load(characters);
                     drawInstantContent(0);
+
+                    console.log("finish")
+                    $("#globalSpinner").css("display", "none");
                 }
             }
         )
@@ -89,7 +97,6 @@
     $("#timeRange").on("input", (e) => {
         const current = e.target.value;
         currentInstant = current;
-        console.log(current)
         drawInstantContent(current);
     })
 
@@ -164,9 +171,7 @@
                 continue;
             }
             const lineData = trackData.playerTrack[accountId];
-            console.log(lineData)
             const teamId = trackData.characters[accountId].teamId;
-            console.log(teamId)
             pubgMap.drawPath(lineData, teamId);
 
         }
