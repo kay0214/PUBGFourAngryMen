@@ -66,37 +66,45 @@
         }
 
         $.ajax({
-            url: baseUrl + "/position/track/" + matchId,
-            success: (e) => {
-                console.log(e)
-                trackData = e;
-                $("#timeRange").attr("max", e.end).removeAttr("disabled");
-                //载入地图
-                pubgMap.setBackgroundMap(mapConstant.source[e.mapType], 800, 800);
-                //载入玩家列表
-                const characters = [];
-                for (let c in e.characters) {
-                    characters.push(e.characters[c]);
+                url: baseUrl + "/position/track/" + matchId,
+                success: (e) => {
+                    console.log(e)
+                    trackData = e;
+                    $("#timeRange").attr("max", e.end).removeAttr("disabled").val(0);
+                    //载入地图
+                    pubgMap.setBackgroundMap(mapConstant.source[e.mapType], 800, 800);
+                    //载入玩家列表
+                    const characters = [];
+                    for (let c in e.characters) {
+                        characters.push(e.characters[c]);
+                    }
+                    teamList.load(characters);
+                    drawInstantContent(0);
                 }
-                teamList.load(characters);
-            }
             }
         )
     })
 
+    //拖动事件
     $("#timeRange").on("input", (e) => {
         const current = e.target.value;
         currentInstant = current;
+        console.log(current)
         drawInstantContent(current);
     })
 
     /**
-     *
+     * 绘制某一时刻
      * @param instant 时刻 拖动条的值
      */
     function drawInstantContent(instant) {
-        let DRAW_NAME = true;
         pubgMap.clear();
+        if (instant == 0) {
+            drawPersonalTrackLine();
+            return;
+        }
+
+        let DRAW_NAME = true;
 
         //遍历玩家
         for (let character in trackData.characters) {
@@ -131,7 +139,6 @@
                         }
                         characterPos = trackData.positions[past][accountId];
                         if (characterPos) {
-                            //!test
                             if (characterPos.location == null) {
                                 continue;
                             }
@@ -151,8 +158,18 @@
     /**
      * 绘制个人维度路线
      */
-    function drawPersonalTrack() {
+    function drawPersonalTrackLine() {
+        for (let accountId in trackData.playerTrack) {
+            if (!teamList.isSelected(accountId)) {
+                continue;
+            }
+            const lineData = trackData.playerTrack[accountId];
+            console.log(lineData)
+            const teamId = trackData.characters[accountId].teamId;
+            console.log(teamId)
+            pubgMap.drawPath(lineData, teamId);
 
+        }
     }
 
 
