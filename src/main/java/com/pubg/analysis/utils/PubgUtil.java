@@ -8,6 +8,7 @@ import com.pubg.analysis.entity.log.Location;
 import com.pubg.analysis.repository.LogRepository;
 import com.pubg.analysis.repository.MatchRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -199,7 +200,10 @@ public class PubgUtil {
 
         return baseLogs
                 .parallelStream()
-                .filter(e -> e.getCharacter() != null && e.getCharacter().getLocation() != null)
+                .filter(e -> e.getCharacter() != null &&
+                        e.getCharacter().getLocation() != null &&
+                        !StringUtils.isEmpty(e.getCharacter().getAccountId())
+                )
                 .collect(Collectors.groupingByConcurrent(e -> e.getCharacter().getAccountId()))
                 .entrySet()
                 .parallelStream()
