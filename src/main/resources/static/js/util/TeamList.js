@@ -132,7 +132,9 @@ function TeamList(listId, checkBox = true) {
         }
         //填入
         table.innerHTML = html;
-        document.getElementById(listId).appendChild(table);
+        const listElement = document.getElementById(listId);
+        listElement.innerHTML = "";
+        listElement.appendChild(table);
 
         //注册点击事件
         $(`#${listId} td input[type="checkbox"]`).change((e) => {
