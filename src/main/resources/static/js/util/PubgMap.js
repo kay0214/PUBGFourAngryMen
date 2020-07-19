@@ -111,6 +111,20 @@ function PubgMap(elementId, width, height, mapImgSrc = undefined) {
     }
 
     /**
+     * 绘制文字
+     * @param text  文字
+     * @param x     横坐标
+     * @param y     纵坐标
+     * @param color 颜色
+     * @param font  大小字体
+     */
+    function drawText(text, x, y, color = "white", font = "10px Arial") {
+        context.font = font;
+        context.fillStyle = color;
+        context.fillText(text, x, y);
+    }
+
+    /**
      * 实心圆
      * @param x 中心横坐标
      * @param y 中心纵坐标
@@ -123,6 +137,46 @@ function PubgMap(elementId, width, height, mapImgSrc = undefined) {
         context.arc(x, y, size, 0, Math.PI * 2);
         context.closePath();
         context.fill();
+    }
+
+    /**
+     * 反向实心圆
+     * @param x 中心横坐标
+     * @param y 中心纵坐标
+     * @param radius 大小
+     * @param color 颜色
+     * @param opacity 透明度
+     */
+    function fillReverseCircle(x, y, radius, color = "blue", opacity = 0.5) {
+        context.fillStyle = color;
+        context.beginPath();
+        context.globalAlpha = opacity;
+        context.arc(x, y, radius, 0, Math.PI * 2);
+        context.rect(width, 0, -width, height);
+        context.closePath();
+        context.fill();
+        context.globalAlpha = 1;
+    }
+
+    /**
+     * 空心圆
+     * @param x 中心横坐标
+     * @param y 中心纵坐标
+     * @param radius 半径
+     * @param width 线宽
+     * @param color 颜色
+     */
+    function strokeCircle(x, y, radius, width = 2, color = "white") {
+        if (radius <= 0) {
+            return;
+        }
+        context.strokeStyle = color;
+        context.lineWidth = width;
+        context.beginPath();
+        context.arc(x, y, radius, 0, Math.PI * 2);
+        context.closePath();
+        context.stroke();
+
     }
 
     this.test = (x, y) => {
@@ -178,6 +232,40 @@ function PubgMap(elementId, width, height, mapImgSrc = undefined) {
             coordinates.push([pos.x, pos.y]);
         }
         drawLines(coordinates, 2, mapConstant.color[teamIndex]);
+    }
+
+    /**
+     * 绘制安全区 篮圈
+     * @param xRatio        横坐标比率
+     * @param yRatio        纵坐标比率
+     * @param radiusRatio   半径比率
+     */
+    this.drawSafetyZone = (xRatio, yRatio, radiusRatio) => {
+        fillReverseCircle(xRatio * width, yRatio * height, radiusRatio * width, "blue", 0.15);
+    }
+
+    /**
+     * 绘制白圈
+     * @param xRatio
+     * @param yRatio
+     * @param radiusRatio
+     */
+    this.drawGasWarningZone = (xRatio, yRatio, radiusRatio) => {
+        strokeCircle(xRatio * width, yRatio * height, radiusRatio * width);
+    }
+
+    /**
+     * 显示时间
+     * @param instant 时刻
+     */
+    this.displayTime = (instant) => {
+        if (!instant) {
+            return;
+        }
+        const min = parseInt(instant / 60);
+        const sec = instant % 60;
+        const time = `${min}:${sec}`;
+        drawText(time, width / 2, 20);
     }
 
 }
