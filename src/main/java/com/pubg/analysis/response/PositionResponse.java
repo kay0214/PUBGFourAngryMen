@@ -1,6 +1,7 @@
 package com.pubg.analysis.response;
 
 import com.pubg.analysis.entity.log.Character;
+import com.pubg.analysis.entity.log.GameState;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -40,4 +41,7 @@ public class PositionResponse implements Serializable {
 
     @ApiModelProperty(value = "角色维度位置追踪", notes = "<accountId, [[xRatio, yRatio]]>")
     Map<String, List<List<Double>>> playerTrack;
+
+    @ApiModelProperty(value = "游戏状态")
+    Map<Long, GameState> gameState;
 }

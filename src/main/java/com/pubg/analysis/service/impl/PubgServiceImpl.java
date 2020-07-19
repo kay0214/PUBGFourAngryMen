@@ -10,6 +10,7 @@ import com.pubg.analysis.constants.LogTypes;
 import com.pubg.analysis.constants.PubgConstant;
 import com.pubg.analysis.entity.log.BaseLog;
 import com.pubg.analysis.entity.log.Character;
+import com.pubg.analysis.entity.log.GameState;
 import com.pubg.analysis.entity.matchs.Match;
 import com.pubg.analysis.entity.matchs.MatchPlayer;
 import com.pubg.analysis.repository.LogRepository;
@@ -88,6 +89,9 @@ public class PubgServiceImpl implements IPubgService {
         //角色维度位置追踪
         Map<String, List<List<Double>>> playerTrack = PubgUtil.getPersonalTrack(baseLogs, mapType);
 
+        //游戏状态信息
+        Map<Long, GameState> gameStateMap = PubgUtil.getGameStateByMatchId(matchId, startTimestamp, mapType);
+
         //构建响应
         PositionResponse response = new PositionResponse();
         response.setPositions(logs);
@@ -95,6 +99,7 @@ public class PubgServiceImpl implements IPubgService {
         response.setDeathLog(deathLog);
         response.setCharacters(characters);
         response.setPlayerTrack(playerTrack);
+        response.setGameState(gameStateMap);
         if (logs.size() > 0) {
             response.setStart(logs.firstKey());
             response.setEnd(logs.lastKey());

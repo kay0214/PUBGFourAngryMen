@@ -23,7 +23,7 @@ public enum LogTypes {
 	LogCarePackageSpawn,
 
 	/**
-	 * ？
+	 * 安全区、毒圈、轰炸区、黑圈日志
 	 */
 	LogGameStatePeriodic,
 
