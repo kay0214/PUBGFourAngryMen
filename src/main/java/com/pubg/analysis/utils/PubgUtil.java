@@ -4,6 +4,7 @@ import com.pubg.analysis.constants.LogTypes;
 import com.pubg.analysis.constants.PubgConstant;
 import com.pubg.analysis.entity.log.BaseLog;
 import com.pubg.analysis.entity.log.Character;
+import com.pubg.analysis.entity.log.GameState;
 import com.pubg.analysis.entity.log.Location;
 import com.pubg.analysis.repository.LogRepository;
 import com.pubg.analysis.repository.MatchRepository;
@@ -241,5 +242,42 @@ public class PubgUtil {
                 ))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
+    }
+
+    /**
+     * 取得游戏状态信息
+     *
+     * @param matchId        比赛id
+     * @param startTimestamp 比赛开始时间戳
+     * @return 时间，状态map
+     */
+    public static Map<Long, GameState> getGameStateByMatchId(String matchId, long startTimestamp, PubgConstant.Maps mapType) {
+
+        LogRepository logRepository = BeanUtil.getBean(LogRepository.class);
+        List<BaseLog> baseLogs = logRepository.getBaseLog(matchId, Collections.singletonList(LogTypes.LogGameStatePeriodic));
+
+        return baseLogs
+                .parallelStream()
+                .filter(e -> e.getGameState() != null)
+                .peek(e -> {
+                    GameState gameState = e.getGameState();
+                    //计算比率位置
+                    calculateLocationRation(gameState.getSafetyZonePosition(), mapType);
+                    calculateLocationRation(gameState.getPoisonGasWarningPosition(), mapType);
+                    calculateLocationRation(gameState.getRedZonePosition(), mapType);
+                    calculateLocationRation(gameState.getBlackZonePosition(), mapType);
+
+                    //根据地图宽计算横半径比率
+                    long width = mapType.getWidth();
+                    gameState.setSafetyZoneRadius(gameState.getSafetyZoneRadius() / width);
+                    gameState.setPoisonGasWarningRadius(gameState.getPoisonGasWarningRadius() / width);
+                    gameState.setRedZoneRadius(gameState.getRedZoneRadius() / width);
+                    gameState.setBlackZoneRadius(gameState.getBlackZoneRadius() / width);
+                })
+                .collect(Collectors.toMap(
+                        e -> (e.get_D().getTime() - startTimestamp) / 1000,
+                        e -> e.getGameState(),
+                        (v1, v2) -> v2
+                ));
     }
 }
