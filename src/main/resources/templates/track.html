@@ -142,7 +142,7 @@
 
             let instantValue = trackData.positions[instant];
             if (!instantValue) {
-                continue;
+                instantValue = {};
             }
 
             let characterPos = instantValue[accountId];
