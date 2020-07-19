@@ -8,11 +8,11 @@
     user-select: none;
 
     text-align: center;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .table-player-list th {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .table-player-list .td-team-id {
@@ -23,7 +23,7 @@
     width: 200px;
     padding-left: 5px;
     padding-right: 2px;
-    height: 34px;
+    height: 20px;
     text-align: left;
 }
 
