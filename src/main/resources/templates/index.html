@@ -1,10 +1,92 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
+    <link rel="icon" href="img/icon/icon.jpg">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="js/lib/jquery-3.5.1.min.js"></script>
+    <script src="layui/layui.js"></script>
 </head>
 <body>
-<p th:text="'Hello！, ' + ${userName} + '!'"></p>
+
+<div th:replace="header :: home"></div>
+<table id="match" class="layui-table-hover"></table>
+
 </body>
+<script>
+    var matchTable;
+    layui.use('table',function () {
+        matchTable = layui.table;
+        matchTable.render({
+            elem: '#match'
+            ,id: 'match'
+            ,url: '/pubg/match/findMatchPageByPlayerName'
+            ,page: true
+            ,limits : [10,20,30,40,50]
+            ,limit : 10
+            ,parseData: function(res){
+                return {
+                    "code": res.status,
+                    "msg": res.statusDesc,
+                    "count": res.data.total,
+                    "data": res.data.records
+                };
+            }
+            ,cols: [
+                [
+                    {field:'matchId', minWidth:70, title: 'ID',style:'text-align: left;'}
+                    ,{field:'duration', width:100, title: '持续时间',style:'text-align: center;'}
+                    ,{field:'customMatch', width:100, title: '自定义对局',style:'text-align: center;',templet:function (data) {
+                        if(data.customMatch === 1){
+                            return '是';
+                        }else{
+                            return '否';
+                        }
+                    }}
+                    ,{field:'mapName', width:120, title: '地图名称',style:'text-align: center;'}
+                    ,{field:'gameMode', width:100, title: '游戏模式',style:'text-align: center;'}
+                    ,{field:'createTime', width:180, title: '对局时间',style:'text-align: center;'}
+                    ,{fixed:'right', width:200, title: '操作',style:'text-align: left;', templet:function (data) {
+                        return "<button onclick='repay(" + data.id + ")' class='layui-btn layui-btn-sm layui-btn-normal'>对局详情</button><a href='/findPlz_manager/delete?id=" + data.id + "' class='layui-btn layui-btn-sm layui-btn-danger'>对局日志</a>";
+                    }}
+                ]
+            ]
+        });
+    });
+
+    /**
+     * 从本地mongo库搜索对局
+     * */
+    function searchByPlayerName() {
+        let playerName = $('#playerName');
+        //执行重载
+        matchTable.reload('match', {
+            url: '/pubg/match/findMatchPageByPlayerName'
+            ,page: {
+                curr: 1 //重新从第 1 页开始
+            }
+            ,where: {
+                playerName: playerName.val()
+            }
+        });
+    }
+    /**
+     * 从pubg远程库搜索对局
+     * */
+    function fetchFromRemote() {
+        let playerName = $("#playerName");
+        //执行重载
+        matchTable.reload('match', {
+            url: '/pubg/match/findMatchPageByPlayerNameRemote'
+            ,page: {
+                curr: 1 //重新从第 1 页开始
+            }
+            ,where: {
+                playerName: playerName.val()
+            }
+        });
+    }
+
+</script>
 </html>

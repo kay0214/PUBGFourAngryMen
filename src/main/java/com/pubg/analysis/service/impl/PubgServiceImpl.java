@@ -116,7 +116,7 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
-    @Cacheable(value = "match:page:accountId", key = "#request.accountId + #request.currPage + #request.pageSize", unless = "#result.records.size()<=0")
+    @Cacheable(value = "match:page:accountId", key = "#request.accountId + #request.page + #request.limit", unless = "#result.records.size()<=0")
     public Page<MatchResponse> findMatchPageByAccountId(MatchRequest request) {
 
         log.info("no cached");
@@ -147,7 +147,7 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
-    @Cacheable(value = "match:page:playerName", key = "#request.playerName + #request.currPage + #request.pageSize", unless = "#result.records.size()<=0")
+    @Cacheable(value = "match:page:playerName", key = "#request.playerName + #request.page + #request.limit", unless = "#result.records.size()<=0")
     public Page<MatchResponse> findMatchPageByPlayerName(MatchRequest request) {
 
         log.info("no cached");
@@ -339,17 +339,26 @@ public class PubgServiceImpl implements IPubgService {
     private Page<MatchResponse> findMatchPageByAccountIdOrPlayerName(MatchRequest request) {
 
         Query query = new Query();
-        // 构建查询条件
-        Criteria criteria = new Criteria();
-        if (!StringUtils.isEmpty(request.getAccountId())) {
-            criteria.and("accountId").is(request.getAccountId());
+
+
+        if(StringUtils.isEmpty(request.getAccountId()) && StringUtils.isEmpty(request.getPlayerName())){
+            // 如果参数都为空 - 直接查询match表
+            return matchRepository.page(query,request.getPage(),request.getLimit()).convert(Match::getResponse);
+        }else{
+            // 构建查询条件
+            Criteria criteria = new Criteria();
+            // 如果有一个参数不为空 - 先查询matchPlayer再查询match
+            if (!StringUtils.isEmpty(request.getAccountId())) {
+                criteria.and("accountId").is(request.getAccountId());
+            }
+            if (!StringUtils.isEmpty(request.getPlayerName())) {
+                criteria.and("playerName").is(request.getPlayerName());
+            }
+            query.addCriteria(criteria);
+            Page<MatchPlayer> matchPlayers = matchPlayerRepository.page(query, request.getPage(), request.getLimit());
+            return matchPlayers.convert(matchPlayer -> matchRepository.findByMatchId(matchPlayer.getMatchId()).getResponse());
         }
-        if (!StringUtils.isEmpty(request.getPlayerName())) {
-            criteria.and("playerName").is(request.getPlayerName());
-        }
-        query.addCriteria(criteria);
-        Page<MatchPlayer> matchPlayers = matchPlayerRepository.page(query, request.getCurrPage(), request.getPageSize());
-        return matchPlayers.convert(matchPlayer -> matchRepository.findByMatchId(matchPlayer.getMatchId()).getResponse());
+
     }
 
 }

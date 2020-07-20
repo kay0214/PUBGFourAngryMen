@@ -16,9 +16,9 @@ import java.io.Serializable;
 @Data
 public class BaseRequest implements Serializable {
     @ApiModelProperty(value = "当前页码")
-    private int currPage = 1;
+    private int page = 1;
 
     @ApiModelProperty(value = "每页记录数")
-    private int pageSize = 10;
+    private int limit = 10;
 
 }

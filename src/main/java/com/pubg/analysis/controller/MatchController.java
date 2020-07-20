@@ -4,6 +4,7 @@
 package com.pubg.analysis.controller;
 
 import com.pubg.analysis.base.Page;
+import com.pubg.analysis.base.R;
 import com.pubg.analysis.entity.matchs.Match;
 import com.pubg.analysis.entity.matchs.MatchPlayer;
 import com.pubg.analysis.request.MatchRequest;
@@ -37,32 +38,34 @@ public class MatchController {
     private IPubgService iPubgService;
 
     @ApiOperation(value = "账户昵称搜索对局列表本地库",notes = "账户昵称搜索对局列表本地库")
-    @PostMapping("/findMatchPageByPlayerName")
-    public Page<MatchResponse> findMatchPageByPlayerName(@RequestBody MatchRequest request){
-        return iPubgService.findMatchPageByPlayerName(request);
+    @GetMapping("/findMatchPageByPlayerName")
+    public R<Page<MatchResponse>> findMatchPageByPlayerName(MatchRequest request){
+        handleParam(request);
+        return R.data(iPubgService.findMatchPageByPlayerName(request));
     }
 
     @ApiOperation(value = "账户昵称搜索对局列表远程库",notes = "账户昵称搜索对局列表远程库")
-    @PostMapping("/findMatchPageByPlayerNameRemote")
-    public Page<MatchResponse> findMatchPageByPlayerNameRemote(@RequestBody MatchRequest request){
-        return iPubgService.findMatchPageByPlayerName(true,request);
+    @GetMapping("/findMatchPageByPlayerNameRemote")
+    public R<Page<MatchResponse>> findMatchPageByPlayerNameRemote(MatchRequest request){
+        return R.data(iPubgService.findMatchPageByPlayerName(true,request));
     }
 
     @ApiOperation(value = "账户ID搜索对局列表本地库",notes = "账户ID搜索对局列表本地库")
-    @PostMapping("/findMatchPageByAccountId")
-    public Page<MatchResponse> findMatchPageByAccountId(@RequestBody MatchRequest request){
-        return iPubgService.findMatchPageByAccountId(request);
+    @GetMapping("/findMatchPageByAccountId")
+    public R<Page<MatchResponse>> findMatchPageByAccountId(MatchRequest request){
+        handleParam(request);
+        return R.data(iPubgService.findMatchPageByAccountId(request));
     }
 
     @ApiOperation(value = "账户ID搜索对局列表远程库",notes = "账户ID搜索对局列表远程库")
-    @PostMapping("/findMatchPageByAccountIdRemote")
-    public Page<MatchResponse> findMatchPageByAccountIdRemote(@RequestBody MatchRequest request){
-        return iPubgService.findMatchPageByAccountId(true,request);
+    @GetMapping("/findMatchPageByAccountIdRemote")
+    public R<Page<MatchResponse>> findMatchPageByAccountIdRemote(MatchRequest request){
+        return R.data(iPubgService.findMatchPageByAccountId(true,request));
     }
 
     @ApiOperation(value = "对局ID搜索对局详情本地库",notes = "对局ID搜索对局详情本地库")
     @PostMapping("/findMatchDetailByMatchId")
-    public MatchDetailResponse findMatchDetailByMatchId(@RequestBody MatchRequest request){
+    public R<MatchDetailResponse> findMatchDetailByMatchId(@RequestBody MatchRequest request){
         if(StringUtils.isEmpty(request.getMatchId())){
             return null;
         }
@@ -77,12 +80,12 @@ public class MatchController {
         // 获取对局所有玩家信息
         List<MatchPlayer> matchPlayers = iPubgService.findMatchPlayersByMatchId(request.getMatchId());
         result.setMatchPlayers(EntityUtil.copyBeans(matchPlayers, MatchPlayerResponse.class));
-        return result;
+        return R.data(result);
     }
 
     @ApiOperation(value = "对局ID和玩家ID搜索对局详情本地库",notes = "对局ID和玩家ID搜索对局详情本地库")
     @PostMapping("/findMatchDetailByMatchIdAndAccountId")
-    public MatchDetailResponse findMatchDetailByMatchIdAndAccountId(@RequestBody MatchRequest request){
+    public R<MatchDetailResponse> findMatchDetailByMatchIdAndAccountId(@RequestBody MatchRequest request){
         if(StringUtils.isEmpty(request.getMatchId()) || StringUtils.isEmpty(request.getAccountId())){
             return null;
         }
@@ -115,12 +118,12 @@ public class MatchController {
             result.setTeamPlayers(EntityUtil.copyBeans(teamPlayers, MatchPlayerResponse.class));
         }
 
-        return result;
+        return R.data(result);
     }
 
     @ApiOperation(value = "对局ID和玩家昵称搜索对局详情本地库",notes = "对局ID和玩家昵称搜索对局详情本地库")
     @PostMapping("/findMatchDetailByMatchIdAndPlayerName")
-    public MatchDetailResponse findMatchDetailByMatchIdAndPlayerName(@RequestBody MatchRequest request){
+    public R<MatchDetailResponse> findMatchDetailByMatchIdAndPlayerName(@RequestBody MatchRequest request){
         if(StringUtils.isEmpty(request.getMatchId()) || StringUtils.isEmpty(request.getPlayerName())){
             return null;
         }
@@ -153,6 +156,12 @@ public class MatchController {
             result.setTeamPlayers(EntityUtil.copyBeans(teamPlayers, MatchPlayerResponse.class));
         }
 
-        return result;
+        return R.data(result);
+    }
+
+    private void handleParam(MatchRequest request){
+        request.setPlayerName(StringUtils.isEmpty(request.getPlayerName())?"":request.getPlayerName());
+        request.setAccountId(StringUtils.isEmpty(request.getAccountId())?"":request.getAccountId());
+        request.setMatchId(StringUtils.isEmpty(request.getMatchId())?"":request.getMatchId());
     }
 }

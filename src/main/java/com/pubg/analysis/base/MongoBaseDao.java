@@ -66,16 +66,16 @@ public abstract class MongoBaseDao<T> {
         return this.mongoTemplate.find(query, this.getEntityClass(), collectionName);
     }
 
-    public Page<T> page(Query query,Integer currPage,Integer pageSize){
+    public Page<T> page(Query query,Integer page,Integer limit){
         Page<T> result = new Page<>();
         // 查询条件添加分页
-        query.skip((currPage - 1) * pageSize).limit(pageSize);
+        query.skip((page - 1) * limit).limit(limit);
         // 查询数据
         List<T> records = find(query);
         // 查询总条数
         int count = count(query).intValue();
         // 处理数据
-        return result.records(records).total(count).current(currPage).size(pageSize);
+        return result.records(records).total(count).current(page).size(limit);
     }
 
     public void update(Query query, Update update) {
