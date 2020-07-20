@@ -67,7 +67,7 @@ public class MatchController {
     @PostMapping("/findMatchDetailByMatchId")
     public R<MatchDetailResponse> findMatchDetailByMatchId(@RequestBody MatchRequest request){
         if(StringUtils.isEmpty(request.getMatchId())){
-            return null;
+            return R.fail("matchId不能为空");
         }
         MatchDetailResponse result = new MatchDetailResponse();
 
@@ -87,7 +87,7 @@ public class MatchController {
     @PostMapping("/findMatchDetailByMatchIdAndAccountId")
     public R<MatchDetailResponse> findMatchDetailByMatchIdAndAccountId(@RequestBody MatchRequest request){
         if(StringUtils.isEmpty(request.getMatchId()) || StringUtils.isEmpty(request.getAccountId())){
-            return null;
+            return R.fail("matchId和accountId不能为空");
         }
         MatchDetailResponse result = new MatchDetailResponse();
         // 搜索对局基本信息
@@ -125,7 +125,7 @@ public class MatchController {
     @PostMapping("/findMatchDetailByMatchIdAndPlayerName")
     public R<MatchDetailResponse> findMatchDetailByMatchIdAndPlayerName(@RequestBody MatchRequest request){
         if(StringUtils.isEmpty(request.getMatchId()) || StringUtils.isEmpty(request.getPlayerName())){
-            return null;
+            return R.fail("matchId和playerName不能为空");
         }
         MatchDetailResponse result = new MatchDetailResponse();
         // 搜索对局基本信息
