@@ -135,7 +135,8 @@
                     $("#fetchLog").html(detail.fetchLogStr);
                     // 比赛创建时间
                     $("#createTime").html(detail.createTime);
-                    if(result.data.matchPlayer != null && result.data.matchPlayer.length > 0){
+                    // console.info("personal size is " + result.data.matchPlayer);
+                    if(result.data.matchPlayer != null){
                         objCreateTable("#me", mapper, result.data.matchPlayer);
                     }
                     if(result.data.teamPlayers != null && result.data.teamPlayers.length > 0){

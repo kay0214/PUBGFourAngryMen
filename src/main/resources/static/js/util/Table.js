@@ -8,10 +8,12 @@
  * @return
  */
 function listCreateTable(element,head,data) {
+    let colspan = head.length;
+    console.info("head length is " + colspan);
     let table = $(element);
     let mapper = new Array();
     // 组装表格表头
-    let header = "<thead><tr>";
+    let header = "<thead><tr><th colspan='" + colspan + "'>大表头</th></tr><tr>";
     $.each(head,function (key,value) {
         mapper.push(key);
         header += "<td>" + value + "</td>"
