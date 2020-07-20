@@ -28,7 +28,7 @@ function listCreateTable(element,head,data) {
     })
     table.html(header + body);
 }
-function objectCreateTable(element,head,data) {
+function objCreateTable(element,head,data) {
     let table = $(element);
     let mapper = new Array();
     // 组装表格表头

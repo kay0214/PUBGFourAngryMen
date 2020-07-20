@@ -137,7 +137,7 @@
                     $("#fetchLog").html(detail.fetchLogStr);
                     // 比赛创建时间
                     $("#createTime").html(detail.createTime);
-                    objectCreateTable("#me", mapper, result.data.matchPlayer);
+                    objCreateTable("#me", mapper, result.data.matchPlayer);
                     listCreateTable("#team", mapper, result.data.teamPlayers);
                     listCreateTable("#all", mapper, result.data.matchPlayers);
                     layer.msg("请求成功",{icon:6});
