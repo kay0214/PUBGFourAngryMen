@@ -26,8 +26,9 @@ public class IndexController {
      * 对局详情
      */
     @GetMapping("/match")
-    public String match(String matchId,Model model) {
+    public String match(String matchId,String playerName,Model model) {
         model.addAttribute("matchId",matchId);
+        model.addAttribute("playerName",playerName);
         return "match";
     }
 

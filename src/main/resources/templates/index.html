@@ -38,22 +38,26 @@
             ,cols: [
                 [
                     {field:'matchId', minWidth:70, title: '对局ID',style:'text-align: left;'}
-                    ,{field:'duration', width:100, title: '持续时间',style:'text-align: center;'}
-                    ,{field:'customMatch', width:100, title: '自定义对局',style:'text-align: center;',templet:function (data) {
-                        if(data.customMatch === 1){
-                            return '是';
-                        }else{
-                            return '否';
-                        }
-                    }}
+                    ,{field:'playerName', width:150, title: '玩家昵称',style:'text-align: center;'}
+                    ,{field:'durationStr', width:100, title: '持续时间',style:'text-align: center;'}
+                    ,{field:'customMatchStr', width:100, title: '自定义对局',style:'text-align: center;'}
                     ,{field:'mapName', width:120, title: '地图名称',style:'text-align: center;'}
                     ,{field:'gameMode', width:100, title: '小队模式',style:'text-align: center;'}
                     ,{field:'createTime', width:180, title: '对局时间',style:'text-align: center;'}
                     ,{fixed:'right', width:200, title: '操作',style:'text-align: left;', templet:function (data) {
                         if(data.fetchLog === 1){
-                            return "<a href='/pubg/match?matchId=" + data.matchId + "' class='layui-btn layui-btn-sm layui-btn-normal'>对局详情</a><a href='/pubg/track?matchId=" + data.matchId + "' class='layui-btn layui-btn-sm'>对局日志</a>";
+                            if(data.playerName == null || data.playerName === '' || data.playerName === undefined){
+                                return "<a href='/pubg/match?matchId=" + data.matchId + "' class='layui-btn layui-btn-sm layui-btn-normal'>对局详情</a><a href='/pubg/track?matchId=" + data.matchId + "' class='layui-btn layui-btn-sm'>对局日志</a>";
+                            }else{
+                                return "<a href='/pubg/match?matchId=" + data.matchId + "&playerName=" + data.playerName + "' class='layui-btn layui-btn-sm layui-btn-normal'>对局详情</a><a href='/pubg/track?matchId=" + data.matchId + "' class='layui-btn layui-btn-sm'>对局日志</a>";
+                            }
                         }else{
-                            return "<a href='/pubg/match?matchId=" + data.matchId + "' class='layui-btn layui-btn-sm layui-btn-normal'>对局详情</a>";
+                            if(data.playerName == null || data.playerName === '' || data.playerName === undefined){
+                                return "<a href='/pubg/match?matchId=" + data.matchId + "' class='layui-btn layui-btn-sm layui-btn-normal'>对局详情</a>";
+                            }else{
+                                return "<a href='/pubg/match?matchId=" + data.matchId + "&playerName=" + data.playerName + "' class='layui-btn layui-btn-sm layui-btn-normal'>对局详情</a>";
+                            }
+
                         }
                     }}
                 ]

@@ -356,7 +356,7 @@ public class PubgServiceImpl implements IPubgService {
             }
             query.addCriteria(criteria);
             Page<MatchPlayer> matchPlayers = matchPlayerRepository.page(query, request.getPage(), request.getLimit());
-            return matchPlayers.convert(matchPlayer -> matchRepository.findByMatchId(matchPlayer.getMatchId()).getResponse());
+            return matchPlayers.convert(matchPlayer -> matchRepository.findByMatchId(matchPlayer.getMatchId()).getResponse(matchPlayer.getPlayerName()));
         }
 
     }

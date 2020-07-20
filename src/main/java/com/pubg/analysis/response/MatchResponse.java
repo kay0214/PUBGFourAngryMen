@@ -17,12 +17,21 @@ public class MatchResponse implements Serializable {
     // 对局ID
     @ApiModelProperty("对局ID")
     private String matchId;
+    // accountId
+    @ApiModelProperty("玩家昵称,不一定有")
+    private String playerName;
     // 持续时间
     @ApiModelProperty("持续时间")
     private Integer duration;
+    // 持续时间
+    @ApiModelProperty("持续时间 - 已格式化")
+    private String durationStr;
     // 是否自定义对局
     @ApiModelProperty("是否自定义对局")
     private Integer customMatch;
+    // 是否自定义对局
+    @ApiModelProperty("是否自定义对局 - 已格式化")
+    private String customMatchStr;
     // 地图名称
     @ApiModelProperty("地图名称")
     private String mapName;
@@ -32,6 +41,9 @@ public class MatchResponse implements Serializable {
     // 是否已经拉取了对局日志
     @ApiModelProperty("是否已经拉取了对局日志")
     private Integer fetchLog;
+    // 是否已经拉取了对局日志
+    @ApiModelProperty("是否已经拉取了对局日志 - 已格式化")
+    private String fetchLogStr;
     // 对局日志URL
     @ApiModelProperty("对局日志URL")
     private String assetsUrl;
