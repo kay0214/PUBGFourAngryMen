@@ -10,29 +10,61 @@
 </head>
 <body>
 
-<div th:replace="header :: detail"></div>
-<p th:text="'Hello！, ' + ${matchId} + '!'"></p>
-<table id="match" class="layui-table-hover"></table>
+    <div th:replace="header :: detail"></div>
+    <p th:text="'Hello！, ' + ${matchId} + '!'"></p>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md2 layui-card">
+            <div class="layui-card-header">耗时</div>
+            <div class="layui-card-body">
+                12
+            </div>
+        </div>
+
+        <div class="layui-col-md2 layui-card">
+            <div class="layui-card-header">自定义模式</div>
+            <div class="layui-card-body">
+                否
+            </div>
+        </div>
+
+        <div class="layui-col-md2 layui-card">
+            <div class="layui-card-header">地图</div>
+            <div class="layui-card-body">
+                雨林
+            </div>
+        </div>
+
+        <div class="layui-col-md2 layui-card">
+            <div class="layui-card-header">小队模式</div>
+            <div class="layui-card-body">
+                四排
+            </div>
+        </div>
+
+        <div class="layui-col-md2 layui-card">
+            <div class="layui-card-header">拉取日志</div>
+            <div class="layui-card-body">
+                已拉取
+            </div>
+        </div>
+
+        <div class="layui-col-md2 layui-card">
+            <div class="layui-card-header">对局时间</div>
+            <div class="layui-card-body">
+                2020-07-20 15:13:43
+            </div>
+        </div>
+    </div>
+
+    <table id="me" class="layui-table-hover"></table>
 </body>
 <script>
     var matchTable;
     layui.use('table',function () {
         matchTable = layui.table;
         matchTable.render({
-            elem: '#match'
-            ,id: 'match'
-            ,url: '/pubg/match/findMatchPageByPlayerName'
-            ,page: true
-            ,limits : [10,20,30,40,50]
-            ,limit : 10
-            ,parseData: function(res){
-                return {
-                    "code": res.status,
-                    "msg": res.statusDesc,
-                    "count": res.data.total,
-                    "data": res.data.records
-                };
-            }
+            elem: '#me'
+            ,data: '[{"matchId":"123345","duration":3,"customMatch":1,"mapName":"雨林","gameMode":"四排","createTime":"2020-07-20 15:13:43"}]'
             ,cols: [
                 [
                     {field:'matchId', minWidth:70, title: '对局ID',style:'text-align: left;'}
@@ -58,39 +90,6 @@
             ]
         });
     });
-
-    /**
-     * 从本地mongo库搜索对局
-     * */
-    function searchByPlayerName() {
-        let playerName = $('#playerName');
-        //执行重载
-        matchTable.reload('match', {
-            url: '/pubg/match/findMatchPageByPlayerName'
-            ,page: {
-                curr: 1 //重新从第 1 页开始
-            }
-            ,where: {
-                playerName: playerName.val()
-            }
-        });
-    }
-    /**
-     * 从pubg远程库搜索对局
-     * */
-    function fetchFromRemote() {
-        let playerName = $("#playerName");
-        //执行重载
-        matchTable.reload('match', {
-            url: '/pubg/match/findMatchPageByPlayerNameRemote'
-            ,page: {
-                curr: 1 //重新从第 1 页开始
-            }
-            ,where: {
-                playerName: playerName.val()
-            }
-        });
-    }
 
 </script>
 </html>

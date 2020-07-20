@@ -38,28 +38,28 @@ public class MatchController {
     private IPubgService iPubgService;
 
     @ApiOperation(value = "账户昵称搜索对局列表本地库",notes = "账户昵称搜索对局列表本地库")
-    @GetMapping("/findMatchPageByPlayerName")
-    public R<Page<MatchResponse>> findMatchPageByPlayerName(MatchRequest request){
+    @PostMapping("/findMatchPageByPlayerName")
+    public R<Page<MatchResponse>> findMatchPageByPlayerName(@RequestBody MatchRequest request){
         handleParam(request);
         return R.data(iPubgService.findMatchPageByPlayerName(request));
     }
 
     @ApiOperation(value = "账户昵称搜索对局列表远程库",notes = "账户昵称搜索对局列表远程库")
-    @GetMapping("/findMatchPageByPlayerNameRemote")
-    public R<Page<MatchResponse>> findMatchPageByPlayerNameRemote(MatchRequest request){
+    @PostMapping("/findMatchPageByPlayerNameRemote")
+    public R<Page<MatchResponse>> findMatchPageByPlayerNameRemote(@RequestBody MatchRequest request){
         return R.data(iPubgService.findMatchPageByPlayerName(true,request));
     }
 
     @ApiOperation(value = "账户ID搜索对局列表本地库",notes = "账户ID搜索对局列表本地库")
-    @GetMapping("/findMatchPageByAccountId")
-    public R<Page<MatchResponse>> findMatchPageByAccountId(MatchRequest request){
+    @PostMapping("/findMatchPageByAccountId")
+    public R<Page<MatchResponse>> findMatchPageByAccountId(@RequestBody MatchRequest request){
         handleParam(request);
         return R.data(iPubgService.findMatchPageByAccountId(request));
     }
 
     @ApiOperation(value = "账户ID搜索对局列表远程库",notes = "账户ID搜索对局列表远程库")
-    @GetMapping("/findMatchPageByAccountIdRemote")
-    public R<Page<MatchResponse>> findMatchPageByAccountIdRemote(MatchRequest request){
+    @PostMapping("/findMatchPageByAccountIdRemote")
+    public R<Page<MatchResponse>> findMatchPageByAccountIdRemote(@RequestBody MatchRequest request){
         return R.data(iPubgService.findMatchPageByAccountId(true,request));
     }
 
