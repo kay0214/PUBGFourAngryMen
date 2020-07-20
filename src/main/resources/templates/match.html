@@ -81,7 +81,6 @@
     // 定义表头映射
     var mapper = {
         "playerName":"昵称"
-        ,"teamId":"团队"
         ,"kills":"击杀"
         ,"headshotKills":"爆头"
         ,"winPlace":"排名"
@@ -120,7 +119,6 @@
             data: JSON.stringify({"matchId":matchId, "playerName":playerName}),
             contentType: 'application/json',
             success: (result) => {
-                console.log(result);
                 if(result.status === 0){
                     /** 请求成功,铺上数据 **/
                     // 比赛细节
@@ -137,10 +135,15 @@
                     $("#fetchLog").html(detail.fetchLogStr);
                     // 比赛创建时间
                     $("#createTime").html(detail.createTime);
-                    objCreateTable("#me", mapper, result.data.matchPlayer);
-                    listCreateTable("#team", mapper, result.data.teamPlayers);
-                    listCreateTable("#all", mapper, result.data.matchPlayers);
-                    layer.msg("请求成功",{icon:6});
+                    if(result.data.matchPlayer != null && result.data.matchPlayer.length > 0){
+                        objCreateTable("#me", mapper, result.data.matchPlayer);
+                    }
+                    if(result.data.teamPlayers != null && result.data.teamPlayers.length > 0){
+                        listCreateTable("#team", mapper, result.data.teamPlayers);
+                    }
+                    if(result.data.matchPlayers != null && result.data.matchPlayers.length > 0){
+                        listCreateTable("#all", mapper, result.data.matchPlayers);
+                    }
                 }else{
                     layer.msg(result.statusDesc,{icon:5});
                 }
