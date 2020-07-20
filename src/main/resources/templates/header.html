@@ -5,13 +5,15 @@
     <title>header</title>
 </head>
 <body>
-<div th:fragment="home" class="layui-bg-black">
+<div th:fragment="list" class="layui-bg-black">
     <div class="layui-container">
         <ul class="layui-nav">
             <!-- logo -->
             <li class="layui-nav-item"><a href="/pubg"><img alt="PUBGFourAngryMen" width="20" height="20" src="img/icon/icon.jpg"></a></li>
             <!-- 菜单 -->
-            <li class="layui-nav-item layui-this"><a href="#">Match</a></li>
+            <li class="layui-nav-item layui-this"><a href="/pubg">MatchList</a></li>
+            <li class="layui-nav-item"><a href="/pubg/match">MatchDetail</a></li>
+            <li class="layui-nav-item"><a href="/pubg/track">Track</a></li>
             <!-- 搜索框 -->
             <ul class="layui-nav-item layui-layout-right">
                 <li class="layui-nav-item">
@@ -27,6 +29,30 @@
                     </div>
                 </li>
             </ul>
+        </ul>
+    </div>
+</div>
+<div th:fragment="detail" class="layui-bg-black">
+    <div class="layui-container">
+        <ul class="layui-nav">
+            <!-- logo -->
+            <li class="layui-nav-item"><a href="/pubg"><img alt="PUBGFourAngryMen" width="20" height="20" src="img/icon/icon.jpg"></a></li>
+            <!-- 菜单 -->
+            <li class="layui-nav-item"><a href="/pubg">MatchList</a></li>
+            <li class="layui-nav-item layui-this"><a href="/pubg/match">MatchDetail</a></li>
+            <li class="layui-nav-item"><a href="/pubg/track">Track</a></li>
+        </ul>
+    </div>
+</div>
+<div th:fragment="track" class="layui-bg-black">
+    <div class="layui-container">
+        <ul class="layui-nav">
+            <!-- logo -->
+            <li class="layui-nav-item"><a href="/pubg"><img alt="PUBGFourAngryMen" width="20" height="20" src="img/icon/icon.jpg"></a></li>
+            <!-- 菜单 -->
+            <li class="layui-nav-item"><a href="/pubg">MatchList</a></li>
+            <li class="layui-nav-item"><a href="/pubg/match">MatchDetail</a></li>
+            <li class="layui-nav-item layui-this"><a href="/pubg/track">Track</a></li>
         </ul>
     </div>
 </div>

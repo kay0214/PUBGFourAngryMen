@@ -50,6 +50,7 @@ public class Match implements Serializable {
         response.setCustomMatch(this.getCustomMatch());
         response.setMapName(this.getMapName());
         response.setGameMode(this.getGameMode());
+        response.setFetchLog(this.getFetchLog());
         response.setAssetsUrl(this.getAssetsUrl());
         response.setCreateTime(DateUtil.formatDateTime(this.getCreateTime()));
         return response;

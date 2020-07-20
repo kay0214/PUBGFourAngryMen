@@ -29,6 +29,9 @@ public class MatchResponse implements Serializable {
     // 模式 - squad - 四排
     @ApiModelProperty("模式")
     private String gameMode;
+    // 是否已经拉取了对局日志
+    @ApiModelProperty("是否已经拉取了对局日志")
+    private Integer fetchLog;
     // 对局日志URL
     @ApiModelProperty("对局日志URL")
     private String assetsUrl;

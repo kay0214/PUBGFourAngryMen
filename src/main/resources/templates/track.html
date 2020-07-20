@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>位置追踪1</title>
+    <title>位置追踪</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/player-list.css">
     <link rel="stylesheet" href="css/loader.css">
@@ -11,11 +11,13 @@
     <script src="js/util/MapConstant.js"></script>
     <script src="js/util/PubgMap.js"></script>
     <script src="js/util/TeamList.js"></script>
-
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="layui/layui.js"></script>
 
 </head>
 <body>
 <div id="globalSpinner" class="loader center-screen top-level" style="display: none"></div>
+<div th:replace="header :: track"></div>
 
 <div class="container-fluid testtest">
 
@@ -23,7 +25,7 @@
         <!--参数输入-->
         <form class="form-inline">
             <div class="form-group">
-                <input type="text" class="form-control" id="matchIdInput1" placeholder="matchId">
+                <input type="text" class="form-control" th:value="${matchId}" id="matchIdInput1" placeholder="matchId">
             </div>
             <div class="btn btn-primary" id="btnGetTrack">load</div>
         </form>

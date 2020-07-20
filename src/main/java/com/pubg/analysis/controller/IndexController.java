@@ -18,17 +18,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 
     @GetMapping("/")
-    public String index(Model model){
-        model.addAttribute("userName","admin");
+    public String index(){
         return "index";
+    }
+
+    /**
+     * 对局详情
+     */
+    @GetMapping("/match")
+    public String match(String matchId,Model model) {
+        model.addAttribute("matchId",matchId);
+        return "match";
     }
 
     /**
      * 追踪页面
      */
     @GetMapping("/track")
-    public String track() {
-
+    public String track(String matchId,Model model) {
+        model.addAttribute("matchId",matchId);
         return "track";
     }
 }

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>对局列表</title>
+    <title>对局详情</title>
     <link rel="icon" href="img/icon/icon.jpg">
     <link rel="stylesheet" href="layui/css/layui.css">
     <script src="js/lib/jquery-3.5.1.min.js"></script>
@@ -10,9 +10,9 @@
 </head>
 <body>
 
-<div th:replace="header :: list"></div>
+<div th:replace="header :: detail"></div>
+<p th:text="'Hello！, ' + ${matchId} + '!'"></p>
 <table id="match" class="layui-table-hover"></table>
-
 </body>
 <script>
     var matchTable;
@@ -49,9 +49,9 @@
                     ,{field:'createTime', width:180, title: '对局时间',style:'text-align: center;'}
                     ,{fixed:'right', width:200, title: '操作',style:'text-align: left;', templet:function (data) {
                         if(data.fetchLog === 1){
-                            return "<a href='/pubg/match?matchId=" + data.matchId + "' class='layui-btn layui-btn-sm layui-btn-normal'>对局详情</a><a href='/pubg/track?matchId=" + data.matchId + "' class='layui-btn layui-btn-sm'>对局日志</a>";
+                            return "<button onclick='repay(" + data.id + ")' class='layui-btn layui-btn-sm layui-btn-normal'>对局详情</button><a href='/findPlz_manager/delete?id=" + data.id + "' class='layui-btn layui-btn-sm layui-btn-danger'>对局日志</a>";
                         }else{
-                            return "<a href='/pubg/match?matchId=" + data.matchId + "' class='layui-btn layui-btn-sm layui-btn-normal'>对局详情</a>";
+                            return "<button onclick='repay(" + data.id + ")' class='layui-btn layui-btn-sm layui-btn-normal'>对局详情</button>";
                         }
                     }}
                 ]
