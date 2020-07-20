@@ -13,8 +13,7 @@
 <body>
 
 <div th:replace="header :: detail"></div>
-<p th:text="'Hello' + ${playerName} + ', ' + ${matchId} + '!'"></p>
-<div class="layui-row">
+<div class="layui-row" style="margin: 20px">
     <div class="layui-form">
         <div class="layui-form-item">
             <div class="layui-inline">
@@ -137,13 +136,13 @@
                     $("#createTime").html(detail.createTime);
                     // console.info("personal size is " + result.data.matchPlayer);
                     if(result.data.matchPlayer != null){
-                        objCreateTable("#me", mapper, result.data.matchPlayer);
+                        objCreateTable("#me", "个人结算数据", mapper, result.data.matchPlayer);
                     }
                     if(result.data.teamPlayers != null && result.data.teamPlayers.length > 0){
-                        listCreateTable("#team", mapper, result.data.teamPlayers);
+                        listCreateTable("#team", "团队结算数据", mapper, result.data.teamPlayers);
                     }
                     if(result.data.matchPlayers != null && result.data.matchPlayers.length > 0){
-                        listCreateTable("#all", mapper, result.data.matchPlayers);
+                        listCreateTable("#all", "全部结算数据", mapper, result.data.matchPlayers);
                     }
                 }else{
                     layer.msg(result.statusDesc,{icon:5});
