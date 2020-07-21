@@ -19,6 +19,7 @@ import java.util.List;
 @Data
 @Document(collection = "pubg_match_log")
 @CompoundIndexes({
+        @CompoundIndex(name = "matchId",def = "{'matchId':1}"),
         @CompoundIndex(name = "matchId_T",def = "{'matchId':1,'_T':1}")
 })
 public class BaseLog implements Serializable {
@@ -66,7 +67,7 @@ public class BaseLog implements Serializable {
 
     /**********          对局人物          **********/
     // 所有人物属性
-    private List<Character> characters;
+    private List<MatchEndCharacter> characters;
     // LogMatchEnd事件 - 获胜者数据
     private GameResultOnFinished gameResultOnFinished;
 
