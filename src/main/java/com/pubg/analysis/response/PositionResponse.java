@@ -1,12 +1,11 @@
 package com.pubg.analysis.response;
 
-import com.pubg.analysis.entity.log.Character;
-import com.pubg.analysis.entity.log.GameState;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -28,7 +27,7 @@ public class PositionResponse implements Serializable {
     private long end = 0;
 
     @ApiModelProperty(value = "位置信息", notes = "<时间点, Map<accountId,Character>>")
-    private TreeMap<Long, Map<String, Character>> positions;
+    private TreeMap<Long, Map<String, CharacterPositionResponse>> positions;
 
     @ApiModelProperty("地图类型")
     private String mapType;
@@ -37,11 +36,11 @@ public class PositionResponse implements Serializable {
     private Map<String, Long> deathLog;
 
     @ApiModelProperty(value = "角色列表", notes = "包括电脑")
-    private Map<String, Character> characters;
+    private Map<String, TrackPlayerResponse> characters;
 
     @ApiModelProperty(value = "角色维度位置追踪", notes = "<accountId, [[xRatio, yRatio]]>")
-    Map<String, List<List<Double>>> playerTrack;
+    Map<String, List<List<BigDecimal>>> playerTrack;
 
     @ApiModelProperty(value = "游戏状态")
-    Map<Long, GameState> gameState;
+    Map<Long, GameStateResponse> gameState;
 }

@@ -158,7 +158,7 @@
                     continue;
                 }
                 const displayName = DRAW_NAME ? characterPos.name : "";
-                pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, characterPos.teamId, displayName);
+                pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, characterPos.winPlace, displayName);
             } else {
                 //判断是否死亡
                 const deathTime = trackData.deathLog[accountId];
@@ -174,7 +174,7 @@
                                 continue;
                             }
                             const displayName = DRAW_NAME ? characterPos.name : "";
-                            pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, characterPos.teamId, displayName);
+                            pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, characterPos.winPlace, displayName);
                             break;
                         }
                     }
@@ -193,8 +193,8 @@
                 continue;
             }
             const lineData = trackData.playerTrack[accountId];
-            const teamId = trackData.characters[accountId].teamId;
-            pubgMap.drawPath(lineData, teamId);
+            const winPlace = trackData.characters[accountId].winPlace;
+            pubgMap.drawPath(lineData, winPlace);
 
         }
     }

@@ -17,10 +17,10 @@ import com.pubg.analysis.repository.LogRepository;
 import com.pubg.analysis.repository.MatchRepository;
 import com.pubg.analysis.repository.MatchPlayerRepository;
 import com.pubg.analysis.request.MatchRequest;
-import com.pubg.analysis.response.MatchResponse;
-import com.pubg.analysis.response.PositionResponse;
+import com.pubg.analysis.response.*;
 import com.pubg.analysis.service.IPubgService;
 import com.pubg.analysis.utils.DateUtil;
+import com.pubg.analysis.utils.EntityUtil;
 import com.pubg.analysis.utils.PubgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -67,39 +68,50 @@ public class PubgServiceImpl implements IPubgService {
 
         //计算位置分组
         TreeMap<Long, Map<String, Character>> logs = sortLogByTimeAndCharacter(baseLogs, startTimestamp);
-        log.debug("读取到LogPlayerPosition: {}", logs);
+        // 转换位置分组
+        TreeMap<Long, Map<String, CharacterPositionResponse>> positionLogs = new TreeMap<>();
+        logs.forEach((time,mapValue) -> {
+            Map<String,CharacterPositionResponse> map = new HashMap<>();
+            mapValue.forEach((key,value) -> map.put(key,EntityUtil.copyBean(value,CharacterPositionResponse.class)));
+            positionLogs.put(time,map);
+        });
+        log.debug("读取到LogPlayerPosition: {}", positionLogs);
 
         //读取死亡记录
         Map<String, Long> deathLog = PubgUtil.getDeathTimestamp(matchId);
         deathLog.entrySet().forEach(e -> e.setValue((e.getValue() - startTimestamp) / 1000));
 
         //玩家列表
-        Map<String, Character> characters = PubgUtil.getDistinctCharacter(baseLogs)
-                .entrySet()
+        List<MatchPlayer> matchPlayers = matchPlayerRepository.findByMatchId(matchId);
+        Map<String, TrackPlayerResponse> characters = matchPlayers
                 .parallelStream()
-                //清空无用字段
-                .peek(e -> {
-                    Character c = e.getValue();
-                    c.setLocation(null);
-                    c.setHealth(0);
-                    c.setZone(null);
-                })
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(MatchPlayer::getAccountId, c -> EntityUtil.copyBean(c,TrackPlayerResponse.class)));
+        // AI列表
+        PubgUtil.getDistinctCharacter(baseLogs).forEach((key,value) -> {
+            // accountId是AI并且不包含在列表中
+            if(PubgUtil.isAiAccount(value.getAccountId()) && !characters.containsKey(value.getAccountId())){
+                characters.put(value.getAccountId(),new TrackPlayerResponse(value.getAccountId(),value.getName(),value.getTeamId()));
+            }
+        });
 
         //角色维度位置追踪
-        Map<String, List<List<Double>>> playerTrack = PubgUtil.getPersonalTrack(baseLogs, mapType);
+        Map<String, List<List<BigDecimal>>> playerTrack = PubgUtil.getPersonalTrack(baseLogs, mapType);
 
         //游戏状态信息
         Map<Long, GameState> gameStateMap = PubgUtil.getGameStateByMatchId(matchId, startTimestamp, mapType);
+        // 游戏状态信息转换 - 为了降低网络流量
+        Map<Long, GameStateResponse> gameStateResponseMap = gameStateMap.entrySet()
+                .parallelStream()
+                .collect(Collectors.toMap(Map.Entry::getKey, c -> EntityUtil.copyBean(c.getValue(),GameStateResponse.class)));
 
         //构建响应
         PositionResponse response = new PositionResponse();
-        response.setPositions(logs);
+        response.setPositions(positionLogs);
         response.setMapType(mapType.name());
         response.setDeathLog(deathLog);
         response.setCharacters(characters);
         response.setPlayerTrack(playerTrack);
-        response.setGameState(gameStateMap);
+        response.setGameState(gameStateResponseMap);
         if (logs.size() > 0) {
             response.setStart(logs.firstKey());
             response.setEnd(logs.lastKey());

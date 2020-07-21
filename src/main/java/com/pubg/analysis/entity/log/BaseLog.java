@@ -1,12 +1,14 @@
 package com.pubg.analysis.entity.log;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.pubg.analysis.utils.ScaleUtil;
 import lombok.Data;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -144,11 +146,11 @@ public class BaseLog implements Serializable {
     // 车辆
     private Vehicle vehicle;
     // 开车距离
-    private Double rideDistance;
+    private BigDecimal rideDistance;
     // 座位索引
     private Integer seatIndex;
     // 最大速度
-    private Double maxSpeed;
+    private BigDecimal maxSpeed;
     // 乘客
     private List<Character> fellowPassengers;
 
@@ -167,13 +169,34 @@ public class BaseLog implements Serializable {
 
 
     // 跑动距离?
-    private Double distance;
+    private BigDecimal distance;
     // 游泳距离
-    private Double swimDistance;
+    private BigDecimal swimDistance;
     // 潜水深度
-    private Double maxSwimDepthOfWater;
+    private BigDecimal maxSwimDepthOfWater;
     // 治疗量
     private Integer healAmount;
+
+
+    public void setRideDistance(BigDecimal rideDistance) {
+        this.rideDistance = ScaleUtil.threeScale(rideDistance);
+    }
+
+    public void setMaxSpeed(BigDecimal maxSpeed) {
+        this.maxSpeed = ScaleUtil.threeScale(maxSpeed);
+    }
+
+    public void setDistance(BigDecimal distance) {
+        this.distance = ScaleUtil.threeScale(distance);
+    }
+
+    public void setSwimDistance(BigDecimal swimDistance) {
+        this.swimDistance = ScaleUtil.threeScale(swimDistance);
+    }
+
+    public void setMaxSwimDepthOfWater(BigDecimal maxSwimDepthOfWater) {
+        this.maxSwimDepthOfWater = ScaleUtil.threeScale(maxSwimDepthOfWater);
+    }
 }
 
 

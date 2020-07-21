@@ -3,9 +3,11 @@
  */
 package com.pubg.analysis.entity.log;
 
+import com.pubg.analysis.utils.ScaleUtil;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author sunpeikai
@@ -16,9 +18,29 @@ import java.io.Serializable;
 public class Stats implements Serializable {
 
     private Integer killCount;
-    private Double distanceOnFoot;
-    private Double distanceOnSwim;
-    private Double distanceOnVehicle;
-    private Double distanceOnParachute;
-    private Double distanceOnFreefall;
+    private BigDecimal distanceOnFoot;
+    private BigDecimal distanceOnSwim;
+    private BigDecimal distanceOnVehicle;
+    private BigDecimal distanceOnParachute;
+    private BigDecimal distanceOnFreefall;
+
+    public void setDistanceOnFoot(BigDecimal distanceOnFoot) {
+        this.distanceOnFoot = ScaleUtil.threeScale(distanceOnFoot);
+    }
+
+    public void setDistanceOnSwim(BigDecimal distanceOnSwim) {
+        this.distanceOnSwim = ScaleUtil.threeScale(distanceOnSwim);
+    }
+
+    public void setDistanceOnVehicle(BigDecimal distanceOnVehicle) {
+        this.distanceOnVehicle = ScaleUtil.threeScale(distanceOnVehicle);
+    }
+
+    public void setDistanceOnParachute(BigDecimal distanceOnParachute) {
+        this.distanceOnParachute = ScaleUtil.threeScale(distanceOnParachute);
+    }
+
+    public void setDistanceOnFreefall(BigDecimal distanceOnFreefall) {
+        this.distanceOnFreefall = ScaleUtil.threeScale(distanceOnFreefall);
+    }
 }

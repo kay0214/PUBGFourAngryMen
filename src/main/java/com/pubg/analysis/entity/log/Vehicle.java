@@ -1,9 +1,11 @@
 package com.pubg.analysis.entity.log;
 
+import com.pubg.analysis.utils.ScaleUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author yangy
@@ -33,11 +35,19 @@ public class Vehicle implements Serializable {
 	private Integer vehicleUniqueId;
 	private Integer seatIndex;
 	private Integer healthPercent;
-	private Double feulPercent;
+	private BigDecimal feulPercent;
 	private Integer altitudeAbs;
 	private Integer altitudeRel;
-	private Double velocity;
+	private BigDecimal velocity;
 	private Boolean isWheelsInAir;
 	private Boolean isInWaterVolume;
 	private Boolean isEngineOn;
+
+    public void setFeulPercent(BigDecimal feulPercent) {
+        this.feulPercent = ScaleUtil.threeScale(feulPercent);
+    }
+
+    public void setVelocity(BigDecimal velocity) {
+        this.velocity = ScaleUtil.threeScale(velocity);
+    }
 }

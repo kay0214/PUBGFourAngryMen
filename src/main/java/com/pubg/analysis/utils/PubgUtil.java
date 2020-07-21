@@ -11,6 +11,7 @@ import com.pubg.analysis.repository.MatchRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,8 +30,8 @@ public class PubgUtil {
      */
     public static void calculateLocationRation(Location location, PubgConstant.Maps mapType) {
 
-        location.setXRatio(location.getX() / mapType.getWidth());
-        location.setYRatio(location.getY() / mapType.getHeight());
+        location.setXRatio(location.getX().divide(BigDecimal.valueOf(mapType.getWidth()),3, BigDecimal.ROUND_DOWN));
+        location.setYRatio(location.getY().divide(BigDecimal.valueOf(mapType.getHeight()),3, BigDecimal.ROUND_DOWN));
         log.debug("计算坐标比率, location: {}, 地图: {}", location, mapType);
     }
 
@@ -197,7 +198,7 @@ public class PubgUtil {
      * @param baseLogs 日志列表
      * @return accountId, [[xRatio, yRatio]]
      */
-    public static Map<String, List<List<Double>>> getPersonalTrack(List<BaseLog> baseLogs, PubgConstant.Maps mapType) {
+    public static Map<String, List<List<BigDecimal>>> getPersonalTrack(List<BaseLog> baseLogs, PubgConstant.Maps mapType) {
 
         //获取落地时间
         Map<String, Long> landings = baseLogs
@@ -228,7 +229,7 @@ public class PubgUtil {
                 .collect(Collectors.groupingByConcurrent(e -> e.getCharacter().getAccountId()))
                 .entrySet()
                 .parallelStream()
-                .map(e -> new AbstractMap.SimpleEntry<String, List<List<Double>>>(
+                .map(e -> new AbstractMap.SimpleEntry<String, List<List<BigDecimal>>>(
                         e.getKey(),
                         e.getValue()
                                 .stream()
@@ -269,10 +270,10 @@ public class PubgUtil {
 
                     //根据地图宽计算横半径比率
                     long width = mapType.getWidth();
-                    gameState.setSafetyZoneRadius(gameState.getSafetyZoneRadius() / width);
-                    gameState.setPoisonGasWarningRadius(gameState.getPoisonGasWarningRadius() / width);
-                    gameState.setRedZoneRadius(gameState.getRedZoneRadius() / width);
-                    gameState.setBlackZoneRadius(gameState.getBlackZoneRadius() / width);
+                    gameState.setSafetyZoneRadius(gameState.getSafetyZoneRadius().divide(BigDecimal.valueOf(width),3,BigDecimal.ROUND_DOWN));
+                    gameState.setPoisonGasWarningRadius(gameState.getPoisonGasWarningRadius().divide(BigDecimal.valueOf(width),3,BigDecimal.ROUND_DOWN));
+                    gameState.setRedZoneRadius(gameState.getRedZoneRadius().divide(BigDecimal.valueOf(width),3,BigDecimal.ROUND_DOWN));
+                    gameState.setBlackZoneRadius(gameState.getBlackZoneRadius().divide(BigDecimal.valueOf(width),3,BigDecimal.ROUND_DOWN));
                 })
                 .collect(Collectors.toMap(
                         e -> (e.get_D().getTime() - startTimestamp) / 1000,

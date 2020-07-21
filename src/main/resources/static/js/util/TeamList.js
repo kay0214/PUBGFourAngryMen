@@ -87,11 +87,12 @@ function TeamList(listId, checkBox = true) {
     this.load = (playerList) => {
         const teams = {};
         for (let player of playerList) {
-            const teamId = player.teamId;
-            if (teams[teamId] === undefined) {
-                teams[teamId] = [];
+            const winPlace = player.winPlace;
+            console.info("winplace is " + winPlace);
+            if (teams[winPlace] === undefined) {
+                teams[winPlace] = [];
             }
-            teams[teamId].push(player);
+            teams[winPlace].push(player);
         }
 
         //构建表格
@@ -105,25 +106,25 @@ function TeamList(listId, checkBox = true) {
                         </th>
                     </tr>`;
 
-        for (let teamId in teams) {
-            const teamPlayerCount = teams[teamId].length;
-            const teamIdBlock = `<td rowspan="${teamPlayerCount + ""}" class="td-team-id">
-                                    <span>${teamId}</span>
+        for (let winPlace in teams) {
+            const teamPlayerCount = teams[winPlace].length;
+            const winPlaceBlock = `<td rowspan="${teamPlayerCount + ""}" class="td-team-id">
+                                    <span>${winPlace}</span>
                                 </td>`;
 
-            let includedTeamId = false;
-            const members = teams[teamId];
+            let includedWinPlace = false;
+            const members = teams[winPlace];
             for (let player of members) {
-                const ele = `<tr data-team-id="${teamId}">
-                                ${includedTeamId ? "" : teamIdBlock}
+                const ele = `<tr data-team-id="${winPlace}">
+                                ${includedWinPlace ? "" : winPlaceBlock}
                                 <td>
                                     <label>
-                                        <div>${player.name}</div>
+                                        <div>${player.playerName}</div>
                                         ${checkBox ? `<input type='checkbox' checked data-name='${player.accountId}'>` : ""}
                                     </label>
                                 </td>
                             </tr>`;
-                includedTeamId = true;
+                includedWinPlace = true;
                 html += ele;
 
                 //加入
@@ -157,11 +158,11 @@ function TeamList(listId, checkBox = true) {
 
         //染色
         $(`#${listId} tr`).each((e, f) => {
-            const teamId = f.getAttribute("data-team-id");
-            if (teamId) {
-                const color = mapConstant.color[teamId];
+            const winPlace = f.getAttribute("data-team-id");
+            if (winPlace) {
+                const color = mapConstant.color[winPlace];
                 f.style.backgroundColor = color;
-                console.debug(`为队伍${teamId}染色`, color);
+                console.debug(`为队伍${winPlace}染色`, color);
             }
         });
     }

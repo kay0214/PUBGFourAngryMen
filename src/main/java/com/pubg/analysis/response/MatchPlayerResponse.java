@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author sunpeikai
@@ -43,10 +44,10 @@ public class MatchPlayerResponse implements Serializable {
     private Integer heals;
 
     @ApiModelProperty(value = "跑步移动距离")
-    private double walkDistance;
+    private BigDecimal walkDistance;
 
     @ApiModelProperty(value = "最远击杀距离")
-    private double longestKill;
+    private BigDecimal longestKill;
 
     @ApiModelProperty(value = "摧毁载具")
     private Integer vehicleDestroys;
@@ -55,7 +56,7 @@ public class MatchPlayerResponse implements Serializable {
     private Integer DBNOs;
 
     @ApiModelProperty(value = "驾车移动距离")
-    private double rideDistance;
+    private BigDecimal rideDistance;
 
     @ApiModelProperty(value = "死亡原因 - byplayer")
     private String deathType;
@@ -73,7 +74,7 @@ public class MatchPlayerResponse implements Serializable {
     private Integer killStreaks;
 
     @ApiModelProperty(value = "游泳移动距离")
-    private double swimDistance;
+    private BigDecimal swimDistance;
 
     @ApiModelProperty(value = "获得武器")
     private Integer weaponsAcquired;
@@ -85,10 +86,10 @@ public class MatchPlayerResponse implements Serializable {
     private Integer boosts;
 
     @ApiModelProperty(value = "存活时间")
-    private double timeSurvived;
+    private BigDecimal timeSurvived;
 
     @ApiModelProperty(value = "造成伤害")
-    private double damageDealt;
+    private BigDecimal damageDealt;
 
     @ApiModelProperty(value = "团队击杀")
     private Integer teamKills;
