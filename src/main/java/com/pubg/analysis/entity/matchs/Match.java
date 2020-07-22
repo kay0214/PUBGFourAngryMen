@@ -47,15 +47,15 @@ public class Match implements Serializable {
         MatchResponse response = new MatchResponse();
         response.setMatchId(this.getMatchId());
         response.setDuration(this.getDuration());
-        response.setDurationStr(this.getDuration().toString());
+        response.setDurationStr(this.getDuration() == null ? "0":this.getDuration().toString());
         response.setCustomMatch(this.getCustomMatch());
-        response.setCustomMatchStr(this.getCustomMatch()==1?"是":"否");
+        response.setCustomMatchStr(null != this.getCustomMatch() && this.getCustomMatch()==1?"是":"否");
         response.setMapName(this.getMapName());
         response.setGameMode(this.getGameMode());
         response.setFetchLog(this.getFetchLog());
         response.setFetchLogStr(this.getFetchLog()==1?"已拉取":"未拉取");
         response.setAssetsUrl(this.getAssetsUrl());
-        response.setCreateTime(DateUtil.formatDateTime(this.getCreateTime()));
+        response.setCreateTime(this.getCreateTime() != null ? DateUtil.formatDateTime(this.getCreateTime()) : "");
         return response;
     }
 
@@ -65,15 +65,15 @@ public class Match implements Serializable {
         response.setMatchId(this.getMatchId());
         response.setPlayerName(playerName);
         response.setDuration(this.getDuration());
-        response.setDurationStr(this.getDuration().toString());
+        response.setDurationStr(this.getDuration() == null ? "0":this.getDuration().toString());
         response.setCustomMatch(this.getCustomMatch());
-        response.setCustomMatchStr(this.getCustomMatch()==1?"是":"否");
+        response.setCustomMatchStr(null != this.getCustomMatch() && this.getCustomMatch()==1?"是":"否");
         response.setMapName(this.getMapName());
         response.setGameMode(this.getGameMode());
         response.setFetchLog(this.getFetchLog());
         response.setFetchLogStr(this.getFetchLog()==1?"已拉取":"未拉取");
         response.setAssetsUrl(this.getAssetsUrl());
-        response.setCreateTime(DateUtil.formatDateTime(this.getCreateTime()));
+        response.setCreateTime(this.getCreateTime() != null ? DateUtil.formatDateTime(this.getCreateTime()) : "");
         return response;
     }
 }
