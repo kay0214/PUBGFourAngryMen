@@ -1,6 +1,7 @@
 package com.pubg.analysis.response;
 
 import com.pubg.analysis.constants.PubgConstant;
+import com.pubg.analysis.utils.FormatUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -89,6 +90,9 @@ public class MatchPlayerResponse implements Serializable {
     @ApiModelProperty(value = "存活时间")
     private BigDecimal timeSurvived;
 
+    @ApiModelProperty(value = "存活时间")
+    private String timeSurvivedStr;
+
     @ApiModelProperty(value = "造成伤害")
     private BigDecimal damageDealt;
 
@@ -97,5 +101,10 @@ public class MatchPlayerResponse implements Serializable {
 
     public void setDeathType(String deathType) {
         this.deathType = PubgConstant.DeathType.getShortNameByLongName(deathType);
+    }
+
+    public void setTimeSurvived(BigDecimal timeSurvived) {
+        this.timeSurvived = timeSurvived;
+        this.timeSurvivedStr = FormatUtil.formatDuration(timeSurvived.intValue());
     }
 }
