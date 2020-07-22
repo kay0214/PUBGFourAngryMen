@@ -45,32 +45,32 @@ public class PubgConstant {
 		/**
 		 * 艾伦格 - 原版
 		 */
-		ERANGEL(0, "艾伦格", "Erangel_Main", MAP_SIDE_LENGTH_8X8_CM, MAP_SIDE_LENGTH_8X8_CM),
+		ERANGEL(1, "艾伦格", "Erangel_Main", MAP_SIDE_LENGTH_8X8_CM, MAP_SIDE_LENGTH_8X8_CM),
 
         /**
          * 艾伦格 - 重制版
          */
-        BALTIC(0, "艾伦格", "Baltic_Main", MAP_SIDE_LENGTH_8X8_CM, MAP_SIDE_LENGTH_8X8_CM),
+        BALTIC(2, "艾伦格", "Baltic_Main", MAP_SIDE_LENGTH_8X8_CM, MAP_SIDE_LENGTH_8X8_CM),
 
         /**
 		 * 米拉玛
 		 */
-		MIRAMAR(1, "米拉玛", "Desert_Main", MAP_SIDE_LENGTH_8X8_CM, MAP_SIDE_LENGTH_8X8_CM),
+		MIRAMAR(3, "米拉玛", "Desert_Main", MAP_SIDE_LENGTH_8X8_CM, MAP_SIDE_LENGTH_8X8_CM),
 
 		/**
 		 * 萨诺
 		 */
-		SANHOK(2, "萨诺", "Savage_Main", MAP_SIDE_LENGTH_4X4_CM, MAP_SIDE_LENGTH_4X4_CM),
+		SANHOK(4, "萨诺", "Savage_Main", MAP_SIDE_LENGTH_4X4_CM, MAP_SIDE_LENGTH_4X4_CM),
 
 		/**
 		 * 维寒迪
 		 */
-		VIKENDI(3, "维寒迪", "DihorOtok_Main", MAP_SIDE_LENGTH_6X6_CM, MAP_SIDE_LENGTH_6X6_CM),
+		VIKENDI(5, "维寒迪", "DihorOtok_Main", MAP_SIDE_LENGTH_6X6_CM, MAP_SIDE_LENGTH_6X6_CM),
 
 		/**
          * 练功房
          * */
-		TRAIN(9, "练功房", "RANGE_Main", MAP_SIDE_LENGTH_2X2_CM, MAP_SIDE_LENGTH_2X2_CM);
+		TRAIN(6, "练功房", "RANGE_Main", MAP_SIDE_LENGTH_2X2_CM, MAP_SIDE_LENGTH_2X2_CM);
 
 		/**
 		 * 地图编号
@@ -142,37 +142,37 @@ public class PubgConstant {
         /**
          * 单排
          */
-        SOLO(0, "单排", "solo"),
+        SOLO(1, "单排", "solo"),
 
         /**
          * 第一人称单排
          */
-        SOLO_FPP(0, "第一人称单排", "solo-fpp"),
+        SOLO_FPP(2, "第一人称单排", "solo-fpp"),
 
         /**
          * 双排
          */
-        DUO(1, "双排", "duo"),
+        DUO(3, "双排", "duo"),
 
         /**
          * 第一人称双排
          */
-        DUO_FPP(1, "第一人称双排", "duo-fpp"),
+        DUO_FPP(4, "第一人称双排", "duo-fpp"),
 
         /**
          * 四排
          * */
-        SQUAD(1, "四排", "squad"),
+        SQUAD(5, "四排", "squad"),
 
         /**
          * 第一人称四排
          * */
-        SQUAD_FPP(1, "第一人称四排", "squad-fpp"),
+        SQUAD_FPP(6, "第一人称四排", "squad-fpp"),
 
         /**
          * 街机模式 - 8V8
          */
-        TEAM_DEATH_MATCH(2, "街机模式-团队淘汰竞赛", "tdm");
+        TEAM_DEATH_MATCH(7, "街机模式-团队淘汰竞赛", "tdm");
 
         /**
          * 地图编号
@@ -242,7 +242,7 @@ public class PubgConstant {
         /**
          * 未知原因
          */
-        UNKNOWN(5, "未知原因", "");
+        UNKNOWN(6, "未知原因", "");
 
         /**
          * 地图编号

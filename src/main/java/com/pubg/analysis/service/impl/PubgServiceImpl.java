@@ -68,7 +68,7 @@ public class PubgServiceImpl implements IPubgService {
         PubgConstant.Maps mapType = PubgUtil.getMapType(matchId);
 
         //计算位置分组
-        TreeMap<Long, Map<String, Character>> logs = sortLogByTimeAndCharacter(baseLogs, startTimestamp);
+        TreeMap<Long, Map<String, Character>> logs = sortLogByTimeAndCharacter(baseLogs, startTimestamp, mapType);
         // 转换位置分组
         TreeMap<Long, Map<String, CharacterPositionResponse>> positionLogs = new TreeMap<>();
         logs.forEach((time,mapValue) -> {

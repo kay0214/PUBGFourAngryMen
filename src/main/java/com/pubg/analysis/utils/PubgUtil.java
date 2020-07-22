@@ -112,7 +112,7 @@ public class PubgUtil {
      * @param startTimestamp 开始时间戳
      * @return 有序map
      */
-    public static TreeMap<Long, Map<String, Character>> sortLogByTimeAndCharacter(List<BaseLog> baseLogs, long startTimestamp) {
+    public static TreeMap<Long, Map<String, Character>> sortLogByTimeAndCharacter(List<BaseLog> baseLogs, long startTimestamp, PubgConstant.Maps mapType) {
 
         TreeMap<Long, Map<String, Character>> logs = new TreeMap<>();
         baseLogs.parallelStream()
@@ -141,7 +141,7 @@ public class PubgUtil {
                                     //确定要保留的元素
                                     Character keep = e.getValue().get(e.getValue().size() - 1);
                                     //计算比率位置
-                                    PubgUtil.calculateLocationRation(keep.getLocation(), PubgConstant.Maps.SANHOK);
+                                    PubgUtil.calculateLocationRation(keep.getLocation(), mapType);
                                     e.setValue(Collections.singletonList(keep));
                                     return new AbstractMap.SimpleEntry<String, Character>(
                                             e.getKey(),
