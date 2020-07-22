@@ -43,6 +43,8 @@ public class FetchLogSchedule {
             if(logRepository.isExistMatchLog(matchId)){
                 // 判断是否已经入库过,避免重复入库
                 log.error("This match is already put into the mongoDB,matchId is [{}]",matchId);
+                // 更新状态
+                matchRepository.updateFetchLogStatus(matchId);
             }else{
                 log.info("Fetch match log from pubg remote,matchId is [{}],url is [{}]",matchId,url);
                 String result = HttpUtil.sendGetGZIP(url);

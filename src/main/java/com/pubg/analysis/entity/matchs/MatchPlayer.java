@@ -26,6 +26,8 @@ import java.util.Date;
 public class MatchPlayer implements Serializable {
     // 对局ID
     private String matchId;
+    // 对局开始时间
+    private Date matchTime;
     // 玩家ID
     private String accountId;
     // 玩家昵称

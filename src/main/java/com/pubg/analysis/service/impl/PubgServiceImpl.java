@@ -24,6 +24,7 @@ import com.pubg.analysis.utils.EntityUtil;
 import com.pubg.analysis.utils.PubgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -303,6 +304,7 @@ public class PubgServiceImpl implements IPubgService {
                             // 个人信息
                             MatchPlayer matchPlayer = JSONObject.parseObject(stats.toJSONString(), MatchPlayer.class);
                             matchPlayer.setMatchId(matchId);
+                            matchPlayer.setMatchTime(match.getCreateTime());
                             matchPlayer.setAccountId(stats.getString("playerId"));
                             matchPlayer.setPlayerName(stats.getString("name"));
                             matchPlayer.setMatchPlayerId(include.getString("id"));
@@ -355,6 +357,7 @@ public class PubgServiceImpl implements IPubgService {
 
         if(StringUtils.isEmpty(request.getAccountId()) && StringUtils.isEmpty(request.getPlayerName())){
             // 如果参数都为空 - 直接查询match表
+            query.with(new Sort(Sort.Direction.DESC,"createTime"));
             return matchRepository.page(query,request.getPage(),request.getLimit()).convert(Match::getResponse);
         }else{
             // 构建查询条件
@@ -366,7 +369,7 @@ public class PubgServiceImpl implements IPubgService {
             if (!StringUtils.isEmpty(request.getPlayerName())) {
                 criteria.and("playerName").is(request.getPlayerName());
             }
-            query.addCriteria(criteria);
+            query.addCriteria(criteria).with(new Sort(Sort.Direction.DESC,"matchTime"));
             Page<MatchPlayer> matchPlayers = matchPlayerRepository.page(query, request.getPage(), request.getLimit());
             return matchPlayers.convert(matchPlayer -> matchRepository.findByMatchId(matchPlayer.getMatchId()).getResponse(matchPlayer.getPlayerName()));
         }
