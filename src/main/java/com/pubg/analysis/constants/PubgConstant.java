@@ -230,9 +230,19 @@ public class PubgConstant {
         TEAM_DEATH_MATCH(3, "被毒身亡", "byzone"),
 
         /**
-         * 被毒身亡
+         * 自杀
          */
-        UNKNOWN(4, "未知原因", "");
+        SUICIDE(4, "自杀", "suicide"),
+
+        /**
+         * 退出
+         */
+        LOGOUT(5, "退出", "logout"),
+
+        /**
+         * 未知原因
+         */
+        UNKNOWN(5, "未知原因", "");
 
         /**
          * 地图编号
