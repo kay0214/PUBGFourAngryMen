@@ -1,5 +1,6 @@
 package com.pubg.analysis.response;
 
+import com.pubg.analysis.constants.PubgConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -93,4 +94,8 @@ public class MatchPlayerResponse implements Serializable {
 
     @ApiModelProperty(value = "团队击杀")
     private Integer teamKills;
+
+    public void setDeathType(String deathType) {
+        this.deathType = PubgConstant.DeathType.getShortNameByLongName(deathType);
+    }
 }

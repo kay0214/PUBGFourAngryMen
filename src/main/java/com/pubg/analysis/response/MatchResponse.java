@@ -44,9 +44,6 @@ public class MatchResponse implements Serializable {
     // 是否已经拉取了对局日志
     @ApiModelProperty("是否已经拉取了对局日志 - 已格式化")
     private String fetchLogStr;
-    // 对局日志URL
-    @ApiModelProperty("对局日志URL")
-    private String assetsUrl;
     // 对局创建时间
     @ApiModelProperty("对局创建时间")
     private String createTime;
