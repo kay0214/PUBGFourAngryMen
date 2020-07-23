@@ -9,6 +9,7 @@ import com.pubg.analysis.entity.log.BaseLog;
 import com.pubg.analysis.entity.matchs.Match;
 import com.pubg.analysis.repository.LogRepository;
 import com.pubg.analysis.repository.MatchRepository;
+import com.pubg.analysis.utils.DateUtil;
 import com.pubg.analysis.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -54,6 +55,7 @@ public class FetchLogSchedule {
                         .map(e -> {
                             JSONObject json = (JSONObject) e;
                             BaseLog baseLog = json.toJavaObject(BaseLog.class);
+                            baseLog.set_D(DateUtil.add8Hours(baseLog.get_D()));
                             baseLog.setMatchId(matchId);
                             return baseLog;
                         })
