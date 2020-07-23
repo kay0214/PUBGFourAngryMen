@@ -129,7 +129,7 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
-    @Cacheable(value = "match:page:accountId", key = "#request.accountId + #request.page + #request.limit", unless = "#result.records.size()<=0")
+    /*@Cacheable(value = "match:page:accountId", key = "#request.accountId + #request.page + #request.limit", unless = "#result.records.size()<=0")*/
     public Page<MatchResponse> findMatchPageByAccountId(MatchRequest request) {
 
         log.info("no cached");
@@ -160,7 +160,7 @@ public class PubgServiceImpl implements IPubgService {
      * @auth sunpeikai
      */
     @Override
-    @Cacheable(value = "match:page:playerName", key = "#request.playerName + #request.page + #request.limit", unless = "#result.records.size()<=0")
+    /*@Cacheable(value = "match:page:playerName", key = "#request.playerName + #request.page + #request.limit", unless = "#result.records.size()<=0")*/
     public Page<MatchResponse> findMatchPageByPlayerName(MatchRequest request) {
 
         log.info("no cached");
