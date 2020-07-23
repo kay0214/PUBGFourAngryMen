@@ -34,7 +34,7 @@ public class HttpUtil {
         BufferedReader in = null;
         try {
             String urlNameString = url + param;
-            log.info("sendGet - {}", urlNameString);
+            log.debug("sendGet - {}", urlNameString);
             URL realUrl = new URL(urlNameString);
             URLConnection connection = realUrl.openConnection();
             connection.setRequestProperty("accept", "application/vnd.api+json");
@@ -47,7 +47,7 @@ public class HttpUtil {
             while ((line = in.readLine()) != null) {
                 result.append(line);
             }
-            log.info("recv - {}", result);
+            log.debug("recv - {}", result);
         } catch (Exception e) {
             log.error("sendGet Exception -> url[{}],param[{}],exception[{}]", url, param, e.getMessage());
         } finally {
