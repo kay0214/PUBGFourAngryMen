@@ -88,7 +88,6 @@ function TeamList(listId, checkBox = true) {
         const teams = {};
         for (let player of playerList) {
             const winPlace = player.winPlace;
-            console.info("winplace is " + winPlace);
             if (teams[winPlace] === undefined) {
                 teams[winPlace] = [];
             }

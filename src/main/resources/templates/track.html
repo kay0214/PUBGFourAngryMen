@@ -23,8 +23,11 @@
     <div class="layui-form">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <div class="layui-input-inline"><input id="matchId" th:value="${matchId}" type="text" class="layui-input" placeholder="matchId"></div>
-                <button type="button" onclick="reloadTrackByMatchId()" class="layui-btn layui-btn-normal"><i class="layui-icon layui-icon-refresh"></i> Load</button>
+                <div class="layui-input-inline"><input id="matchId" th:value="${matchId}" type="text"
+                                                       class="layui-input" placeholder="matchId"></div>
+                <button type="button" onclick="reloadTrackByMatchId()" class="layui-btn layui-btn-normal"><i
+                        class="layui-icon layui-icon-refresh"></i> Load
+                </button>
             </div>
         </div>
     </div>
@@ -72,7 +75,7 @@
     // 进入页面以后先执行一次载入
     reloadTrackByMatchId();
 
-    function reloadTrackByMatchId(){
+    function reloadTrackByMatchId() {
         const matchId = $("#matchId").val();
         if (!matchId) {
             return;
@@ -102,7 +105,7 @@
 
     //拖动事件
     $("#timeRange").on("input", (e) => {
-        const current = e.target.value;
+        const current = parseInt(e.target.value);
         currentInstant = current;
         drawInstantContent(current);
     })
@@ -116,8 +119,7 @@
 
         //游戏状态
         drawGameState(instant);
-
-        if (instant == 0) {
+        if (instant === 0) {
             //个人路线
             drawPersonalTrackLine();
             return;
@@ -140,7 +142,7 @@
         //遍历玩家
         for (let character in trackData.characters) {
             const accountId = trackData.characters[character].accountId;
-
+            const colorIndex = trackData.characters[character].winPlace;
             //判断是否输出该角色
             if (!teamList.isSelected(accountId)) {
                 continue;
@@ -158,7 +160,7 @@
                     continue;
                 }
                 const displayName = DRAW_NAME ? characterPos.name : "";
-                pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, characterPos.winPlace, displayName);
+                pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, colorIndex, displayName);
             } else {
                 //判断是否死亡
                 const deathTime = trackData.deathLog[accountId];
@@ -174,7 +176,7 @@
                                 continue;
                             }
                             const displayName = DRAW_NAME ? characterPos.name : "";
-                            pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, characterPos.winPlace, displayName);
+                            pubgMap.drawPosition(characterPos.location.xratio, characterPos.location.yratio, colorIndex, displayName);
                             break;
                         }
                     }
