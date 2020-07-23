@@ -289,7 +289,7 @@ public class PubgServiceImpl implements IPubgService {
                 match.setMapName(matchInfo.getString("mapName"));
                 match.setGameMode(matchInfo.getString("gameMode"));
                 match.setFetchLog(ApiConstant.MATCH_FETCH_LOG_NO);
-                match.setCreateTime(DateUtil.getFromStr(matchInfo.getString("createdAt")));
+                match.setCreateTime(DateUtil.add8Hours(DateUtil.getFromStr(matchInfo.getString("createdAt"))));
             }
 
             JSONArray array = result.getJSONArray("included");

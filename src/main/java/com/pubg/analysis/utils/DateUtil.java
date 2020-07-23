@@ -4,6 +4,7 @@
 package com.pubg.analysis.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -17,6 +18,13 @@ public class DateUtil {
     private static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     private static final String YYYY_MM_DD = "yyyy-MM-dd";
     private static final String GET_FROM = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+
+    public static Date add8Hours(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR, 8);
+        return calendar.getTime();
+    }
     /**
      * @description string -> date
      * @auth sunpeikai
