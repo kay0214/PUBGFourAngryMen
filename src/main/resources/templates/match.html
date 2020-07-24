@@ -9,6 +9,11 @@
     <script src="layui/layui.js"></script>
     <script src="js/util/Table.js"></script>
     <!--<script src="layui/lay/modules/layer.js"></script>-->
+    <style>
+        .table-hover > tbody > tr:hover > td{
+            background-color: #e6e6e6;
+        }
+    </style>
 </head>
 <body>
 
@@ -68,9 +73,9 @@
     </div>
 </div>
 
-<table id="me" class="layui-table layui-table-hover"></table>
-<table id="team" class="layui-table layui-table-hover"></table>
-<table id="all" class="layui-table layui-table-hover"></table>
+<table id="me" class="layui-table table-hover"></table>
+<table id="team" class="layui-table table-hover"></table>
+<table id="all" class="layui-table table-hover"></table>
 </body>
 <script>
     var layer;
