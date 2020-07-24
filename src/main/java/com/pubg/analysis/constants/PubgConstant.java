@@ -67,10 +67,15 @@ public class PubgConstant {
 		 */
 		VIKENDI(5, "维寒迪", "DihorOtok_Main", MAP_SIDE_LENGTH_6X6_CM, MAP_SIDE_LENGTH_6X6_CM),
 
-		/**
-         * 练功房
+        /**
+         * 卡拉金
+         */
+        KARAKIN(6, "卡拉金", "Summerland_Main", MAP_SIDE_LENGTH_2X2_CM, MAP_SIDE_LENGTH_2X2_CM),
+
+        /**
+         * 训练场
          * */
-		TRAIN(6, "练功房", "RANGE_Main", MAP_SIDE_LENGTH_2X2_CM, MAP_SIDE_LENGTH_2X2_CM);
+		TRAIN(7, "训练场", "Range_Main", MAP_SIDE_LENGTH_2X2_CM, MAP_SIDE_LENGTH_2X2_CM);
 
 		/**
 		 * 地图编号
@@ -170,9 +175,169 @@ public class PubgConstant {
         SQUAD_FPP(6, "第一人称四排", "squad-fpp"),
 
         /**
+         * 普通模式 - 单排
+         */
+        NORMAL_SOLO(7, "普通-单排", "normal-solo"),
+
+        /**
+         * 普通模式 - 第一人称单排
+         */
+        NORMAL_SOLO_FPP(8, "普通-第一人称单排", "normal-solo-fpp"),
+
+        /**
+         * 普通模式 - 双排
+         */
+        NORMAL_DUO(9, "普通-双排", "normal-duo"),
+
+        /**
+         * 普通模式 - 第一人称双排
+         */
+        NORMAL_DUO_FPP(10, "普通-第一人称双排", "normal-duo-fpp"),
+
+        /**
+         * 普通模式 - 四排
+         * */
+        NORMAL_SQUAD(11, "普通-四排", "normal-squad"),
+
+        /**
+         * 普通模式 - 第一人称四排
+         * */
+        NORMAL_SQUAD_FPP(12, "普通-第一人称四排", "normal-squad-fpp"),
+
+        /**
+         * 感染者(僵尸)模式 - 单排
+         */
+        ZOMBIE_SOLO(13, "感染者-单排", "zombie-solo"),
+
+        /**
+         * 感染者(僵尸)模式 - 第一人称单排
+         */
+        ZOMBIE_SOLO_FPP(14, "感染者-第一人称单排", "zombie-solo-fpp"),
+
+        /**
+         * 感染者(僵尸)模式 - 双排
+         */
+        ZOMBIE_DUO(15, "感染者-双排", "zombie-duo"),
+
+        /**
+         * 感染者(僵尸)模式 - 第一人称双排
+         */
+        ZOMBIE_DUO_FPP(16, "感染者-第一人称双排", "zombie-duo-fpp"),
+
+        /**
+         * 感染者(僵尸)模式 - 四排
+         * */
+        ZOMBIE_SQUAD(17, "感染者-四排", "zombie-squad"),
+
+        /**
+         * 感染者(僵尸)模式 - 第一人称四排
+         * */
+        ZOMBIE_SQUAD_FPP(18, "感染者-第一人称四排", "zombie-squad-fpp"),
+
+        /**
+         * 战争模式 - 单排
+         */
+        WAR_SOLO(19, "战争-单排", "war-solo"),
+
+        /**
+         * 战争模式 - 第一人称单排
+         */
+        WAR_SOLO_FPP(20, "战争-第一人称单排", "war-solo-fpp"),
+
+        /**
+         * 战争模式 - 双排
+         */
+        WAR_DUO(21, "战争-双排", "war-duo"),
+
+        /**
+         * 战争模式 - 第一人称双排
+         */
+        WAR_DUO_FPP(22, "战争-第一人称双排", "war-duo-fpp"),
+
+        /**
+         * 战争模式 - 四排
+         * */
+        WAR_SQUAD(23, "战争-四排", "war-squad"),
+
+        /**
+         * 战争模式 - 第一人称四排
+         * */
+        WAR_SQUAD_FPP(24, "战争-第一人称四排", "war-squad-fpp"),
+
+        /**
+         * 对抗模式占领 - 单排
+         */
+        CONQUEST_SOLO(25, "占领-单排", "conquest-solo"),
+
+        /**
+         * 对抗模式占领 - 第一人称单排
+         */
+        CONQUEST_SOLO_FPP(26, "占领-第一人称单排", "conquest-solo-fpp"),
+
+        /**
+         * 对抗模式占领 - 双排
+         */
+        CONQUEST_DUO(27, "占领-双排", "conquest-duo"),
+
+        /**
+         * 对抗模式占领 - 第一人称双排
+         */
+        CONQUEST_DUO_FPP(28, "占领-第一人称双排", "conquest-duo-fpp"),
+
+        /**
+         * 对抗模式占领 - 四排
+         * */
+        CONQUEST_SQUAD(29, "占领-四排", "conquest-squad"),
+
+        /**
+         * 对抗模式占领 - 第一人称四排
+         * */
+        CONQUEST_SQUAD_FPP(30, "占领-第一人称四排", "conquest-squad-fpp"),
+
+        /**
+         * 电竞模式 - 单排
+         */
+        ESPORTS_SOLO(31, "电竞-单排", "esports-solo"),
+
+        /**
+         * 电竞模式 - 第一人称单排
+         */
+        ESPORTS_SOLO_FPP(32, "电竞-第一人称单排", "esports-solo-fpp"),
+
+        /**
+         * 电竞模式 - 双排
+         */
+        ESPORTS_DUO(33, "电竞-双排", "esports-duo"),
+
+        /**
+         * 电竞模式 - 第一人称双排
+         */
+        ESPORTS_DUO_FPP(34, "电竞-第一人称双排", "esports-duo-fpp"),
+
+        /**
+         * 电竞模式 - 四排
+         * */
+        ESPORTS_SQUAD(35, "电竞-四排", "esports-squad"),
+
+        /**
+         * 电竞模式 - 第一人称四排
+         * */
+        ESPORTS_SQUAD_FPP(36, "电竞-第一人称四排", "esports-squad-fpp"),
+
+        /**
+         * 实验室模式 - 第三人称
+         * */
+        LAB_TPP(37, "实验室-第三人称", "lab-tpp"),
+
+        /**
+         * 实验室模式 - 第一人称四排
+         * */
+        LAB_FPP(38, "实验室-第一人称", "lab-fpp"),
+
+        /**
          * 街机模式 - 8V8
          */
-        TEAM_DEATH_MATCH(7, "街机模式-团队淘汰竞赛", "tdm");
+        TEAM_DEATH_MATCH(39, "街机模式-团队淘汰竞赛", "tdm");
 
         /**
          * 地图编号
