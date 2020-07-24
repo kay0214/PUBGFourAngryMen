@@ -22,6 +22,11 @@ public class HttpUtil {
 
     public static final Integer SIZE = 1024;
     public static final Integer OFFSET = 0;
+    // 连接超时时间 - 2分钟
+    private static final Integer CONNECT_TIMEOUT = 2 * 60 * 1000;
+    // 读超时时间 - 30分钟，带宽比较低
+    private static final Integer READ_TIMEOUT = 30 * 60 * 1000;
+
     /**
      * 向指定 URL 发送GET方法的请求
      *
@@ -41,6 +46,8 @@ public class HttpUtil {
             connection.setRequestProperty("connection", "Keep-Alive");
             connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             connection.setRequestProperty("Authorization", "Bearer " +  PUBGConfig.apiKey);
+            connection.setConnectTimeout(CONNECT_TIMEOUT);
+            connection.setReadTimeout(READ_TIMEOUT);
             connection.connect();
             in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
@@ -78,6 +85,8 @@ public class HttpUtil {
             connection.setRequestProperty("accept", "application/vnd.api+json");
             connection.setRequestProperty("connection", "Keep-Alive");
             connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            connection.setConnectTimeout(CONNECT_TIMEOUT);
+            connection.setReadTimeout(READ_TIMEOUT);
             connection.connect();
             inputStream = new GZIPInputStream(connection.getInputStream());
             int count;
