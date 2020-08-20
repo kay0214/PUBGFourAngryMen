@@ -5,6 +5,7 @@
     <title>对局详情</title>
     <link rel="icon" href="img/icon/icon.jpg">
     <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/common.css">
     <script src="js/lib/jquery-3.5.1.min.js"></script>
     <script src="layui/layui.js"></script>
     <script src="js/util/Table.js"></script>
@@ -76,6 +77,8 @@
 <table id="me" class="layui-table table-hover"></table>
 <table id="team" class="layui-table table-hover"></table>
 <table id="all" class="layui-table table-hover"></table>
+
+<div th:replace="footer :: stretched"></div>
 </body>
 <script>
     var layer;

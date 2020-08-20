@@ -1,0 +1,28 @@
+/* 底部 */
+.footer-stretched {
+    width: 100%;
+    position:absolute;
+    margin: 50px 0 0;
+    padding: 10px 0 10px;
+    line-height: 30px;
+    text-align: center;
+    color: #737573;
+    border-top: 1px solid #e2e2e2;
+}
+.footer-stretched a{padding:0 6px; font-weight: 300; color: #333;}
+.footer-stretched a:hover{color: #777;}
+
+/* 底部 */
+.footer-fixed {
+    width: 100%;
+    position:fixed;
+    bottom: 0;
+    margin: 50px 0 0;
+    padding: 10px 0 10px;
+    line-height: 30px;
+    text-align: center;
+    color: #737573;
+    border-top: 1px solid #e2e2e2;
+}
+.footer-fixed a{padding:0 6px; font-weight: 300; color: #333;}
+.footer-fixed a:hover{color: #777;}
